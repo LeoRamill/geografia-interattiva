@@ -4,14 +4,17 @@
   const CAT = window.CATEGORIE;
   const LUOGHI = window.LUOGHI;
   const panel = document.getElementById("panel");
+  const quiz = { on: false, order: [], i: 0, ok: 0, done: 0, marks: {}, tries: 0 };
 
   /* ---------------- Mappa ---------------- */
   const confine = L.geoJSON(window.CONFINE_VDA);
   const bounds = confine.getBounds();
 
   const small = window.matchMedia("(max-width: 820px)").matches;
-  const PIN = small ? 26 : 34;
-  const FIT = { paddingTopLeft: [16, small ? 70 : 100], paddingBottomRight: [16, 16] };
+  const FIT = small
+    ? { padding: [12, 12] }
+    : { paddingTopLeft: [215, 20], paddingBottomRight: [20, 20] };   // spazio per la legenda
+  const NOMI_ZOOM = 10.5;   // da questo zoom in su compaiono i nomi dei luoghi
 
   const map = L.map("map", {
     zoomControl: false,
@@ -23,30 +26,43 @@
   });
   L.control.zoom({ position: "bottomright" }).addTo(map);
 
+  const OSM = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+
+  // Sfondo "Semplice": cartina chiara senza scritte + ombreggiatura del rilievo
+  const semplice = L.layerGroup([
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png", {
+      subdomains: "abcd", maxZoom: 19,
+      attribution: OSM + ' · &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    }),
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}", {
+      maxNativeZoom: 13, maxZoom: 19, opacity: 0.55, className: "rilievo",
+      attribution: 'rilievo &copy; Esri'
+    })
+  ]);
+  const satellite = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+    maxZoom: 18, attribution: 'immagini &copy; Esri'
+  });
   const topo = L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
     maxZoom: 17,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · stile &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)'
+    attribution: OSM + ' · &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)'
   });
-  const osm = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-  });
-  topo.addTo(map);
+  semplice.addTo(map);
 
   // Ombra fuori dalla regione: un grande rettangolo con un "buco" a forma di Valle d'Aosta.
   const ring = window.CONFINE_VDA.geometry.coordinates[0].map(([lng, lat]) => [lat, lng]);
   const world = [[44.5, 5.5], [44.5, 9.2], [47, 9.2], [47, 5.5]];
   L.polygon([world, ring], {
-    stroke: false, fillColor: "#0b1220", fillOpacity: 0.35, interactive: false
+    stroke: false, fillColor: "#ffffff", fillOpacity: 0.6, interactive: false
   }).addTo(map);
 
-  const bordo = L.polygon(ring, {
-    color: "#b91c1c", weight: 3, fill: false, interactive: false
-  }).addTo(map);
+  const bordo = L.featureGroup([
+    L.polygon(ring, { color: "#ffffff", weight: 7, opacity: 0.9, fill: false, interactive: false }),
+    L.polygon(ring, { color: "#c8102e", weight: 3, fill: false, interactive: false })
+  ]).addTo(map);
 
   // Dora Baltea (tracciato semplificato, cliccabile)
   const dora = L.polyline(window.DORA_BALTEA, {
-    color: "#1d4ed8", weight: 5, opacity: 0.75, lineCap: "round", lineJoin: "round"
+    color: "#2563eb", weight: 4, opacity: 0.8, lineCap: "round", lineJoin: "round"
   }).addTo(map);
   dora.bindTooltip("Dora Baltea", { sticky: true, className: "tip" });
   dora.on("click", () => { if (!quiz.on) showPlace(window.DORA_INFO, null); });
@@ -60,33 +76,37 @@
   });
 
   L.control.layers(
-    { "Rilievo (topografica)": topo, "Stradale (OpenStreetMap)": osm },
+    { "Semplice": semplice, "Satellite": satellite, "Escursionistica (dettagliata)": topo },
     { "Confine regionale": bordo, "Dora Baltea": dora },
     { position: "bottomright", collapsed: true }
   ).addTo(map);
   L.control.scale({ imperial: false, position: "bottomleft" }).addTo(map);
-
-  map.fitBounds(bounds, FIT);
 
   /* ---------------- Marker ---------------- */
   const markers = {};      // id -> L.marker
   const visibili = new Set(Object.keys(CAT));
   let attivo = null;
 
+  const vicino = () => map.getZoom() >= NOMI_ZOOM;
+  const pinSize = () => (vicino() ? (small ? 28 : 30) : (small ? 22 : 24));
+
   function pinIcon(l, extra) {
     const c = CAT[l.cat];
+    const n = pinSize();
     return L.divIcon({
       className: "",
-      html: `<div class="pin ${extra || ""}" style="--c:${c.colore}"><span>${c.icona}</span></div>`,
-      iconSize: [PIN, PIN],
-      iconAnchor: [PIN / 2, PIN],
-      tooltipAnchor: [0, -PIN + 4]
+      html: `<div class="pin ${extra || ""}" style="--c:${c.colore};--s:${n}px"><span>${c.icona}</span></div>`,
+      iconSize: [n, n],
+      iconAnchor: [n / 2, n / 2],
+      tooltipAnchor: [n / 2 + 2, 0]
     });
   }
 
   LUOGHI.forEach(l => {
     const m = L.marker([l.lat, l.lng], { icon: pinIcon(l), title: l.nome, riseOnHover: true });
-    m.bindTooltip(l.nome, { direction: "top", className: "tip" });
+    m.bindTooltip(l.nome, { permanent: true, direction: "right", className: "name-label" });
+    m.on("mouseover", () => { const t = m.getTooltip().getElement(); if (t) t.classList.add("hov"); });
+    m.on("mouseout", () => { const t = m.getTooltip().getElement(); if (t) t.classList.remove("hov"); });
     m.on("click", () => (quiz.on ? quizAnswer(l) : select(l.id)));
     m.addTo(map);
     markers[l.id] = m;
@@ -101,6 +121,14 @@
     });
   }
 
+  let eraVicino = null;
+  function onZoom() {
+    const v = vicino();
+    map.getContainer().classList.toggle("show-names", v);
+    if (v !== eraVicino) { eraVicino = v; refreshIcons(); }
+  }
+  map.on("zoomend", onZoom);
+
   function applyFilters() {
     LUOGHI.forEach(l => {
       const show = quiz.on || visibili.has(l.cat);
@@ -110,23 +138,41 @@
     });
   }
 
-  /* ---------------- Filtri ---------------- */
-  const filters = document.getElementById("filters");
-  Object.entries(CAT).forEach(([key, c]) => {
-    const b = document.createElement("button");
-    b.className = "chip";
-    b.style.setProperty("--c", c.colore);
-    b.setAttribute("aria-pressed", "true");
-    b.title = c.nome;
-    b.innerHTML = `<span class="dot"></span><span class="emoji">${c.icona}</span><span class="label">${c.nome}</span>`;
-    b.addEventListener("click", () => {
-      if (visibili.has(key)) visibili.delete(key); else visibili.add(key);
-      b.setAttribute("aria-pressed", visibili.has(key));
-      applyFilters();
-    });
-    filters.appendChild(b);
+  /* ---------------- Legenda (filtra per categoria) ---------------- */
+  const legendBtns = {};
+  const Legenda = L.Control.extend({
+    options: { position: "topleft" },
+    onAdd() {
+      const div = L.DomUtil.create("div", "legend");
+      const toggle = L.DomUtil.create("button", "legend-toggle", div);
+      toggle.textContent = "Legenda";
+      toggle.setAttribute("aria-expanded", String(!small));
+      toggle.addEventListener("click", () =>
+        toggle.setAttribute("aria-expanded", String(toggle.getAttribute("aria-expanded") !== "true")));
+      const items = L.DomUtil.create("div", "legend-items", div);
+      Object.entries(CAT).forEach(([key, c]) => {
+        const b = L.DomUtil.create("button", "legend-item", items);
+        b.style.setProperty("--c", c.colore);
+        b.setAttribute("aria-pressed", "true");
+        b.title = "Mostra/nascondi: " + c.nome;
+        b.innerHTML = `<span class="sw">${c.icona}</span><span class="nm">${c.nome}</span>`;
+        b.addEventListener("click", () => {
+          if (visibili.has(key)) visibili.delete(key); else visibili.add(key);
+          b.setAttribute("aria-pressed", String(visibili.has(key)));
+          applyFilters();
+        });
+        legendBtns[key] = b;
+      });
+      L.DomUtil.create("div", "legend-hint", items).textContent = "Tocca una voce per mostrarla o nasconderla";
+      L.DomEvent.disableClickPropagation(div);
+      L.DomEvent.disableScrollPropagation(div);
+      return div;
+    }
   });
-  L.DomEvent.disableClickPropagation(filters);
+  new Legenda().addTo(map);
+
+  map.fitBounds(bounds, FIT);
+  onZoom();
 
   /* ---------------- Pannello ---------------- */
   const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
@@ -147,7 +193,7 @@
     panel.innerHTML = `
       <h2>La Valle d'Aosta</h2>
       <p class="sub">La regione più piccola d'Italia, tra Francia, Svizzera e Piemonte.</p>
-      <p class="hint">👆 Clicca un segnaposto sulla mappa (o un nome qui sotto) per leggere la sua scheda. Clicca anche la linea blu del fiume!</p>
+      <p class="hint">👆 Clicca un pallino sulla mappa (o un nome qui sotto) per leggere la sua scheda. Avvicinati con lo zoom per vedere i nomi. Clicca anche la linea blu del fiume!</p>
       ${sezioni}
       <div class="places"><h3>Tutti i luoghi della mappa</h3>${gruppi}</div>`;
     panel.querySelectorAll(".place-btn").forEach(b => b.addEventListener("click", () => select(b.dataset.id)));
@@ -181,7 +227,7 @@
     const l = LUOGHI[idx];
     if (!visibili.has(l.cat)) {               // se la categoria era nascosta, la riattiva
       visibili.add(l.cat);
-      filters.children[Object.keys(CAT).indexOf(l.cat)].setAttribute("aria-pressed", "true");
+      legendBtns[l.cat].setAttribute("aria-pressed", "true");
       applyFilters();
     }
     attivo = id;
@@ -199,7 +245,6 @@
   document.getElementById("btn-home").addEventListener("click", () => { if (quiz.on) stopQuiz(); goHome(); });
 
   /* ---------------- Quiz ---------------- */
-  const quiz = { on: false, order: [], i: 0, ok: 0, done: 0, marks: {}, tries: 0 };
   const qbar = document.getElementById("quizbar");
   const qTarget = document.getElementById("quiz-target");
   const qScore = document.getElementById("quiz-score");
@@ -221,8 +266,8 @@
     panel.innerHTML = `
       <h2>🎯 Quiz: dov'è?</h2>
       <p class="sub">Esercitati per l'interrogazione.</p>
-      <p>In basso sulla mappa compare il nome di un luogo: clicca il segnaposto giusto. Hai <b>due tentativi</b> per ogni luogo.</p>
-      <p class="hint">I segnaposto sono tutti grigi e senza icona, così non puoi barare! 😉</p>`;
+      <p>In basso sulla mappa compare il nome di un luogo: clicca il pallino giusto. Hai <b>due tentativi</b> per ogni luogo.</p>
+      <p class="hint">I pallini sono tutti grigi e senza icona, così non puoi barare! 😉</p>`;
     nextQuestion();
   }
 
@@ -252,7 +297,7 @@
         quiz.done++;
         quiz.marks[target.id] = "correct";
         qFb.className = "quiz-feedback ko";
-        qFb.textContent = `✘ No: quello era ${l.nome}. ${target.nome} è il segnaposto verde.`;
+        qFb.textContent = `✘ No: quello era ${l.nome}. ${target.nome} è il pallino verde.`;
         map.panTo([target.lat, target.lng]);
         advance();
       } else {
@@ -294,7 +339,7 @@
     quiz.done++;
     quiz.marks[t.id] = "correct";
     qFb.className = "quiz-feedback ko";
-    qFb.textContent = `Saltato: ${t.nome} è il segnaposto verde.`;
+    qFb.textContent = `Saltato: ${t.nome} è il pallino verde.`;
     map.panTo([t.lat, t.lng]);
     advance();
   });

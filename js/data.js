@@ -139,26 +139,16 @@ window.LUOGHI = [
     ricorda: "Castello medievale degli Challant con torri e affreschi."
   },
   {
-    id: "issogne", nome: "Castello di Issogne", cat: "castelli", lat: 45.6544, lng: 7.6875,
-    sottotitolo: "Il castello-residenza del Rinascimento",
-    testo: "Il castello di Issogne non è una fortezza ma un'elegante residenza signorile, trasformata dalla famiglia Challant alla fine del Quattrocento. Nel cortile si trova la celebre fontana del melograno, in ferro battuto.",
+    id: "verres-issogne", nome: "Castelli di Verrès e Issogne", cat: "castelli", lat: 45.6614, lng: 7.6921,
+    sottotitolo: "Due castelli degli Challant, uno di fronte all'altro",
+    testo: "Verrès e Issogne si trovano uno di fronte all'altro, sulle due rive della Dora Baltea, e appartenevano entrambi alla famiglia Challant. Il castello di Verrès, costruito nel Trecento su una roccia, è una fortezza massiccia a forma di cubo, fatta per difendere la valle. Il castello di Issogne, invece, non è una fortezza ma un'elegante residenza signorile, trasformata alla fine del Quattrocento, con un cortile famoso per la fontana del melograno in ferro battuto.",
     punti: [
-      "Residenza degli Challant, stile rinascimentale",
-      "Fontana del melograno nel cortile",
-      "Portico affrescato con scene di vita quotidiana (botteghe, mercato)"
+      "Verrès: fortezza a forma di cubo (XIV secolo), sede del Carnevale storico",
+      "Issogne: residenza rinascimentale con la fontana del melograno",
+      "Il portico di Issogne è affrescato con scene di vita quotidiana (botteghe, mercato)",
+      "Entrambi appartenevano alla famiglia Challant"
     ],
-    ricorda: "Fontana del melograno."
-  },
-  {
-    id: "verres", nome: "Castello di Verrès", cat: "castelli", lat: 45.6683, lng: 7.6967,
-    sottotitolo: "La fortezza a forma di cubo",
-    testo: "Il castello di Verrès si trova su una roccia che domina il paese. È una fortezza massiccia a forma di cubo, costruita nel Trecento per controllare la valle e l'ingresso della Val d'Ayas.",
-    punti: [
-      "Costruito nel XIV secolo",
-      "Forma di grande cubo di pietra",
-      "Ogni anno ospita il Carnevale storico di Verrès"
-    ],
-    ricorda: "La fortezza a forma di cubo."
+    ricorda: "Verrès = fortezza a cubo · Issogne = fontana del melograno."
   },
   {
     id: "bard", nome: "Forte di Bard", cat: "castelli", lat: 45.6086, lng: 7.7442,

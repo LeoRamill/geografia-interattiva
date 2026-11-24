@@ -5,18 +5,21 @@ Si clicca un punto sulla cartina e si legge la sua scheda con le informazioni pr
 
 ## Cosa contiene
 
-- **Cartina** con il confine ufficiale della regione, il rilievo (OpenTopoMap) e la **Dora Baltea**
-- **31 luoghi** divisi in 7 categorie, ciascuna filtrabile:
+- **Cartina pulita**: sfondo chiaro senza scritte con l'ombreggiatura delle montagne, la regione in evidenza (il resto è sbiadito) e la **Dora Baltea**
+- **Tre sfondi** a scelta: Semplice, Satellite, Escursionistica (dettagliata)
+- **Nomi dei luoghi** che compaiono quando ti avvicini con lo zoom (o passando sopra col mouse)
+- **Legenda** sulla cartina: tocca una categoria per mostrarla o nasconderla
+- **30 luoghi** divisi in 7 categorie:
   - 🏘️ Città e paesi: Aosta, Cogne, Valle del Lys (Walser), Pont-Saint-Martin
   - ⛰️ Montagne e ghiacciai: Monte Bianco, Cervino, Monte Rosa, Gran Paradiso, Miage
-  - 🏰 Castelli e monumenti: Fénis, Issogne, Verrès, Forte di Bard, Sarre, Castel Savoia
+  - 🏰 Castelli e monumenti: Fénis, Verrès e Issogne, Forte di Bard, Sarre, Castel Savoia
   - 🦌 Parchi, laghi e fiumi: Parco del Gran Paradiso, Mont Avic, Place-Moulin, Dora Baltea
   - 🚗 Passi e trafori: Traforo del Monte Bianco, Gran San Bernardo, Piccolo San Bernardo
   - ⛷️ Sci e terme: Courmayeur, Cervinia, La Thuile, Pila, Monterosa Ski, Pré-Saint-Didier, Saint-Vincent
   - 🧀 Prodotti tipici: Fontina (Valpelline), lardo di Arnad, vigneti di Morgex e La Salle
 - **Scheda di ogni luogo**: testo, informazioni principali e una frase "Da ricordare"
 - **Scheda della regione**: dati, confini, lingue, clima, storia, economia, comunicazioni, cucina e tradizioni
-- **Quiz "Dov'è?"**: compare il nome di un luogo e bisogna trovarlo sulla cartina (segnaposto tutti grigi)
+- **Quiz "Dov'è?"**: compare il nome di un luogo e bisogna trovarlo sulla cartina (pallini tutti grigi)
 - Funziona su computer e telefono, in tema chiaro e scuro
 
 ## Come aprirlo
@@ -60,6 +63,8 @@ Apri `js/data.js`, copia uno degli oggetti nell'elenco `LUOGHI` e cambia i campi
 ## Fonti e licenze
 
 - Confine regionale: [openpolis/geojson-italy](https://github.com/openpolis/geojson-italy) (dati ISTAT, CC-BY)
-- Cartina: © contributori [OpenStreetMap](https://www.openstreetmap.org/copyright), stile [OpenTopoMap](https://opentopomap.org) (CC-BY-SA)
+- Cartina: © contributori [OpenStreetMap](https://www.openstreetmap.org/copyright), stile [CARTO](https://carto.com/attributions) (Voyager)
+- Rilievo e satellite: © [Esri](https://www.esri.com)
+- Sfondo escursionistico: [OpenTopoMap](https://opentopomap.org) (CC-BY-SA)
 - Libreria [Leaflet](https://leafletjs.com) (licenza BSD-2, vedi `vendor/leaflet/LICENSE`)
 - Il tracciato della Dora Baltea è semplificato
