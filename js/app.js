@@ -410,10 +410,21 @@
       if (show && !map.hasLayer(m)) m.addTo(map);
       if (!show && map.hasLayer(m)) map.removeLayer(m);
     });
+    aggiornaTutti();
   }
+
 
   /* ---------------- Legenda (filtra per categoria) ---------------- */
   const legendBtns = {};
+  let btnTutti = null;
+  // interruttore "Tutti i luoghi": acceso, spento o "in parte" (solo alcune categorie)
+  function aggiornaTutti() {
+    if (!btnTutti) return;
+    const n = Object.keys(CAT).filter(k => visibili.has(k)).length, tot = Object.keys(CAT).length;
+    btnTutti.setAttribute("aria-pressed", n === tot ? "true" : n === 0 ? "false" : "mixed");
+    btnTutti.querySelector(".sw").textContent = n === 0 ? "🙈" : "👁️";
+    btnTutti.querySelector(".nm").textContent = n === tot ? "Tutti i luoghi" : n === 0 ? "Tutti i luoghi (spenti)" : `Tutti i luoghi (${n} su ${tot})`;
+  }
   const Legenda = L.Control.extend({
     options: { position: "topleft" },
     onAdd() {
@@ -424,6 +435,16 @@
       toggle.addEventListener("click", () =>
         toggle.setAttribute("aria-expanded", String(toggle.getAttribute("aria-expanded") !== "true")));
       const items = L.DomUtil.create("div", "legend-items", div);
+      btnTutti = L.DomUtil.create("button", "legend-item legend-tutti", items);
+      btnTutti.style.setProperty("--c", "#374151");
+      btnTutti.title = "Mostra o nascondi tutti i luoghi insieme";
+      btnTutti.innerHTML = `<span class="sw">👁️</span><span class="nm">Tutti i luoghi</span>`;
+      btnTutti.addEventListener("click", () => {
+        const tutti = Object.keys(CAT).every(k => visibili.has(k));
+        Object.keys(CAT).forEach(k => { if (tutti) visibili.delete(k); else visibili.add(k); });
+        Object.entries(legendBtns).forEach(([k, b]) => b.setAttribute("aria-pressed", String(visibili.has(k))));
+        applyFilters();
+      });
       Object.entries(CAT).forEach(([key, c]) => {
         const b = L.DomUtil.create("button", "legend-item", items);
         b.style.setProperty("--c", c.colore);
@@ -653,6 +674,14 @@
   }
 
   function startQuiz() {
+    if (![...LUOGHI, ...EXTRA].some(l => visibili.has(l.cat))) {
+      panel.innerHTML = `
+        <button class="btn btn-ghost btn-small back" id="back">← Indietro</button>
+        <h2>🗺️ Dov'è?</h2>
+        <p>Tutti i luoghi sono spenti. Accendi almeno una categoria nella <b>legenda</b> (oppure tocca <b>Tutti i luoghi</b>) e riprova.</p>`;
+      panel.querySelector("#back").addEventListener("click", showQuizMenu);
+      return;
+    }
     Object.assign(quiz, { on: true, order: shuffle([...LUOGHI, ...EXTRA].filter(l => visibili.has(l.cat))), i: 0, ok: 0, done: 0, marks: {}, tries: 0 });
     document.body.classList.add("quiz-on");
     qbar.hidden = false;

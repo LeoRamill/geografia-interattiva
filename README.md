@@ -13,7 +13,7 @@ Si clicca un punto sulla cartina e si legge la sua scheda con le informazioni pr
   - Satellite, Escursionistica e Semplice hanno bisogno di internet: i loro pulsanti compaiono solo quando il sito riesce a caricarle
 - I **fiumi** e il tracciato della **Dora Baltea** sono calcolati dai dati di altitudine (dove scorre l'acqua), quindi seguono le valli vere
 - **Nomi dei luoghi** che compaiono quando ti avvicini con lo zoom (o passando sopra col mouse)
-- **Legenda** sulla cartina: tocca una categoria per mostrarla o nasconderla; c'è anche la scala dell'altitudine (carta fisica) o dei confini (carta politica)
+- **Legenda** sulla cartina: tocca una categoria per mostrarla o nasconderla, oppure **Tutti i luoghi** per accenderle o spegnerle tutte insieme; c'è anche la scala dell'altitudine (carta fisica) o dei confini (carta politica)
 - **31 luoghi** divisi in 7 categorie, nella legenda in ordine di importanza per lo studio (Sci e terme parte spenta, perché non è nel libro):
   - 🏘️ Città e paesi: Aosta, Cogne, Valle del Lys (Walser), Pont-Saint-Martin
   - ⛰️ Montagne e ghiacciai: Monte Bianco, Cervino, Monte Rosa, Gran Paradiso, Miage, Mont Dolent (dove si incontrano Italia, Francia e Svizzera)
@@ -65,7 +65,7 @@ vendor/leaflet/     libreria Leaflet 1.9.4 per la cartina
 
 ### Dopo ogni modifica
 
-In `index.html` i file hanno un numero di versione (`app.js?v=17`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=18`, `?v=19`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
+In `index.html` i file hanno un numero di versione (`app.js?v=18`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=19`, `?v=20`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
 
 ### Aggiungere una domanda
 

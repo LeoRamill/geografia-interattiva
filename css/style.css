@@ -515,3 +515,9 @@ table.trab td:first-child { width: 55%; }
   .actions { gap: 6px; }
   .actions .btn { padding: 7px 10px; }
 }
+
+/* interruttore "Tutti i luoghi" nella legenda */
+.legend-tutti { font-weight: 700; border-bottom: 1px solid var(--border); border-radius: 8px 8px 0 0; margin-bottom: 2px; padding-bottom: 6px; }
+.legend-tutti .sw { background: var(--surface-2); border-color: var(--border); box-shadow: 0 0 0 1px var(--border); }
+.legend-item.legend-tutti[aria-pressed="false"] .nm { text-decoration: none; }
+.legend-item.legend-tutti[aria-pressed="mixed"] .sw { opacity: .7; }
