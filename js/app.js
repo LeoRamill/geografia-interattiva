@@ -28,18 +28,19 @@
 
   const OSM = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
-  // Sfondo "Semplice": cartina chiara senza scritte + ombreggiatura del rilievo
-  const semplice = L.layerGroup([
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png", {
-      subdomains: "abcd", maxZoom: 19,
-      attribution: OSM + ' · &copy; <a href="https://carto.com/attributions">CARTO</a>'
-    }),
-    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}", {
-      maxNativeZoom: 13, maxZoom: 19, opacity: 0.55, className: "rilievo",
-      attribution: 'rilievo &copy; Esri'
-    })
-  ]);
-  const satellite = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+  const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/";
+
+  // Sfondo "Semplice": solo l'ombreggiatura delle montagne, senza strade né scritte
+  const semplice = L.tileLayer(ESRI + "World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}", {
+    maxNativeZoom: 13, maxZoom: 19, opacity: 0.6,
+    attribution: 'rilievo &copy; <a href="https://www.esri.com">Esri</a>'
+  });
+  // Sfondo "Rilievo a colori": montagne, boschi e laghi, senza scritte
+  const colori = L.tileLayer(ESRI + "World_Terrain_Base/MapServer/tile/{z}/{y}/{x}", {
+    maxNativeZoom: 13, maxZoom: 19,
+    attribution: 'rilievo &copy; <a href="https://www.esri.com">Esri</a>'
+  });
+  const satellite = L.tileLayer(ESRI + "World_Imagery/MapServer/tile/{z}/{y}/{x}", {
     maxZoom: 18, attribution: 'immagini &copy; Esri'
   });
   const topo = L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
@@ -76,7 +77,7 @@
   });
 
   L.control.layers(
-    { "Semplice": semplice, "Satellite": satellite, "Escursionistica (dettagliata)": topo },
+    { "Semplice": semplice, "Rilievo a colori": colori, "Satellite": satellite, "Escursionistica (dettagliata)": topo },
     { "Confine regionale": bordo, "Dora Baltea": dora },
     { position: "bottomright", collapsed: true }
   ).addTo(map);

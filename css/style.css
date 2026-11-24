@@ -71,7 +71,7 @@ body {
 /* ---------- Layout ---------- */
 .layout { flex: 1; display: flex; min-height: 0; }
 .map-wrap { position: relative; flex: 1 1 62%; min-width: 0; }
-#map { position: absolute; inset: 0; background: #dfe7ea; }
+#map { position: absolute; inset: 0; background: #f3f1ea; }
 .panel {
   flex: 0 0 400px; max-width: 440px;
   background: var(--surface);
@@ -206,7 +206,6 @@ details.sec .body { padding: 0 14px 6px; }
 body.quiz-on .legend,
 body.quiz-on .leaflet-tooltip.tip,
 body.quiz-on .leaflet-tooltip.name-label { display: none !important; }
-.leaflet-tile-pane .rilievo { mix-blend-mode: multiply; }
 
 /* ---------- Leaflet in dark mode ---------- */
 .leaflet-container { font: inherit; }
