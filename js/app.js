@@ -345,7 +345,7 @@
 
   /* ---------------- Marker ---------------- */
   const markers = {};      // id -> L.marker
-  const visibili = new Set(Object.keys(CAT));
+  const visibili = new Set(Object.keys(CAT).filter(k => !CAT[k].spenta));
   let attivo = null;
 
   const vicino = () => map.getZoom() >= NOMI_ZOOM;
@@ -392,7 +392,7 @@
 
   function applyFilters() {
     LUOGHI.forEach(l => {
-      const show = quiz.on || visibili.has(l.cat);
+      const show = visibili.has(l.cat);
       const m = markers[l.id];
       if (show && !map.hasLayer(m)) m.addTo(map);
       if (!show && map.hasLayer(m)) map.removeLayer(m);
@@ -414,7 +414,7 @@
       Object.entries(CAT).forEach(([key, c]) => {
         const b = L.DomUtil.create("button", "legend-item", items);
         b.style.setProperty("--c", c.colore);
-        b.setAttribute("aria-pressed", "true");
+        b.setAttribute("aria-pressed", String(visibili.has(key)));
         b.title = "Mostra/nascondi: " + c.nome;
         b.innerHTML = `<span class="sw">${c.icona}</span><span class="nm">${c.nome}</span>`;
         b.addEventListener("click", () => {
@@ -454,6 +454,7 @@
     }
   });
   new Legenda().addTo(map);
+  applyFilters();
   reticolato.addTo(map);
 
   map.fitBounds(bounds, FIT);
@@ -549,7 +550,7 @@
   }
 
   function startQuiz() {
-    Object.assign(quiz, { on: true, order: shuffle(LUOGHI.slice()), i: 0, ok: 0, done: 0, marks: {}, tries: 0 });
+    Object.assign(quiz, { on: true, order: shuffle(LUOGHI.filter(l => visibili.has(l.cat))), i: 0, ok: 0, done: 0, marks: {}, tries: 0 });
     document.body.classList.add("quiz-on");
     qbar.hidden = false;
     applyFilters();
@@ -559,6 +560,7 @@
       <h2>🎯 Quiz: dov'è?</h2>
       <p class="sub">Esercitati per l'interrogazione.</p>
       <p>In basso sulla mappa compare il nome di un luogo: clicca il pallino giusto. Hai <b>due tentativi</b> per ogni luogo.</p>
+      <p class="hint">Ci sono solo i luoghi delle categorie accese nella legenda.</p>
       <p class="hint">I pallini sono tutti grigi e senza icona, così non puoi barare! 😉</p>`;
     nextQuestion();
   }

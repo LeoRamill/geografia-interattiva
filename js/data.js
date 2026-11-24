@@ -4,14 +4,16 @@
  * e cambiare nome, coordinate (lat, lng) e testi.
  */
 
+/* Categorie in ordine di importanza per lo studio (così appaiono nella legenda).
+   spenta: true = all'apertura i pallini non si vedono (si accendono dalla legenda). */
 window.CATEGORIE = {
-  citta:    { nome: "Città e paesi",          icona: "🏘️", colore: "#2563eb" },
   montagne: { nome: "Montagne e ghiacciai",   icona: "⛰️", colore: "#64748b" },
-  castelli: { nome: "Castelli e monumenti",   icona: "🏰", colore: "#b91c1c" },
+  citta:    { nome: "Città e paesi",          icona: "🏘️", colore: "#2563eb" },
   natura:   { nome: "Parchi, laghi e fiumi",  icona: "🦌", colore: "#15803d" },
   passi:    { nome: "Passi e trafori",        icona: "🚗", colore: "#c2410c" },
-  turismo:  { nome: "Sci e terme",            icona: "⛷️", colore: "#0891b2" },
-  sapori:   { nome: "Prodotti tipici",        icona: "🧀", colore: "#a16207" }
+  sapori:   { nome: "Prodotti tipici",        icona: "🧀", colore: "#a16207" },
+  castelli: { nome: "Castelli e monumenti",   icona: "🏰", colore: "#b91c1c" },
+  turismo:  { nome: "Sci e terme",            icona: "⛷️", colore: "#0891b2", spenta: true }
 };
 
 window.LUOGHI = [
