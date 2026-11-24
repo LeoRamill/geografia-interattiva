@@ -10,6 +10,10 @@
   const confine = L.geoJSON(window.CONFINE_VDA);
   const bounds = confine.getBounds();
 
+  // Area coperta dallo sfondo "Atlante" (vedi tools/genera_rilievo.py)
+  const AREA_LARGA = L.latLngBounds([45.10, 6.00], [46.35, 8.75]);
+  const AREA_REGIONE = L.latLngBounds([45.39, 6.63], [46.07, 8.11]);
+
   const small = window.matchMedia("(max-width: 820px)").matches;
   const FIT = small
     ? { padding: [12, 12] }
@@ -21,39 +25,41 @@
     zoomSnap: 0.25,
     minZoom: 8,
     maxZoom: 16,
-    maxBounds: bounds.pad(0.8),
+    maxBounds: AREA_LARGA,
     maxBoundsViscosity: 0.8
   });
   L.control.zoom({ position: "bottomright" }).addTo(map);
 
   const OSM = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
-  const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/";
-
-  // Sfondo "Semplice": solo l'ombreggiatura delle montagne, senza strade né scritte
-  const semplice = L.tileLayer(ESRI + "World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}", {
-    maxNativeZoom: 13, maxZoom: 19, opacity: 0.6,
-    attribution: 'rilievo &copy; <a href="https://www.esri.com">Esri</a>'
-  });
-  // Sfondo "Rilievo a colori": montagne, boschi e laghi, senza scritte
-  const colori = L.tileLayer(ESRI + "World_Terrain_Base/MapServer/tile/{z}/{y}/{x}", {
-    maxNativeZoom: 13, maxZoom: 19,
-    attribution: 'rilievo &copy; <a href="https://www.esri.com">Esri</a>'
-  });
-  const satellite = L.tileLayer(ESRI + "World_Imagery/MapServer/tile/{z}/{y}/{x}", {
-    maxZoom: 18, attribution: 'immagini &copy; Esri'
+  // Sfondo "Atlante": rilievo a colori creato da noi con i dati di altitudine
+  // (Terrain Tiles, AWS Open Data). Le tessere sono nella cartella tiles/rilievo,
+  // quindi funziona anche senza internet e senza chiavi.
+  const ATTR_RILIEVO = 'rilievo: <a href="https://registry.opendata.aws/terrain-tiles/">Terrain Tiles</a> (SRTM, EU-DEM &copy; Copernicus)';
+  const atlante = L.layerGroup([
+    // zoom 8–11 su tutta l'area (ingrandite oltre l'11)
+    L.tileLayer("tiles/rilievo/{z}/{x}/{y}.jpg?v=5", {
+      minZoom: 8, maxNativeZoom: 11, maxZoom: 19, bounds: AREA_LARGA, className: "atlante", attribution: ATTR_RILIEVO
+    }),
+    // zoom 12 più dettagliato, solo intorno alla regione
+    L.tileLayer("tiles/rilievo/{z}/{x}/{y}.jpg?v=5", {
+      minZoom: 12, minNativeZoom: 12, maxNativeZoom: 12, maxZoom: 19, bounds: AREA_REGIONE, className: "atlante"
+    })
+  ]);
+  const satellite = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+    maxZoom: 18, attribution: 'immagini &copy; <a href="https://www.esri.com">Esri</a>'
   });
   const topo = L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
     maxZoom: 17,
     attribution: OSM + ' · &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)'
   });
-  colori.addTo(map);
+  atlante.addTo(map);
 
   // Ombra fuori dalla regione: un grande rettangolo con un "buco" a forma di Valle d'Aosta.
   const ring = window.CONFINE_VDA.geometry.coordinates[0].map(([lng, lat]) => [lat, lng]);
   const world = [[44.5, 5.5], [44.5, 9.2], [47, 9.2], [47, 5.5]];
   L.polygon([world, ring], {
-    stroke: false, fillColor: "#ffffff", fillOpacity: 0.6, interactive: false
+    stroke: false, fillColor: "#ffffff", fillOpacity: 0.45, interactive: false
   }).addTo(map);
 
   const bordo = L.featureGroup([
@@ -77,7 +83,7 @@
   });
 
   L.control.layers(
-    { "Rilievo a colori": colori, "Semplice": semplice, "Satellite": satellite, "Escursionistica (dettagliata)": topo },
+    { "Atlante (rilievo a colori)": atlante, "Satellite": satellite, "Escursionistica (dettagliata)": topo },
     { "Confine regionale": bordo, "Dora Baltea": dora },
     { position: "bottomright", collapsed: true }
   ).addTo(map);
@@ -165,6 +171,11 @@
         legendBtns[key] = b;
       });
       L.DomUtil.create("div", "legend-hint", items).textContent = "Tocca una voce per mostrarla o nasconderla";
+      const alt = L.DomUtil.create("div", "alt-scale", items);
+      alt.innerHTML = `<div class="alt-title">Altitudine</div>
+        <div class="alt-bar"></div>
+        <div class="alt-ticks"><span>0</span><span>1000</span><span>2000</span><span>3000</span><span>4000 m</span></div>
+        <div class="alt-note">⬜ sopra i 3.000 m: nevi e ghiacciai · 🟦 laghi</div>`;
       L.DomEvent.disableClickPropagation(div);
       L.DomEvent.disableScrollPropagation(div);
       return div;
