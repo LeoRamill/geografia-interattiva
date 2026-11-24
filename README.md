@@ -5,10 +5,12 @@ Si clicca un punto sulla cartina e si legge la sua scheda con le informazioni pr
 
 ## Cosa contiene
 
-- **Tre cartine**, come negli atlanti di scuola (si scelgono in alto a destra):
+- **Cartine diverse**, come negli atlanti di scuola (si scelgono in alto a destra):
   - **Fisica**: rilievo a colori creato con i dati di altitudine reali (verde = valli, marrone = montagne, bianco = nevi e ghiacciai, blu = laghi), fiumi, catene montuose, valli, cime con l'altezza, laghi e pianure
   - **Politica**: Stati, regioni, province, cantoni svizzeri e dipartimenti francesi colorati, i 74 comuni della Valle d'Aosta, città, strade principali e confini
   - **Satellite**: foto dal satellite
+  - nel menu **Altre**: **Escursionistica** (OpenTopoMap, con sentieri e curve di livello) e **Semplice** (solo il rilievo in grigio)
+  - Satellite, Escursionistica e Semplice hanno bisogno di internet: i loro pulsanti compaiono solo quando il sito riesce a caricarle
 - I **fiumi** e il tracciato della **Dora Baltea** sono calcolati dai dati di altitudine (dove scorre l'acqua), quindi seguono le valli vere
 - **Nomi dei luoghi** che compaiono quando ti avvicini con lo zoom (o passando sopra col mouse)
 - **Legenda** sulla cartina: tocca una categoria per mostrarla o nasconderla; c'è anche la scala dell'altitudine (carta fisica) o dei confini (carta politica)
@@ -28,7 +30,7 @@ Si clicca un punto sulla cartina e si legge la sua scheda con le informazioni pr
 ## Come aprirlo
 
 Non serve installare niente: basta aprire `index.html` con il browser.
-Funziona anche senza internet: la carta fisica e la carta politica sono salvate nel sito (cartelle `tiles/` e `data/`). Solo la vista Satellite ha bisogno della connessione.
+Funziona anche senza internet: la carta fisica e la carta politica sono salvate nel sito (cartelle `tiles/` e `data/`). Solo Satellite, Escursionistica e Semplice hanno bisogno della connessione: senza internet i loro pulsanti non compaiono.
 
 ### Pubblicarlo online con GitHub Pages
 
@@ -54,7 +56,7 @@ vendor/leaflet/     libreria Leaflet 1.9.4 per la cartina
 
 ### Dopo ogni modifica
 
-In `index.html` i file hanno un numero di versione (`app.js?v=6`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=7`, `?v=8`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
+In `index.html` i file hanno un numero di versione (`app.js?v=7`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=8`, `?v=9`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
 
 ### Aggiungere o modificare un luogo
 
@@ -86,6 +88,8 @@ Colori, area coperta e soglie si cambiano all'inizio di ogni script. Le scritte 
 
 - Confine regionale: [openpolis/geojson-italy](https://github.com/openpolis/geojson-italy) (dati ISTAT, CC-BY)
 - Rilievo e fiumi: dati di altitudine [Terrain Tiles](https://registry.opendata.aws/terrain-tiles/) su AWS Open Data (SRTM, EU-DEM © Copernicus e altre fonti), elaborati con gli script in `tools/`
+- Escursionistica: © contributori [OpenStreetMap](https://www.openstreetmap.org/copyright), stile [OpenTopoMap](https://opentopomap.org) (CC-BY-SA)
+- Semplice: rilievo © [Esri](https://www.esri.com)
 - Carta politica: province e comuni italiani da [openpolis/geojson-italy](https://github.com/openpolis/geojson-italy) (dati ISTAT, CC-BY); Stati, cantoni, dipartimenti, strade e laghi da [Natural Earth](https://www.naturalearthdata.com) (pubblico dominio)
 - Sfondo Satellite: © [Esri](https://www.esri.com)
 - Libreria [Leaflet](https://leafletjs.com) (licenza BSD-2, vedi `vendor/leaflet/LICENSE`)

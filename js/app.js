@@ -136,10 +136,24 @@
     scritta(c.lat, c.lng, `<span class="dot dot-${c.tipo}"></span>${c.nome}`, "lbl-citta", c.tipo === "provincia" ? 8 : 9, politica);
   });
 
-  /* ---------- SATELLITE ---------- */
+  /* ---------- Cartine che hanno bisogno di internet ---------- */
+  const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/";
+  const OTM = "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png";
   const satellite = L.layerGroup([
-    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+    L.tileLayer(ESRI + "World_Imagery/MapServer/tile/{z}/{y}/{x}", {
       maxZoom: 18, attribution: 'immagini &copy; <a href="https://www.esri.com">Esri</a>'
+    }),
+    confineStato()
+  ]);
+  const escursionistica = L.layerGroup([
+    L.tileLayer(OTM, {
+      maxZoom: 17,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)'
+    })
+  ]);
+  const semplice = L.layerGroup([
+    L.tileLayer(ESRI + "World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}", {
+      maxNativeZoom: 13, maxZoom: 19, opacity: 0.6, attribution: 'rilievo &copy; <a href="https://www.esri.com">Esri</a>'
     }),
     confineStato()
   ]);
@@ -172,13 +186,22 @@
   });
 
   /* ---------- Selettore delle cartine ---------- */
+  // "prova": una tessera di esempio; se si carica, c'è internet e la cartina è disponibile
   const CARTE = {
     fisica:    { nome: "Fisica",    icona: "⛰️", gruppo: fisica,    velo: 0.45 },
     politica:  { nome: "Politica",  icona: "🗺️", gruppo: politica,  velo: 0.12 },
-    satellite: { nome: "Satellite", icona: "🛰️", gruppo: satellite, velo: 0.30 }
+    satellite: { nome: "Satellite", icona: "🛰️", gruppo: satellite, velo: 0.30,
+                 prova: ESRI + "World_Imagery/MapServer/tile/8/91/133" },
+    escursionistica: { nome: "Escursionistica", icona: "🥾", gruppo: escursionistica, velo: 0.35, altre: true,
+                 prova: "https://a.tile.opentopomap.org/8/133/91.png" },
+    semplice:  { nome: "Semplice",  icona: "🏔️", gruppo: semplice,  velo: 0.45, altre: true,
+                 prova: ESRI + "World_Shaded_Relief/MapServer/tile/8/91/133" }
   };
   let cartaAttiva = null;
+  let cartaDesiderata = null;   // cartina salvata che aspetta internet per essere mostrata
   const bottoniCarta = {};
+  const disponibile = {};
+  let bottoneAltre = null, menuAltre = null;
 
   function aggiornaScritte() {
     if (!cartaAttiva) return;
@@ -192,28 +215,88 @@
     map.getContainer().classList.toggle("zoom-alto", z >= 10.5);
   }
 
-  function mostraCarta(id) {
+  function mostraCarta(id, ricorda = true) {
     if (cartaAttiva) map.removeLayer(CARTE[cartaAttiva].gruppo);
     cartaAttiva = id;
     CARTE[id].gruppo.addTo(map);
     velo.setStyle({ fillOpacity: CARTE[id].velo });
     document.body.dataset.carta = id;
     Object.entries(bottoniCarta).forEach(([k, b]) => b.setAttribute("aria-pressed", String(k === id)));
+    if (bottoneAltre) {
+      const altra = CARTE[id].altre;
+      bottoneAltre.setAttribute("aria-pressed", String(!!altra));
+      bottoneAltre.innerHTML = altra ? `<span aria-hidden="true">${CARTE[id].icona}</span> ${CARTE[id].nome} ▾` : "Altre ▾";
+      menuAltre.hidden = true;
+      bottoneAltre.setAttribute("aria-expanded", "false");
+    }
     aggiornaScritte();
-    try { localStorage.setItem("carta", id); } catch (e) { /* non importa */ }
+    if (ricorda) {
+      cartaDesiderata = null;
+      try { localStorage.setItem("carta", id); } catch (e) { /* non importa */ }
+    }
   }
+
+  // Mostra i pulsanti delle cartine online solo se la tessera di prova si carica
+  function provaTessera(url) {
+    return new Promise(ok => {
+      const img = new Image();
+      const t = setTimeout(() => { img.src = ""; ok(false); }, 6000);
+      img.onload = () => { clearTimeout(t); ok(true); };
+      img.onerror = () => { clearTimeout(t); ok(false); };
+      img.src = url + (url.includes("?") ? "&" : "?") + "t=" + Date.now();
+    });
+  }
+
+  function aggiornaPulsanti() {
+    Object.entries(CARTE).forEach(([id, c]) => {
+      if (c.prova) bottoniCarta[id].hidden = !disponibile[id];
+    });
+    bottoneAltre.hidden = !Object.entries(CARTE).some(([id, c]) => c.altre && disponibile[id]);
+    if (bottoneAltre.hidden) menuAltre.hidden = true;
+    // se la cartina in uso non è più raggiungibile si torna alla fisica
+    if (CARTE[cartaAttiva].prova && !disponibile[cartaAttiva]) {
+      cartaDesiderata = cartaDesiderata || cartaAttiva;
+      mostraCarta("fisica", false);
+    }
+    // la cartina scelta l'ultima volta era online: appena c'è internet la rimette
+    if (cartaDesiderata && disponibile[cartaDesiderata] && cartaAttiva === "fisica") mostraCarta(cartaDesiderata);
+  }
+
+  function controllaInternet() {
+    const online = Object.entries(CARTE).filter(([, c]) => c.prova);
+    if (navigator.onLine === false) {
+      online.forEach(([id]) => { disponibile[id] = false; });
+      aggiornaPulsanti();
+      return;
+    }
+    online.forEach(([id, c]) => provaTessera(c.prova).then(ok => { disponibile[id] = ok; aggiornaPulsanti(); }));
+  }
+  window.addEventListener("online", controllaInternet);
+  window.addEventListener("offline", controllaInternet);
 
   const Selettore = L.Control.extend({
     options: { position: "topright" },
     onAdd() {
-      const div = L.DomUtil.create("div", "carta-switch");
-      div.setAttribute("role", "group");
-      div.setAttribute("aria-label", "Tipo di cartina");
+      const div = L.DomUtil.create("div", "carta-switch-wrap");
+      const riga = L.DomUtil.create("div", "carta-switch", div);
+      riga.setAttribute("role", "group");
+      riga.setAttribute("aria-label", "Tipo di cartina");
+      menuAltre = L.DomUtil.create("div", "carta-menu", div);
+      menuAltre.hidden = true;
       Object.entries(CARTE).forEach(([id, c]) => {
-        const b = L.DomUtil.create("button", "", div);
+        const b = L.DomUtil.create("button", "", c.altre ? menuAltre : riga);
         b.innerHTML = `<span aria-hidden="true">${c.icona}</span> ${c.nome}`;
         b.addEventListener("click", () => mostraCarta(id));
+        if (c.prova) b.hidden = true;           // compare solo se c'è internet
         bottoniCarta[id] = b;
+      });
+      bottoneAltre = L.DomUtil.create("button", "altre", riga);
+      bottoneAltre.textContent = "Altre ▾";
+      bottoneAltre.hidden = true;
+      bottoneAltre.setAttribute("aria-expanded", "false");
+      bottoneAltre.addEventListener("click", () => {
+        menuAltre.hidden = !menuAltre.hidden;
+        bottoneAltre.setAttribute("aria-expanded", String(!menuAltre.hidden));
       });
       L.DomEvent.disableClickPropagation(div);
       return div;
@@ -329,7 +412,10 @@
   onZoom();
   let cartaIniziale = "fisica";
   try { const c = localStorage.getItem("carta"); if (CARTE[c]) cartaIniziale = c; } catch (e) { /* non importa */ }
-  mostraCarta(cartaIniziale);
+  // le cartine online si mostrano solo dopo aver verificato che c'è internet
+  if (CARTE[cartaIniziale].prova) { cartaDesiderata = cartaIniziale; cartaIniziale = "fisica"; }
+  mostraCarta(cartaIniziale, false);
+  controllaInternet();
 
   /* ---------------- Pannello ---------------- */
   const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));

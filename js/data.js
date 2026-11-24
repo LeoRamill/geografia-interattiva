@@ -450,7 +450,7 @@ window.CITTA = [
 /* Etichette dei territori confinanti. */
 window.CONFINANTI = [
   { nome: "FRANCIA",  lat: 45.70, lng: 6.62 },
-  { nome: "SVIZZERA", lat: 46.02, lng: 7.30 },
+  { nome: "SVIZZERA", lat: 46.10, lng: 7.15 },
   { nome: "PIEMONTE", lat: 45.42, lng: 7.68 }
 ];
 
