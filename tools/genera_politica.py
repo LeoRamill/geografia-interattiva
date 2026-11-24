@@ -32,7 +32,6 @@ OP = "https://raw.githubusercontent.com/openpolis/geojson-italy/master/geojson/"
 
 AREA = None                # impostata in main() da REGIONE.area_larga
 SEMPLIFICA = 0.0015        # gradi (circa 150 m): basta per la scala della cartina
-MARE_MIN = 0.01            # gradi² (circa 80 km²): zone vuote più piccole non sono mare
 
 # colori pastello come nelle carte politiche di scuola
 REGIONE_COLORI = ["#d9ead3", "#c7e0bf", "#e3f0d8", "#cfe5c4", "#bcd9b0"]          # la regione studiata: verdi
@@ -71,8 +70,17 @@ def carica(url):
 
 
 def taglia(g, tol=SEMPLIFICA):
-    g = g.intersection(AREA)
+    g = solo(g.intersection(AREA), g)
     return g.simplify(tol, preserve_topology=True) if not g.is_empty else g
+
+
+def solo(g, modello):
+    """Dopo un taglio può restare un misto di superfici, linee e punti: tiene solo il tipo del modello."""
+    if g.geom_type != "GeometryCollection":
+        return g
+    poligoni = "Polygon" in modello.geom_type or modello.geom_type == "GeometryCollection"
+    parti = [p for p in g.geoms if ("Polygon" in p.geom_type) == poligoni and "Point" not in p.geom_type]
+    return unary_union(parti) if parti else type(g)()
 
 
 def arrotonda(geom):
@@ -135,11 +143,11 @@ def main():
         if iso != "IT" and g.intersects(AREA):
             stati[iso] = (p.get("NAME_IT") or p["NAME"], g)
     terra = unary_union([g for _, g in stati.values()] + [italia]).buffer(0)
-    # mare: le parti dell'area che non sono terra, ma solo quelle grandi (le strisce sottili
-    # tra i confini delle due fonti di dati non sono mare)
-    vuoto_area = AREA.difference(terra)
-    parti = getattr(vuoto_area, "geoms", [vuoto_area])
-    mare = unary_union([g for g in parti if g.area > MARE_MIN]) if any(g.area > MARE_MIN for g in parti) else None
+    # mare: il contorno del mare di Natural Earth, un po' allargato verso terra (le aree colorate,
+    # disegnate sopra, lo coprono): così tra costa e mare non restano strisce vuote
+    oceano = [shape(f["geometry"]) for f in carica(NE + "ne_10m_ocean.geojson")]
+    oceano = unary_union([g.intersection(AREA) for g in oceano if g.intersects(AREA)])
+    mare = oceano.buffer(0.01).intersection(AREA) if not oceano.is_empty else None
     for iso, (nome, g) in stati.items():
         tavolozze[iso] = ESTERO_COLORI.get(iso, ALTRO_ESTERO)
         if iso not in SUDDIVISIONI:
@@ -161,7 +169,7 @@ def main():
     if straniere:
         buchi = AREA.difference(italia).difference(unary_union([a["geom"] for a in straniere]))
         if mare is not None:
-            buchi = buchi.difference(mare)
+            buchi = buchi.difference(oceano)
         for a in straniere:
             a["geom"] = a["geom"].union(a["geom"].buffer(0.05).intersection(buchi))
 
@@ -190,7 +198,7 @@ def main():
     vuoto = {"type": "MultiLineString", "coordinates": []}
     linea = lambda g: arrotonda(g) if not g.is_empty else vuoto
     # confine di Stato: il bordo dell'Italia, tranne la costa
-    confine_stato = italia.boundary if mare is None else italia.boundary.difference(mare.buffer(0.01))
+    confine_stato = italia.boundary if mare is None else italia.boundary.difference(oceano.buffer(0.03))
     confine_stato = taglia(confine_stato) if stati else box(0, 0, 0, 0).boundary
     confine_regioni = taglia(unary_union([g.boundary for _, g in regioni.values() if g.intersects(AREA)])
                              .difference(italia.boundary.buffer(0.003)))

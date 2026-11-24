@@ -12,7 +12,8 @@
   const areaBounds = a => L.latLngBounds([a[1], a[0]], [a[3], a[2]]);   // [lng0, lat0, lng1, lat1] -> bounds
   document.title = R.nome + " interattiva";
   document.querySelector(".brand h1").textContent = R.nome;
-  document.querySelectorAll(".flag i").forEach((el, k) => { el.style.background = R.bandiera[k % R.bandiera.length]; });
+  // bandiera: una striscia verticale per ogni colore di REGIONE.bandiera
+  document.querySelector(".brand .flag").innerHTML = R.bandiera.map(c => `<i style="background:${c}"></i>`).join("");
   document.getElementById("map").setAttribute("aria-label", "Mappa: " + R.nome);
 
   const CAT = window.CATEGORIE;
@@ -79,7 +80,7 @@
   function stileFiume(km2, sottile) {
     const w = km2 < 100 ? 1 : km2 < 500 ? 1.6 : km2 < 2000 ? 2.4 : 3.2;
     return { color: "#2f7fc8", weight: sottile ? w * 0.7 : w, opacity: 0.9, lineCap: "round", lineJoin: "round",
-             className: km2 < 150 ? "fiume-piccolo" : "", interactive: false, pane: "fiumi" };
+             className: km2 < 150 ? "fiume-piccolo" : km2 < 600 ? "fiume-medio" : "", interactive: false, pane: "fiumi" };
   }
   const fiumi = sottile => L.geoJSON(window.FIUMI.fiumi, { style: f => stileFiume(f.properties.km2, sottile) });
 
@@ -148,7 +149,7 @@
     fiumi(true),
     L.geoJSON({ type: "Feature", properties: {}, geometry: P.confini.regioni },
               { style: { pane: "fiumi", color: "#6b6170", weight: 2.2, opacity: 0.9, interactive: false } }),
-    L.geoJSON(P.strade, { style: f => ({ pane: "fiumi", color: "#d23c2f", opacity: 0.85, interactive: false, className: "strada",
+    L.geoJSON(P.strade, { style: f => ({ pane: "fiumi", color: "#d23c2f", opacity: 0.85, interactive: false, className: f.properties.tipo === "Major Highway" ? "strada" : "strada strada-minore",
                                          weight: f.properties.tipo === "Major Highway" ? 2.4 : 1.4 }) }),
     confineStato()
   ]);
@@ -291,6 +292,7 @@
       if (!on && map.hasLayer(s.marker)) map.removeLayer(s.marker);
     });
     map.getContainer().classList.toggle("zoom-basso", z < 9.75);
+    map.getContainer().classList.toggle("zoom-lontano", z < 8.5);   // regioni grandi viste da lontano
     map.getContainer().classList.toggle("zoom-alto", z >= 10.5);
   }
 

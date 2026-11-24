@@ -28,6 +28,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from regione import argomenti, cartella, laghi, leggi_regione, scarica_dem, tile_xy  # noqa: E402
 
 ZOOM_DETTAGLIO = 12          # l'ultimo livello solo su area_regione (più dettagliato)
+ZOOM_LAGHI_NE = 10           # fino a questo zoom i laghi si colorano anche con i contorni di Natural Earth:
+                             # nei dati poco dettagliati la superficie dei laghi non è piatta e non si riconosce
 # Esagerazione verticale: un po' di più a zoom bassi, dove il rilievo si vede meno
 ESAGERAZIONE = {6: 2.8, 7: 2.5, 8: 2.2, 9: 1.8, 10: 1.5, 11: 1.25, 12: 1.0}
 
@@ -71,7 +73,43 @@ def ombreggiatura(elev, z, lat):
     return np.clip(tot, 0, 1)
 
 
-def genera_livello(z, area, out):
+_laghi_ne = None
+
+
+def laghi_ne(area):
+    """Contorni dei laghi di Natural Earth nell'area (scaricati una volta, come per la carta politica)."""
+    global _laghi_ne
+    if _laghi_ne is None:
+        from shapely.geometry import box, shape
+        from genera_politica import NE, carica
+        zona = box(*area)
+        _laghi_ne = [shape(f["geometry"]).intersection(zona)
+                     for f in carica(NE + "ne_10m_lakes.geojson") + carica(NE + "ne_10m_lakes_europe.geojson")
+                     if shape(f["geometry"]).intersects(zona)]
+    return _laghi_ne
+
+
+def maschera_laghi_ne(z, fx, fy, forma, area):
+    """True dove il centro del pixel cade dentro un lago di Natural Earth."""
+    import shapely
+    n = 2 ** z * 256
+    col = (np.arange(forma[1]) + fx[0] * 256 + 0.5) / n * 360 - 180
+    riga = np.degrees(np.arctan(np.sinh(np.pi * (1 - 2 * (np.arange(forma[0]) + fy[0] * 256 + 0.5) / n))))
+    m = np.zeros(forma, dtype=bool)
+    for lago in laghi_ne(area):
+        if lago.is_empty:
+            continue
+        a, b, c, d = lago.bounds          # solo il rettangolo che contiene il lago
+        cc = np.flatnonzero((col >= a) & (col <= c))
+        rr = np.flatnonzero((riga >= b) & (riga <= d))
+        if not len(cc) or not len(rr):
+            continue
+        X, Y = np.meshgrid(col[cc], riga[rr])
+        m[np.ix_(rr, cc)] |= shapely.contains_xy(lago, X, Y)
+    return m
+
+
+def genera_livello(z, area, out, area_larga):
     lng0, lat0, lng1, lat1 = area
     xa, ya = tile_xy(lng0, lat1, z)
     xb, yb = tile_xy(lng1, lat0, z)
@@ -88,7 +126,10 @@ def genera_livello(z, area, out):
     lat_c = (lat0 + lat1) / 2
     hs = ombreggiatura(elev, z, lat_c)
     rgb = colori(elev) * (0.42 + 0.68 * hs)[..., None]
-    rgb[laghi(elev, z) | mare] = ACQUA
+    acqua = laghi(elev, z) | mare
+    if z <= ZOOM_LAGHI_NE:
+        acqua |= maschera_laghi_ne(z, fx, fy, elev.shape, area_larga)
+    rgb[acqua] = ACQUA
     img = np.clip(rgb, 0, 255).astype(np.uint8)
     n = 0
     for j, y in enumerate(range(ty0, ty1 + 1), start=1):
@@ -108,8 +149,8 @@ def main():
     if os.path.isdir(out):
         shutil.rmtree(out)                              # niente tessere vecchie
     for z in range(r.get("zoom_min", 8), ZOOM_DETTAGLIO):
-        genera_livello(z, r["area_larga"], out)
-    genera_livello(ZOOM_DETTAGLIO, r["area_regione"], out)
+        genera_livello(z, r["area_larga"], out, r["area_larga"])
+    genera_livello(ZOOM_DETTAGLIO, r["area_regione"], out, r["area_larga"])
 
 
 if __name__ == "__main__":

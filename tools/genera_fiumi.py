@@ -113,7 +113,9 @@ def main():
     fiume = acc >= soglia
     quota = R.get("fiumi_quota_pianura", QUOTA_PIANURA)
     fiume &= ~((elev.ravel() < quota) & (acc < SOGLIA_PIANURA_KM2 / km2_cella))
-    fiume &= ~laghi(elev, Z).ravel()          # niente linee dentro i laghi
+    fiume &= ~laghi(elev, Z).ravel()          # niente linee dentro i laghi…
+    from genera_rilievo import maschera_laghi_ne   # …anche quelli che nei dati non sono piatti
+    fiume &= ~maschera_laghi_ne(Z, [x0], [y0], elev.shape, area).ravel()
     fiume &= elev.ravel() > 0                 # né in mare
 
     # quanti affluenti-fiume entrano in ogni cella

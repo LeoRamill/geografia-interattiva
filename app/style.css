@@ -310,6 +310,8 @@ body:not([data-carta="politica"]) .pol-scale { display: none; }
 
 /* i fiumi piccoli compaiono solo avvicinandosi */
 #map.zoom-basso path.fiume-piccolo { display: none; }
+/* da lontano (regioni grandi) solo i fiumi grandi e le autostrade, se no la cartina è troppo piena */
+#map.zoom-lontano path.fiume-medio, #map.zoom-lontano path.strada { display: none; }
 /* le strade di Natural Earth sono approssimative: si vedono solo nella vista d'insieme */
 #map.zoom-alto path.strada { display: none; }
 body.quiz-on .lbl-cima { display: none; }

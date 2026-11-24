@@ -26,9 +26,10 @@ Tieni l'utente aggiornato con frasi brevi in italiano; mostragli gli screenshot 
 - [ ] `fiume`: il fiume principale del libro. `sorgente` = un punto vicino alla sorgente nel fondovalle,
       `fine` = dove fermarsi (foce o uscita dalla regione), `foce` = scritta finale ("verso il Po", "verso il mare Adriatico"),
       `etichetta`, `ricorda`, `con_articolo` ("il Po", "l'Adige").
-- [ ] `zone`: 1–3 zone utili per il quiz "Dov'è?" e la visita (catene montuose, pianura/collina, isole…), con
-      `poligono` [[lng, lat], …] approssimato (verrà tagliato sul confine) o `resto: true`; colore, `etichetta`, `plurale`.
-      Se la regione non ha zone sensate, lascia `zone: []`.
+- [ ] `zone`: 1–3 zone utili per il quiz "Dov'è?" e la visita. Di solito **montagna / collina / pianura**
+      (`altimetria: "montagna"`, `altimetria: "collina"`, pianura con `resto: true`: vedi `regioni/piemonte/regione.js`);
+      oppure catene montuose o isole con `poligono` [[lng, lat], …] approssimato (verrà tagliato sul confine).
+      Colore, `etichetta` (un punto dentro la zona), `plurale`. Se la regione non ha zone sensate, lascia `zone: []`.
 - [ ] `politica.comuni`: `true` solo se la regione ha pochi comuni (< 150), altrimenti `false` (si vedono le province).
 - [ ] In `regioni/regioni.js` la regione c'è già con `pronta: false`: lasciala così finché non è finita.
 
@@ -46,7 +47,11 @@ python3 tools/genera_zone.py    --regione <id>
       niente macchie strane). Dimensione di `tiles/` ragionevole (pochi MB).
 - [ ] Guarda i fiumi sopra il rilievo: il fiume principale deve seguire la valle fino a `fine`; niente linee nel mare o nei laghi.
       Se la pianura è piena di falsi ruscelli, alza `fiumi_quota_pianura` in `regione.js`.
-- [ ] Carta politica: regioni e Stati vicini con colori diversi, mare azzurro se c'è, nomi giusti dei laghi.
+- [ ] Carta politica: regioni e Stati vicini con colori diversi, mare azzurro se c'è, nomi giusti dei laghi,
+      niente strisce vuote o azzurre lungo i confini, confine di Stato solo sulla terra.
+- [ ] Zone: guarda le percentuali stampate da `genera_zone.py` e confrontale con il grafico del libro.
+- [ ] Per vedere le cartine nel sito prima dei testi: un `dati.js` provvisorio minimo e `pronta: true` solo in locale
+      (poi toglili, non vanno pubblicati).
 
 ## 3. Testi (`regioni/<id>/dati.js`)
 
