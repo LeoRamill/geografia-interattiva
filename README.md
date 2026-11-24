@@ -14,17 +14,20 @@ Si clicca un punto sulla cartina e si legge la sua scheda con le informazioni pr
 - I **fiumi** e il tracciato della **Dora Baltea** sono calcolati dai dati di altitudine (dove scorre l'acqua), quindi seguono le valli vere
 - **Nomi dei luoghi** che compaiono quando ti avvicini con lo zoom (o passando sopra col mouse)
 - **Legenda** sulla cartina: tocca una categoria per mostrarla o nasconderla; c'è anche la scala dell'altitudine (carta fisica) o dei confini (carta politica)
-- **30 luoghi** divisi in 7 categorie:
+- **31 luoghi** divisi in 7 categorie:
   - 🏘️ Città e paesi: Aosta, Cogne, Valle del Lys (Walser), Pont-Saint-Martin
-  - ⛰️ Montagne e ghiacciai: Monte Bianco, Cervino, Monte Rosa, Gran Paradiso, Miage
+  - ⛰️ Montagne e ghiacciai: Monte Bianco, Cervino, Monte Rosa, Gran Paradiso, Miage, Mont Dolent (dove si incontrano Italia, Francia e Svizzera)
   - 🏰 Castelli e monumenti: Fénis, Verrès e Issogne, Forte di Bard, Sarre, Castel Savoia
   - 🦌 Parchi, laghi e fiumi: Parco del Gran Paradiso, Mont Avic, Place-Moulin, Dora Baltea
   - 🚗 Passi e trafori: Traforo del Monte Bianco, Gran San Bernardo, Piccolo San Bernardo
   - ⛷️ Sci e terme: Courmayeur, Cervinia, La Thuile, Pila, Monterosa Ski, Pré-Saint-Didier, Saint-Vincent
   - 🧀 Prodotti tipici: Fontina (Valpelline), lardo di Arnad, vigneti di Morgex e La Salle
 - **Scheda di ogni luogo**: testo, informazioni principali e una frase "Da ricordare"
-- **Scheda della regione**: dati, confini, lingue, clima, storia, economia, comunicazioni, cucina e tradizioni
-- **Quiz "Dov'è?"**: compare il nome di un luogo e bisogna trovarlo sulla cartina (pallini tutti grigi)
+- **Scheda della regione**: carta d'identità (superficie, abitanti, densità, capoluogo, stemma), confini e territorio, popolazione, lingue, clima e fasce di vegetazione, storia, economia con gli occupati per settore, comunicazioni, cucina e tradizioni. I numeri sono quelli del libro di testo (Geografia vol. 5)
+- **Esercitati** (pulsante Quiz), due modalità:
+  - **Dov'è?**: compare il nome di un luogo e bisogna trovarlo sulla cartina (pallini tutti grigi)
+  - **Domande e vero/falso**: 12 domande a caso su 32, come gli esercizi del libro, con la spiegazione dopo ogni risposta
+- **Paralleli e meridiani** sulla cartina (si possono nascondere dalla legenda)
 - Funziona su computer e telefono, in tema chiaro e scuro
 
 ## Come aprirlo
@@ -44,7 +47,7 @@ Funziona anche senza internet: la carta fisica e la carta politica sono salvate 
 ```
 index.html          pagina principale
 css/style.css       grafica
-js/data.js          TUTTI i testi: luoghi, categorie, scheda della regione
+js/data.js          TUTTI i testi: luoghi, categorie, scheda della regione, domande del quiz
 js/app.js           logica della mappa, del pannello e del quiz
 data/confine.js     confine della regione (GeoJSON)
 data/fiumi.js       fiumi e Dora Baltea (generato con tools/genera_fiumi.py)
@@ -56,7 +59,16 @@ vendor/leaflet/     libreria Leaflet 1.9.4 per la cartina
 
 ### Dopo ogni modifica
 
-In `index.html` i file hanno un numero di versione (`app.js?v=7`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=8`, `?v=9`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
+In `index.html` i file hanno un numero di versione (`app.js?v=8`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=9`, `?v=10`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
+
+### Aggiungere una domanda
+
+In `js/data.js`, nell'elenco `DOMANDE`:
+
+```js
+{ tipo: "scelta", d: "La domanda?", opzioni: ["A", "B", "C"], giusta: 1, spiega: "Perché è B." },
+{ tipo: "vf", d: "Un'affermazione.", vero: false, spiega: "Perché è falsa." }
+```
 
 ### Aggiungere o modificare un luogo
 

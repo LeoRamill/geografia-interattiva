@@ -18,17 +18,18 @@ window.LUOGHI = [
   /* ---------------- CITTÀ E PAESI ---------------- */
   {
     id: "aosta", nome: "Aosta", cat: "citta", lat: 45.7372, lng: 7.3206,
-    sottotitolo: "Capoluogo di regione · circa 33.000 abitanti",
+    sottotitolo: "Capoluogo di regione · 33.186 abitanti, circa un quarto della popolazione",
     testo: "Aosta è l'unica vera città della regione e ne è il capoluogo. Fu fondata dai Romani nel 25 a.C. con il nome di Augusta Praetoria Salassorum, in onore dell'imperatore Augusto, dopo la sconfitta dei Salassi. La città fu costruita come un accampamento militare, con strade dritte che si incrociano ad angolo retto: per i suoi tanti monumenti romani è chiamata la \"Roma delle Alpi\".",
     punti: [
-      "Monumenti romani: Arco d'Augusto, Porta Pretoria, Teatro romano, criptoportico",
+      "Aosta romana: le mura, la Porta Pretoria (l'ingresso della città), il teatro, l'anfiteatro, il foro (con il criptoportico) e le terme",
+      "Fuori dalle mura: l'Arco d'Augusto e il ponte romano sul torrente Buthier, sulla strada per la Gallia",
       "Area megalitica di Saint-Martin-de-Corléans: resti di oltre 5.000 anni fa",
       "Qui nacque sant'Anselmo d'Aosta (1033), filosofo e arcivescovo di Canterbury",
       "Fiera di Sant'Orso (30–31 gennaio): artigianato del legno, si svolge da oltre 1000 anni",
       "Arena della Croix-Noire: finale della Bataille des Reines, la sfida tra mucche \"regine\"",
       "Industria: l'acciaieria Cogne Acciai Speciali"
     ],
-    ricorda: "Aosta = Augusta Praetoria, fondata dai Romani nel 25 a.C."
+    ricorda: "Aosta = Augusta Praetoria, fondata dai Romani nel 25 a.C.; il nome della regione viene da qui."
   },
   {
     id: "cogne", nome: "Cogne", cat: "citta", lat: 45.6086, lng: 7.3561,
@@ -69,12 +70,13 @@ window.LUOGHI = [
   /* ---------------- MONTAGNE ---------------- */
   {
     id: "montebianco", nome: "Monte Bianco", cat: "montagne", lat: 45.8326, lng: 6.8652,
-    sottotitolo: "Circa 4.806 m · la vetta più alta delle Alpi",
+    sottotitolo: "4.807 m · la vetta più alta delle Alpi",
     testo: "Il Monte Bianco è la montagna più alta delle Alpi e dell'Europa occidentale. Si trova sul confine tra Italia e Francia, sopra Courmayeur. Il massiccio è coperto da grandi ghiacciai, come quello del Miage e quello della Brenva, che oggi si stanno ritirando a causa del riscaldamento climatico.",
     punti: [
-      "Altezza: circa 4.806 metri",
+      "Altezza: 4.807 metri (la misura cambia un po' a ogni rilevazione, perché la cima è di ghiaccio e neve: nel 2021 erano 4.805,6 m)",
       "Confine tra Italia (Courmayeur) e Francia (Chamonix)",
       "La funivia Skyway Monte Bianco sale fino a Punta Helbronner (3.466 m)",
+      "Ogni anno è la meta di moltissimi alpinisti",
       "Sotto la montagna passa il Traforo del Monte Bianco"
     ],
     ricorda: "È la montagna più alta d'Europa occidentale."
@@ -84,7 +86,7 @@ window.LUOGHI = [
     sottotitolo: "4.478 m · la montagna a forma di piramide",
     testo: "Il Cervino è famoso in tutto il mondo per la sua forma a piramide. Si trova sul confine con la Svizzera, sopra Breuil-Cervinia, in fondo alla Valtournenche. Dall'altra parte, in Svizzera, si trova il paese di Zermatt.",
     punti: [
-      "Altezza: 4.478 metri",
+      "Altezza: 4.478 metri: è la terza montagna d'Italia, dopo Monte Bianco e Monte Rosa",
       "Confine tra Italia e Svizzera",
       "Fu scalato per la prima volta nel 1865",
       "In francese si chiama Mont Cervin, in tedesco Matterhorn"
@@ -93,10 +95,10 @@ window.LUOGHI = [
   },
   {
     id: "monterosa", nome: "Monte Rosa", cat: "montagne", lat: 45.9180, lng: 7.8600,
-    sottotitolo: "4.634 m (Punta Dufour) · un grande massiccio",
-    testo: "Il Monte Rosa non è una sola cima ma un grande massiccio con molte vette sopra i 4.000 metri. La più alta, la Punta Dufour (4.634 m), si trova in territorio svizzero. Ai suoi piedi si aprono le valli di Ayas e del Lys (Gressoney).",
+    sottotitolo: "4.637 m (Punta Dufour) · un grande massiccio",
+    testo: "Il Monte Rosa non è una sola cima ma un grande massiccio con molte vette sopra i 4.000 metri. La più alta, la Punta Dufour (4.637 m), si trova sul versante svizzero. Ai suoi piedi si aprono le valli di Ayas e del Lys (Gressoney).",
     punti: [
-      "Cima più alta: Punta Dufour, 4.634 m (in Svizzera)",
+      "Cima più alta: Punta Dufour, 4.637 m (la misura ufficiale svizzera è 4.634 m)",
       "Sulla Punta Gnifetti (4.554 m) c'è la Capanna Margherita, il rifugio più alto d'Europa",
       "Ghiacciaio del Lys",
       "Il nome viene dalla parola \"roise\", che nel dialetto locale indica il ghiacciaio"
@@ -124,6 +126,18 @@ window.LUOGHI = [
       "Ai suoi piedi c'è il piccolo lago del Miage"
     ],
     ricorda: "I ghiacciai si stanno ritirando per il riscaldamento globale."
+  },
+
+  {
+    id: "dolent", nome: "Mont Dolent", cat: "montagne", lat: 45.9225, lng: 7.0461,
+    sottotitolo: "3.820 m · dove si incontrano tre Stati",
+    testo: "Il Mont Dolent si trova in fondo alla Val Ferret, a nord-est del Monte Bianco. Sulla sua cima si incontrano i confini di tre Stati: Italia, Francia e Svizzera. Stando lassù si può mettere un piede in ciascuno dei tre Paesi!",
+    punti: [
+      "Altezza: 3.820 metri",
+      "Sulla cima si incontrano Italia, Francia e Svizzera",
+      "Si trova in fondo alla Val Ferret, vicino a Courmayeur"
+    ],
+    ricorda: "Mont Dolent = punto d'incontro di Italia, Francia e Svizzera."
   },
 
   /* ---------------- CASTELLI E MONUMENTI ---------------- */
@@ -193,7 +207,7 @@ window.LUOGHI = [
       "Fondato nel 1922: il primo parco nazionale italiano",
       "Simbolo: lo stambecco",
       "Animali: stambecchi, camosci, marmotte, aquile reali, gipeti, lupi",
-      "Piante: larici, abeti, pino cembro, stella alpina, genepì"
+      "Piante: cambiano con l'altitudine. In basso boschi di larici, abeti e pino cembro, poi prati e piante erbacee (stella alpina, genepì), più in alto muschi e licheni"
     ],
     ricorda: "Primo parco nazionale (1922), simbolo lo stambecco."
   },
@@ -265,7 +279,7 @@ window.LUOGHI = [
     sottotitolo: "Ai piedi del Monte Bianco",
     testo: "Courmayeur è una delle località turistiche più famose delle Alpi, ai piedi del Monte Bianco. D'inverno si scia, d'estate si fanno escursioni e scalate: è considerata la capitale dell'alpinismo italiano. Qui vicino nasce la Dora Baltea, dall'unione della Dora di Veny e della Dora di Ferret.",
     punti: [
-      "Sci e alpinismo",
+      "Sci e alpinismo: dal 2019 l'alpinismo è Patrimonio dell'Umanità UNESCO",
       "Funivia Skyway Monte Bianco",
       "Valli laterali: Val Veny e Val Ferret",
       "Durante il fascismo fu rinominata \"Cormaiore\""
@@ -366,10 +380,11 @@ window.LUOGHI = [
     testo: "Tra Morgex e La Salle crescono vigneti che arrivano a circa 1.000–1.200 metri di altezza, tra i più alti d'Europa. Qui si produce il vino bianco Blanc de Morgex et de La Salle. Le viti crescono sul versante al sole (adret), mentre quello in ombra (envers) è coperto di boschi.",
     punti: [
       "Vigneti tra i più alti d'Europa",
+      "Si chiamano \"vigneti eroici\": sono su terreni ripidi e difficili, dove tutto si fa a mano",
       "Vino Blanc de Morgex et de La Salle",
       "Altri vini valdostani: Enfer d'Arvier, Torrette"
     ],
-    ricorda: "Vigneti di montagna sul versante al sole (adret)."
+    ricorda: "Vigneti eroici: di montagna, sul versante al sole (adret), coltivati a mano."
   }
 ];
 
@@ -454,39 +469,68 @@ window.CONFINANTI = [
   { nome: "PIEMONTE", lat: 45.42, lng: 7.68 }
 ];
 
-/* Scheda generale mostrata quando nessun luogo è selezionato. */
+/* Scheda generale mostrata quando nessun luogo è selezionato.
+   Numeri come nel libro di testo (Geografia vol. 5, pp. 30–33). */
 window.SCHEDA = [
   {
     titolo: "📍 Carta d'identità",
-    html: `<ul>
-      <li><b>Capoluogo:</b> Aosta</li>
-      <li><b>Superficie:</b> circa 3.260 km² – la regione <b>più piccola</b> d'Italia</li>
-      <li><b>Abitanti:</b> circa 123.000 – la regione <b>meno popolata</b></li>
+    html: `<div class="stats">
+        <div class="stat"><span>Superficie</span><b>3.261 km²</b></div>
+        <div class="stat"><span>Abitanti</span><b>123.337</b></div>
+        <div class="stat"><span>Densità</span><b>38 ab./km²</b></div>
+        <div class="stat"><span>Capoluogo</span><b>Aosta</b><small>33.186 ab.</small></div>
+      </div>
+      <ul>
+      <li>La regione <b>più piccola</b> e <b>meno popolata</b> d'Italia</li>
+      <li><b>Territorio:</b> 100% montagna</li>
       <li><b>Comuni:</b> 74, nessuna provincia</li>
       <li><b>Regione autonoma a statuto speciale</b> dal 1948</li>
       <li><b>Bandiera:</b> nera e rossa</li>
+      <li><b>Stemma:</b> un leone d'argento su sfondo nero, con una corona sopra lo scudo</li>
     </ul>`
   },
   {
     titolo: "🗺️ Confini e territorio",
-    html: `<p>Confina a <b>nord</b> con la <b>Svizzera</b>, a <b>ovest</b> con la <b>Francia</b>, a <b>sud</b> e a <b>est</b> con il <b>Piemonte</b>.</p>
-      <p>È <b>tutta montuosa</b>: una grande valle centrale, percorsa dalla <b>Dora Baltea</b>, da cui si aprono a "lisca di pesce" circa venti valli laterali (Valpelline, Valtournenche, Val d'Ayas, Valle di Gressoney, Valle di Cogne, Valsavarenche, Val di Rhêmes, Valgrisenche…).</p>`
+    html: `<p>Si trova nella parte <b>nord-occidentale</b> dell'Italia. Confina a <b>nord</b> con la <b>Svizzera</b>, a <b>ovest</b> con la <b>Francia</b>, a <b>sud</b> e a <b>est</b> con il <b>Piemonte</b>. Sul <b>Mont Dolent</b> (3.820 m) si incontrano i confini di Italia, Francia e Svizzera.</p>
+      <p>Il territorio è <b>interamente montuoso</b>: una grande valle centrale, percorsa dalla <b>Dora Baltea</b>, da cui si aprono a "lisca di pesce" circa venti valli laterali (Valpelline, Valtournenche, Val d'Ayas, Valle di Gressoney, Valle di Cogne, Valsavarenche, Val di Rhêmes, Valgrisenche…).</p>
+      <p><b>Le montagne più alte d'Europa:</b> Monte Bianco (4.807 m), Monte Rosa (4.637 m), Cervino (4.478 m), Gran Paradiso (4.061 m). A nord ci sono le <b>Alpi Pennine</b>, a ovest e a sud le <b>Alpi Graie</b>.</p>
+      <p><b>Ghiacciai:</b> si trovano sulle vette oltre i 3.000 m; un tempo erano perenni, oggi si riducono per i cambiamenti climatici.</p>
+      <p><b>Acque:</b> molti torrenti scendono dalle valli laterali e confluiscono nella <b>Dora Baltea</b>, che nasce ai piedi del Monte Bianco, attraversa la regione da ovest a est e si getta nel Po. Tra le cime ci sono tanti piccoli laghi alpini.</p>`
+  },
+  {
+    titolo: "👥 Popolazione",
+    html: `<ul>
+      <li>È la regione <b>meno popolata</b> d'Italia: 123.337 abitanti, <b>38 per km²</b></li>
+      <li>La maggior parte degli abitanti vive nel <b>fondovalle</b>, lungo la valle della Dora Baltea</li>
+      <li><b>Aosta</b> (33.186 ab.) ha circa <b>un quarto</b> della popolazione; gli altri vivono in <b>piccoli comuni</b></li>
+      <li>Nel Novecento molte valli laterali si sono <b>spopolate</b>: la gente è scesa in città o in pianura per lavorare</li>
+      <li>È una regione <b>bilingue</b>: italiano e francese sono lingue ufficiali</li>
+    </ul>`
   },
   {
     titolo: "🗣️ Lingue",
     html: `<p>Lingue ufficiali: <b>italiano e francese</b>. Molti parlano il <b>patois</b> (francoprovenzale); nella valle del Lys i <b>Walser</b> parlano una lingua di origine tedesca.</p>`
   },
   {
-    titolo: "❄️ Clima",
-    html: `<p>Clima <b>alpino</b>: inverni freddi e nevosi, estati brevi e fresche. Il fondovalle è secco: già nel Medioevo si costruivano i <b>rus</b>, canali per irrigare i campi.</p>
-      <p><b>Adret</b> = versante al sole (paesi, vigneti) · <b>Envers</b> = versante in ombra (boschi).</p>`
+    titolo: "❄️ Clima e ambienti",
+    html: `<p>Clima <b>alpino</b>: inverni lunghi e molto freddi, con frequenti <b>nevicate</b>; estati brevi e fresche. Il fondovalle è secco: già nel Medioevo si costruivano i <b>rus</b>, canali per irrigare i campi.</p>
+      <p><b>Adret</b> = versante al sole (paesi, vigneti) · <b>Envers</b> = versante in ombra (boschi).</p>
+      <p><b>Piante e animali cambiano con l'altitudine.</b> Salendo si incontrano (altezze indicative):</p>
+      <ol class="fasce" reversed>
+        <li style="--c:#f1f4f8"><b>oltre 3.000 m</b> nevi e ghiacciai</li>
+        <li style="--c:#cfc7c0"><b>2.500–3.000 m</b> rocce, muschi e licheni</li>
+        <li style="--c:#e2cf9f"><b>2.000–2.500 m</b> prati e piante erbacee (pascoli, alpeggi)</li>
+        <li style="--c:#9fc08a"><b>1.000–2.000 m</b> boschi di abeti e larici</li>
+        <li style="--c:#c8dc9c"><b>fondovalle</b> campi, vigneti, frutteti</li>
+      </ol>
+      <p>Sulle montagne vivono molti animali selvatici: <b>stambecchi</b>, camosci, marmotte, aquile. Per proteggerli nel <b>1922</b> è nato il <b>Parco Nazionale del Gran Paradiso</b>, il più antico d'Italia; il suo simbolo è lo stambecco.</p>`
   },
   {
     titolo: "🏛️ Storia in breve",
     html: `<ol class="timeline">
       <li><b>Preistoria</b> – area megalitica di Saint-Martin-de-Corléans (Aosta)</li>
-      <li><b>Salassi</b> – popolo celtico che controllava passi e miniere</li>
-      <li><b>25 a.C.</b> – i Romani fondano <i>Augusta Praetoria</i> (Aosta)</li>
+      <li><b>Salassi</b> – popolo celtico (gallico) che controllava passi e miniere</li>
+      <li><b>25 a.C.</b> – i Romani sconfiggono i Salassi e fondano <i>Augusta Praetoria</i>, in onore di Augusto: da qui vengono i nomi di <b>Aosta</b> e della regione</li>
       <li><b>Medioevo</b> – Burgundi, Franchi, poi dal 1000 circa i <b>Savoia</b>; gli Challant costruiscono i castelli</li>
       <li><b>1800</b> – Napoleone passa il Gran San Bernardo; il Forte di Bard lo blocca</li>
       <li><b>1861</b> – entra nel Regno d'Italia</li>
@@ -497,16 +541,31 @@ window.SCHEDA = [
   },
   {
     titolo: "💼 Economia",
-    html: `<ul>
-      <li><b>Primario:</b> allevamento (razza valdostana, alpeggi), vigneti, mele</li>
-      <li><b>Secondario:</b> energia idroelettrica (ne produce più di quanta ne consuma), acciaieria di Aosta</li>
-      <li><b>Terziario:</b> il più importante, grazie al <b>turismo</b> (sci, alpinismo, terme, castelli)</li>
+    html: `<p><b>Occupati per settore</b></p>
+      <div class="segbar-wrap" role="img" aria-label="Occupati per settore: primario 2,8 per cento, secondario 21,3 per cento, terziario 75,9 per cento">
+        <div class="segbar">
+          <span style="--w:2.8;--c:var(--s1)" title="Primario: 2,8%"></span>
+          <span style="--w:21.3;--c:var(--s2)" title="Secondario: 21,3%"><b>21,3%</b></span>
+          <span style="--w:75.9;--c:var(--s3)" title="Terziario: 75,9%"><b>75,9%</b></span>
+        </div>
+        <ul class="seglegend">
+          <li><i style="--c:var(--s1)"></i>Primario <small>agricoltura, allevamento</small><b>2,8%</b></li>
+          <li><i style="--c:var(--s2)"></i>Secondario <small>industria, energia, artigianato</small><b>21,3%</b></li>
+          <li><i style="--c:var(--s3)"></i>Terziario <small>turismo, commercio, servizi</small><b>75,9%</b></li>
+        </ul>
+      </div>
+      <ul>
+      <li><b>Primario:</b> l'agricoltura si pratica nel <b>fondovalle</b> e ha pochi addetti: cereali, patate, viti (i <b>vigneti eroici</b>) e alberi da frutto (mele). Nei grandi pascoli si allevano i <b>bovini</b>: con il loro latte si fanno ottimi formaggi come la <b>Fontina</b>.</li>
+      <li><b>Secondario:</b> grazie all'acqua si produce molta <b>energia idroelettrica</b> (più di quella che la regione consuma); industria (acciaieria di Aosta) e <b>artigianato</b>, soprattutto la lavorazione del legno.</li>
+      <li><b>Terziario:</b> il più importante, grazie al <b>turismo</b>: bellezze naturali e artistiche, <b>alpinismo</b> e <b>sport invernali</b>. Dal 2019 l'alpinismo è <b>Patrimonio dell'Umanità UNESCO</b>.</li>
     </ul>`
   },
   {
     titolo: "🚗 Comunicazioni",
-    html: `<ul>
-      <li><b>Autostrada A5</b> Torino – Aosta – Monte Bianco</li>
+    html: `<p>Nonostante le montagne, i collegamenti sono assicurati da:</p>
+      <ul>
+      <li><b>Autostrada A5</b> Torino – Aosta – Monte Bianco, nel fondovalle</li>
+      <li><b>Valichi alpini:</b> Colle del Gran San Bernardo e Colle del Piccolo San Bernardo</li>
       <li><b>Traforo del Monte Bianco</b> (1965) → Francia</li>
       <li><b>Traforo del Gran San Bernardo</b> (1964) → Svizzera</li>
       <li>Ferrovia Aosta – Torino</li>
@@ -517,4 +576,73 @@ window.SCHEDA = [
     html: `<p><b>Fontina DOP</b>, fonduta, polenta concia, carbonade, zuppa alla valpellinese, lardo di Arnad, tegole, <b>caffè alla valdostana</b> nella <b>coppa dell'amicizia</b>.</p>
       <p><b>Fiera di Sant'Orso</b> (30–31 gennaio), <b>Bataille des Reines</b>, sport tradizionali (tsan, rebatta, fiolet, palet), carnevali storici, merletti di Cogne.</p>`
   }
+];
+
+/* Domande per esercitarsi, come negli esercizi del libro ("Osserva la carta e rispondi", vero/falso).
+   tipo "scelta": opzioni + indice della risposta giusta; tipo "vf": vero = true/false. */
+window.DOMANDE = [
+  { tipo: "scelta", d: "Con quale Paese confina la Valle d'Aosta a nord?", opzioni: ["Francia", "Svizzera", "Austria"], giusta: 1,
+    spiega: "A nord c'è la Svizzera (il Cantone Vallese)." },
+  { tipo: "scelta", d: "Con quale Paese confina a ovest?", opzioni: ["Svizzera", "Slovenia", "Francia"], giusta: 2,
+    spiega: "A ovest c'è la Francia: si passa con il Traforo del Monte Bianco o il Colle del Piccolo San Bernardo." },
+  { tipo: "scelta", d: "Con quale regione italiana confina?", opzioni: ["Piemonte", "Lombardia", "Liguria"], giusta: 0,
+    spiega: "Confina solo con il Piemonte, a sud e a est." },
+  { tipo: "scelta", d: "Qual è il fiume che attraversa la regione?", opzioni: ["Adige", "Dora Baltea", "Ticino"], giusta: 1,
+    spiega: "La Dora Baltea nasce ai piedi del Monte Bianco e attraversa la regione da ovest a est." },
+  { tipo: "scelta", d: "In quale fiume si getta la Dora Baltea?", opzioni: ["Po", "Rodano", "Sesia"], giusta: 0,
+    spiega: "La Dora Baltea esce a Pont-Saint-Martin, attraversa il Piemonte e si getta nel Po." },
+  { tipo: "scelta", d: "Il territorio della Valle d'Aosta è…", opzioni: ["pianeggiante", "collinare", "montuoso"], giusta: 2,
+    spiega: "È interamente montuoso: 100% montagna." },
+  { tipo: "scelta", d: "Qual è la montagna più alta della regione?", opzioni: ["Cervino", "Monte Bianco", "Gran Paradiso"], giusta: 1,
+    spiega: "Il Monte Bianco (4.807 m) è la vetta più alta delle Alpi." },
+  { tipo: "scelta", d: "Quanto è alto il Cervino?", opzioni: ["4.478 m", "4.807 m", "3.820 m"], giusta: 0,
+    spiega: "Il Cervino è alto 4.478 m: è la terza montagna d'Italia." },
+  { tipo: "scelta", d: "Su quale montagna si incontrano i confini di Italia, Francia e Svizzera?", opzioni: ["Gran Paradiso", "Mont Dolent", "Monte Rosa"], giusta: 1,
+    spiega: "Sul Mont Dolent (3.820 m), in fondo alla Val Ferret." },
+  { tipo: "scelta", d: "Quali sono le lingue ufficiali?", opzioni: ["italiano e tedesco", "italiano e francese", "solo l'italiano"], giusta: 1,
+    spiega: "È una regione bilingue: italiano e francese." },
+  { tipo: "scelta", d: "Qual è la densità di popolazione?", opzioni: ["38 abitanti per km²", "200 abitanti per km²", "3 abitanti per km²"], giusta: 0,
+    spiega: "123.337 abitanti su 3.261 km²: circa 38 abitanti per km², tra le più basse d'Italia." },
+  { tipo: "scelta", d: "Dove vive la maggior parte della popolazione?", opzioni: ["in alta montagna", "nel fondovalle", "vicino ai ghiacciai"], giusta: 1,
+    spiega: "Nel fondovalle, lungo la Dora Baltea; Aosta da sola ha circa un quarto degli abitanti." },
+  { tipo: "scelta", d: "Che cosa si produce grazie alla grande disponibilità di acqua?", opzioni: ["energia idroelettrica", "petrolio", "energia eolica"], giusta: 0,
+    spiega: "Dighe e torrenti producono energia idroelettrica, più di quella che la regione consuma." },
+  { tipo: "scelta", d: "Quale settore ha più occupati?", opzioni: ["primario", "secondario", "terziario"], giusta: 2,
+    spiega: "Il terziario (75,9%), soprattutto grazie al turismo." },
+  { tipo: "scelta", d: "Quale animale è il simbolo del Parco Nazionale del Gran Paradiso?", opzioni: ["l'orso", "lo stambecco", "il lupo"], giusta: 1,
+    spiega: "Lo stambecco, che il parco ha salvato dall'estinzione." },
+  { tipo: "scelta", d: "In che anno è nato il Parco Nazionale del Gran Paradiso?", opzioni: ["1922", "1948", "1965"], giusta: 0,
+    spiega: "Nel 1922: è il parco nazionale più antico d'Italia." },
+  { tipo: "scelta", d: "Come si chiamava Aosta al tempo dei Romani?", opzioni: ["Augusta Taurinorum", "Augusta Praetoria", "Aquileia"], giusta: 1,
+    spiega: "Augusta Praetoria, in onore dell'imperatore Augusto (Augusta Taurinorum era Torino)." },
+  { tipo: "scelta", d: "Quale popolo abitava la regione prima dei Romani?", opzioni: ["i Salassi", "gli Etruschi", "i Sanniti"], giusta: 0,
+    spiega: "I Salassi, un popolo gallico (celtico)." },
+  { tipo: "scelta", d: "Quale galleria porta in Francia?", opzioni: ["Traforo del Gran San Bernardo", "Traforo del Monte Bianco", "Traforo del Frejus"], giusta: 1,
+    spiega: "Il Traforo del Monte Bianco (1965) collega Courmayeur a Chamonix. Il Gran San Bernardo porta in Svizzera." },
+  { tipo: "scelta", d: "Come si chiama il formaggio più famoso della regione?", opzioni: ["Gorgonzola", "Fontina", "Parmigiano"], giusta: 1,
+    spiega: "La Fontina DOP, fatta con il latte delle mucche valdostane." },
+  { tipo: "scelta", d: "Perché si parla di \"vigneti eroici\"?", opzioni: ["perché li piantarono i soldati", "perché sono su terreni ripidi e si coltivano a mano", "perché fanno il vino più forte"], giusta: 1,
+    spiega: "Sono su terreni ripidi e difficili, dove il clima e il terreno obbligano a lavorare a mano." },
+  { tipo: "scelta", d: "Salendo in montagna, dopo i boschi di abeti e larici si trovano…", opzioni: ["risaie e vigneti", "piante erbacee, poi muschi e licheni", "palme e ulivi"], giusta: 1,
+    spiega: "Più in alto ci sono prati e piante erbacee, poi muschi e licheni, e infine nevi e ghiacciai." },
+  { tipo: "vf", d: "Il Gran Paradiso è il monte più alto della regione.", vero: false,
+    spiega: "Falso: il più alto è il Monte Bianco. Il Gran Paradiso (4.061 m) è l'unico \"4000\" tutto in territorio italiano." },
+  { tipo: "vf", d: "La regione ha molti torrenti.", vero: true,
+    spiega: "Vero: scendono dalle valli laterali e confluiscono nella Dora Baltea." },
+  { tipo: "vf", d: "I ghiacciai stanno diminuendo a causa dei cambiamenti climatici.", vero: true,
+    spiega: "Vero: un tempo erano perenni, oggi si riducono." },
+  { tipo: "vf", d: "Sulle cime più alte crescono abeti e larici.", vero: false,
+    spiega: "Falso: abeti e larici crescono più in basso; sulle cime ci sono rocce, muschi, licheni e ghiacciai." },
+  { tipo: "vf", d: "La Valle d'Aosta è una regione a statuto speciale.", vero: true,
+    spiega: "Vero: dal 1948 ha più autonomia delle altre regioni." },
+  { tipo: "vf", d: "Il clima della Valle d'Aosta è mediterraneo.", vero: false,
+    spiega: "Falso: è un clima alpino, con inverni lunghi e freddi e abbondanti nevicate." },
+  { tipo: "vf", d: "La Valle d'Aosta è divisa in molte province.", vero: false,
+    spiega: "Falso: non ha province; ha 74 comuni." },
+  { tipo: "vf", d: "L'alpinismo è Patrimonio dell'Umanità UNESCO.", vero: true,
+    spiega: "Vero: dal 2019." },
+  { tipo: "vf", d: "Aosta ha circa un quarto degli abitanti della regione.", vero: true,
+    spiega: "Vero: 33.186 abitanti su 123.337." },
+  { tipo: "vf", d: "Il Cervino si trova al confine con la Svizzera.", vero: true,
+    spiega: "Vero: dall'altra parte c'è Zermatt." }
 ];

@@ -5,6 +5,7 @@
   const LUOGHI = window.LUOGHI;
   const panel = document.getElementById("panel");
   const quiz = { on: false, order: [], i: 0, ok: 0, done: 0, marks: {}, tries: 0 };
+  const domande = { on: false, elenco: [], i: 0, ok: 0, risposto: false };
 
   /* ---------------- Mappa ---------------- */
   const confine = L.geoJSON(window.CONFINE_VDA);
@@ -175,7 +176,7 @@
     color: "#1f63b5", weight: 5, opacity: 0.9, lineCap: "round", lineJoin: "round"
   }).addTo(map);
   dora.bindTooltip("Dora Baltea", { sticky: true, className: "tip" });
-  dora.on("click", () => { if (!quiz.on) showPlace(window.DORA_INFO, null); });
+  dora.on("click", () => { if (!quiz.on && !domande.on) showPlace(window.DORA_INFO, null); });
 
   // Etichette dei territori confinanti
   window.CONFINANTI.forEach(c => {
@@ -184,6 +185,42 @@
       icon: L.divIcon({ className: "", html: `<div class="country-label">${c.nome}</div>`, iconSize: [120, 20], iconAnchor: [60, 10] })
     }).addTo(map);
   });
+
+  /* ---------- Paralleli e meridiani (reticolato geografico) ---------- */
+  const PARALLELI = [45, 45.5, 46, 46.5], MERIDIANI = [6, 6.5, 7, 7.5, 8, 8.5, 9];
+  const gradi = (v, dir) => Math.floor(v) + "°" + (v % 1 ? "30′" : "") + " " + dir;
+  map.createPane("reticolo").style.zIndex = 420;   // sopra la velatura bianca
+  const stileReticolo = { color: "#1d4f86", weight: 1.3, opacity: 0.7, dashArray: "6 4", interactive: false, pane: "reticolo" };
+  const reticolato = L.layerGroup();
+  const scritteReticolo = [];
+  PARALLELI.forEach(lat => {
+    L.polyline([[lat, 5.5], [lat, 9.2]], stileReticolo).addTo(reticolato);
+    scritteReticolo.push({ tipo: "lat", v: lat, m: L.marker([lat, 7], { pane: "scritte", interactive: false, keyboard: false,
+      icon: L.divIcon({ className: "lbl-wrap", iconSize: [0, 0], html: `<div class="lbl lbl-grid">${gradi(lat, "N")}</div>` }) }) });
+  });
+  MERIDIANI.forEach(lng => {
+    L.polyline([[44.5, lng], [47, lng]], stileReticolo).addTo(reticolato);
+    scritteReticolo.push({ tipo: "lng", v: lng, m: L.marker([45.5, lng], { pane: "scritte", interactive: false, keyboard: false,
+      icon: L.divIcon({ className: "lbl-wrap", iconSize: [0, 0], html: `<div class="lbl lbl-grid">${gradi(lng, "E")}</div>` }) }) });
+  });
+  // le scritte stanno sul bordo destro (paralleli) e in basso (meridiani) della parte visibile
+  function posizionaReticolo() {
+    if (!map.hasLayer(reticolato)) return;
+    const size = map.getSize(), c = map.getCenter();
+    scritteReticolo.forEach(r => {
+      let pt;
+      if (r.tipo === "lat") {
+        const y = map.latLngToContainerPoint([r.v, c.lng]).y;
+        pt = y > 70 && y < size.y - 50 ? L.point(size.x - 46, y) : null;
+      } else {
+        const x = map.latLngToContainerPoint([c.lat, r.v]).x;
+        pt = x > 30 && x < size.x - 70 ? L.point(x, size.y - 44) : null;
+      }
+      if (pt) { r.m.setLatLng(map.containerPointToLatLng(pt)); if (!reticolato.hasLayer(r.m)) r.m.addTo(reticolato); }
+      else if (reticolato.hasLayer(r.m)) reticolato.removeLayer(r.m);
+    });
+  }
+  map.on("moveend zoomend resize", posizionaReticolo);
 
   /* ---------- Selettore delle cartine ---------- */
   // "prova": una tessera di esempio; se si carica, c'è internet e la cartina è disponibile
@@ -388,6 +425,16 @@
         legendBtns[key] = b;
       });
       L.DomUtil.create("div", "legend-hint", items).textContent = "Tocca una voce per mostrarla o nasconderla";
+      const ret = L.DomUtil.create("button", "legend-item legend-grid", items);
+      ret.style.setProperty("--c", "#2b5d8f");
+      ret.title = "Mostra/nascondi paralleli e meridiani";
+      ret.innerHTML = `<span class="sw">▦</span><span class="nm">Paralleli e meridiani</span>`;
+      ret.setAttribute("aria-pressed", "true");
+      ret.addEventListener("click", () => {
+        const on = !map.hasLayer(reticolato);
+        if (on) { reticolato.addTo(map); posizionaReticolo(); } else map.removeLayer(reticolato);
+        ret.setAttribute("aria-pressed", String(on));
+      });
       const alt = L.DomUtil.create("div", "alt-scale", items);
       alt.innerHTML = `<div class="alt-title">Altitudine</div>
         <div class="alt-bar"></div>
@@ -407,6 +454,7 @@
     }
   });
   new Legenda().addTo(map);
+  reticolato.addTo(map);
 
   map.fitBounds(bounds, FIT);
   onZoom();
@@ -465,6 +513,7 @@
   }
 
   function select(id) {
+    if (domande.on) return;       // durante le domande la scheda non si apre (sarebbe un aiutino!)
     const idx = LUOGHI.findIndex(l => l.id === id);
     if (idx < 0) return;
     const l = LUOGHI[idx];
@@ -485,7 +534,7 @@
     map.flyToBounds(bounds, Object.assign({ duration: 0.6 }, FIT));
   }
 
-  document.getElementById("btn-home").addEventListener("click", () => { if (quiz.on) stopQuiz(); goHome(); });
+  document.getElementById("btn-home").addEventListener("click", () => { if (quiz.on) stopQuiz(); domande.on = false; goHome(); });
 
   /* ---------------- Quiz ---------------- */
   const qbar = document.getElementById("quizbar");
@@ -574,7 +623,90 @@
     showHome();
   }
 
-  document.getElementById("btn-quiz").addEventListener("click", () => (quiz.on ? stopQuiz() : startQuiz()));
+  /* ---------------- Menu del quiz e modalità "Domande" ---------------- */
+  function showQuizMenu() {
+    attivo = null;
+    refreshIcons();
+    panel.innerHTML = `
+      <button class="btn btn-ghost btn-small back" id="back">← Torna alla regione</button>
+      <h2>🎯 Esercitati</h2>
+      <p class="sub">Scegli come vuoi ripassare.</p>
+      <button class="quiz-card" id="q-dove"><span>🗺️</span><b>Dov'è?</b><small>Compare il nome di un luogo: trovalo sulla cartina.</small></button>
+      <button class="quiz-card" id="q-domande"><span>❓</span><b>Domande e vero/falso</b><small>Come gli esercizi del libro: "Osserva la carta e rispondi".</small></button>`;
+    panel.querySelector("#back").addEventListener("click", goHome);
+    panel.querySelector("#q-dove").addEventListener("click", startQuiz);
+    panel.querySelector("#q-domande").addEventListener("click", startDomande);
+    panel.scrollTop = 0;
+  }
+
+  const QUANTE = 12;   // domande per partita
+  function startDomande() {
+    Object.assign(domande, { on: true, elenco: shuffle(window.DOMANDE.slice()).slice(0, QUANTE), i: 0, ok: 0, risposto: false });
+    attivo = null;
+    refreshIcons();
+    renderDomanda();
+  }
+
+  function renderDomanda() {
+    const q = domande.elenco[domande.i];
+    const opzioni = q.tipo === "vf" ? ["Vero", "Falso"] : q.opzioni;
+    panel.innerHTML = `
+      <button class="btn btn-ghost btn-small back" id="back">← Esci</button>
+      <h2>❓ Domande</h2>
+      <p class="sub">Domanda ${domande.i + 1} di ${domande.elenco.length} · Risposte giuste: ${domande.ok}</p>
+      <div class="qbar"><span style="width:${(domande.i / domande.elenco.length) * 100}%"></span></div>
+      ${q.tipo === "vf" ? '<p class="qtipo">Vero o falso?</p>' : ""}
+      <p class="qtesto">${esc(q.d)}</p>
+      <div class="qopts">${opzioni.map((o, k) => `<button class="qopt" data-k="${k}">${esc(o)}</button>`).join("")}</div>
+      <div class="qfb" aria-live="polite"></div>
+      <button class="btn qnext" hidden>${domande.i + 1 < domande.elenco.length ? "Avanti →" : "Vedi il risultato"}</button>`;
+    panel.querySelector("#back").addEventListener("click", () => { domande.on = false; goHome(); });
+    const giusta = q.tipo === "vf" ? (q.vero ? 0 : 1) : q.giusta;
+    panel.querySelectorAll(".qopt").forEach(b => b.addEventListener("click", () => {
+      if (domande.risposto) return;
+      domande.risposto = true;
+      const k = +b.dataset.k, bene = k === giusta;
+      if (bene) domande.ok++;
+      panel.querySelectorAll(".qopt").forEach(x => {
+        x.disabled = true;
+        if (+x.dataset.k === giusta) x.classList.add("ok");
+      });
+      if (!bene) b.classList.add("ko");
+      const fb = panel.querySelector(".qfb");
+      fb.className = "qfb " + (bene ? "ok" : "ko");
+      fb.innerHTML = `<b>${bene ? "✔ Giusto!" : "✘ Non è giusto."}</b> ${esc(q.spiega)}`;
+      const next = panel.querySelector(".qnext");
+      next.hidden = false;
+      next.focus();
+    }));
+    panel.querySelector(".qnext").addEventListener("click", () => {
+      domande.i++;
+      domande.risposto = false;
+      if (domande.i < domande.elenco.length) renderDomanda(); else fineDomande();
+    });
+    panel.scrollTop = 0;
+  }
+
+  function fineDomande() {
+    const n = domande.elenco.length, pct = Math.round((domande.ok / n) * 100);
+    const msg = pct >= 90 ? "Bravissimo/a, sei pronto/a per l'interrogazione! 🏆" : pct >= 60 ? "Buon lavoro! Ripassa le schede delle domande sbagliate. 👍" : "Ripassa la scheda della regione e riprova! 💪";
+    panel.innerHTML = `
+      <h2>❓ Risultato</h2>
+      <p class="qrisultato"><b>${domande.ok}</b> su ${n}</p>
+      <p>${msg}</p>
+      <div class="nav-row">
+        <button class="btn btn-ghost btn-small" id="q-home">← Torna alla regione</button>
+        <button class="btn btn-small" id="q-ancora">Altre domande</button>
+      </div>`;
+    panel.querySelector("#q-home").addEventListener("click", () => { domande.on = false; goHome(); });
+    panel.querySelector("#q-ancora").addEventListener("click", startDomande);
+  }
+
+  document.getElementById("btn-quiz").addEventListener("click", () => {
+    if (quiz.on) stopQuiz();
+    else if (domande.on) { domande.on = false; goHome(); }
+    else showQuizMenu();
+  });
   document.getElementById("quiz-stop").addEventListener("click", stopQuiz);
   document.getElementById("quiz-skip").addEventListener("click", () => {
     if (!quiz.on || quiz.i >= quiz.order.length) return;
