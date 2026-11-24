@@ -25,7 +25,7 @@ Si clicca un punto sulla cartina e si legge la sua scheda con le informazioni pr
 - **Scheda di ogni luogo**: testo, informazioni principali e una frase "Da ricordare"
 - **Scheda della regione**: carta d'identità (superficie, abitanti, densità, capoluogo, stemma), confini e territorio, popolazione e lingue, clima e fasce di vegetazione, storia, economia con gli occupati per settore, comunicazioni, tradizioni e sport. I numeri sono quelli del libro di testo (Geografia vol. 5)
 - **Domande e risposte** nella scheda della regione: 26 domande semplici (livello scuola primaria), divise per argomento; la risposta si apre toccando la domanda
-- **▶ Visita guidata**: 14 tappe animate sulla cartina (confini, montagne, Alpi Pennine e Graie, la Dora Baltea che si disegna, Aosta, popolazione, lavoro, collegamenti) con la spiegazione passo passo; va avanti da sola, si può mettere in pausa e far leggere ad alta voce, sempre in italiano (il sito sceglie la voce italiana più naturale del dispositivo; se non ce n'è una, spiega come installarla). Le tappe sono in `js/data.js` (`TOUR`)
+- **▶ Visita guidata**: 14 tappe animate sulla cartina (confini, montagne, Alpi Pennine e Graie, la Dora Baltea che si disegna, Aosta, popolazione, lavoro, collegamenti) con la spiegazione passo passo; va avanti da sola, si può mettere in pausa e **ascoltare la maestra**: la spiegazione è registrata con una voce italiana femminile ("Paola" di [Piper](https://github.com/rhasspy/piper)), sempre la stessa su ogni dispositivo e anche senza internet. File in `audio/tour/`; se cambi i testi della visita, rigenera l'audio con `tools/genera_audio.py`. Le tappe sono in `js/data.js` (`TOUR`)
 - **Esercitati** (pulsante Quiz), quattro modalità:
   - **Dov'è?**: compare il nome di un luogo e bisogna trovarlo sulla cartina (pallini tutti grigi). Ci sono anche la **Dora Baltea** (si clicca il fiume) e le catene montuose, **Alpi Pennine** e **Alpi Graie** (si clicca la zona giusta)
   - **Domande e vero/falso**: 12 domande su 58, come gli esercizi del libro, con la spiegazione dopo ogni risposta. A ogni partita c'è almeno una domanda per ogni sezione della scheda
@@ -60,13 +60,14 @@ data/fiumi.js       fiumi e Dora Baltea (generato con tools/genera_fiumi.py)
 data/politica.js    aree, comuni, confini, strade, laghi (generato con tools/genera_politica.py)
 data/zone.js        zone di Alpi Pennine e Alpi Graie per il quiz (generato con tools/genera_zone.py)
 tiles/rilievo/      rilievo della carta fisica (generato con tools/genera_rilievo.py)
+audio/tour/         voce della visita guidata, una registrazione per tappa (generata con tools/genera_audio.py)
 tools/              script per rigenerare i dati
 vendor/leaflet/     libreria Leaflet 1.9.4 per la cartina
 ```
 
 ### Dopo ogni modifica
 
-In `index.html` i file hanno un numero di versione (`app.js?v=24`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=25`, `?v=26`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
+In `index.html` i file hanno un numero di versione (`app.js?v=25`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=26`, `?v=27`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
 
 ### Aggiungere una domanda
 
@@ -102,12 +103,21 @@ python3 tools/genera_politica.py    # dati della carta politica
 python3 tools/genera_zone.py        # zone di Alpi Pennine e Graie (dopo genera_fiumi.py)
 ```
 
+Per la voce della visita guidata:
+
+```bash
+pip install piper-tts                # serve anche ffmpeg
+# scarica it_IT-paola-medium.onnx e .onnx.json da huggingface.co/rhasspy/piper-voices (it/it_IT/paola/medium)
+python3 tools/genera_audio.py --voce it_IT-paola-medium.onnx
+```
+
 Colori, area coperta e soglie si cambiano all'inizio di ogni script. Le scritte della carta fisica (catene, valli, cime, fiumi) e le città della carta politica sono in `js/data.js` (`ETICHETTE_FISICHE` e `CITTA`).
 
 ## Fonti e licenze
 
 - Confine regionale: [openpolis/geojson-italy](https://github.com/openpolis/geojson-italy) (dati ISTAT, CC-BY)
 - Rilievo e fiumi: dati di altitudine [Terrain Tiles](https://registry.opendata.aws/terrain-tiles/) su AWS Open Data (SRTM, EU-DEM © Copernicus e altre fonti), elaborati con gli script in `tools/`
+- Voce della visita guidata: "Paola" di [Piper](https://github.com/rhasspy/piper) ([piper-voices](https://huggingface.co/rhasspy/piper-voices); registrazioni di addestramento in pubblico dominio, CC0)
 - Escursionistica: © contributori [OpenStreetMap](https://www.openstreetmap.org/copyright), stile [OpenTopoMap](https://opentopomap.org) (CC-BY-SA)
 - Semplice: rilievo © [Esri](https://www.esri.com)
 - Carta politica: province e comuni italiani da [openpolis/geojson-italy](https://github.com/openpolis/geojson-italy) (dati ISTAT, CC-BY); Stati, cantoni, dipartimenti, strade e laghi da [Natural Earth](https://www.naturalearthdata.com) (pubblico dominio)

@@ -1105,7 +1105,10 @@
   map.getPane("tour").style.pointerEvents = "none";
   const tourLayer = L.layerGroup().addTo(map);
   const pocoMoto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const puoParlare = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+  // Voce della visita: registrata una volta sola (voce "Paola", tools/genera_audio.py), uguale su ogni dispositivo
+  const AUDIO_V = 1;
+  const audioTour = new Audio();
+  audioTour.preload = "auto";
 
   const BottoneTour = L.Control.extend({
     options: { position: "bottomleft" },
@@ -1130,7 +1133,7 @@
     tour.raf = null;
     tourLayer.clearLayers();
     map.getContainer().classList.remove("tour-confini");
-    if (puoParlare) speechSynthesis.cancel();
+    audioTour.pause();
   }
 
   function startTour() {
@@ -1212,84 +1215,24 @@
     return Math.max(8000, parole * 400 + 2500) + (t.zone ? 2500 : 0) + (t.dora === "disegna" ? 3000 : 0);
   }
 
-  /* --- Voce: sempre italiana, la più naturale disponibile --- */
-  // voci "buffe" o caricaturali (es. quelle di macOS/iOS disponibili anche in italiano): mai scelte da sole
-  const VOCI_BUFFE = /\b(eddy|flo|grandma|grandpa|nonna|nonno|reed|rocko|sandy|shelley|bad news|bells|boing|bubbles|cellos|jester|organ|superstar|trinoids|whisper|wobble|zarvox|albert|bahh|fred|junior|ralph|kathy)\b/i;
-  const eItaliana = v => /^it([-_]|$)/i.test(v.lang || "");
-  function punteggioVoce(v) {
-    const n = v.name || "";
-    let p = 0;
-    if (/^it[-_]it$/i.test(v.lang)) p += 10;                              // italiano d'Italia
-    if (/natural|neural|online/i.test(n)) p += 40;                        // voci neurali (Edge/Windows)
-    if (/premium/i.test(n)) p += 35;
-    if (/enhanced|migliorat|avanzat/i.test(n)) p += 25;
-    if (/google/i.test(n)) p += 30;                                       // Chrome / Android
-    if (/\b(alice|federica|luca|paola|elsa|isabella|diego|giuseppe|cosimo|lucia)\b/i.test(n)) p += 15;
-    if (v.localService) p += 2;
-    if (VOCI_BUFFE.test(n)) p -= 100;
-    return p;
-  }
-  let vociItaliane = [];
-  function caricaVoci() {
-    if (!puoParlare) return;
-    vociItaliane = speechSynthesis.getVoices().filter(eItaliana).sort((a, b) => punteggioVoce(b) - punteggioVoce(a));
-    aggiornaSceltaVoce();
-  }
-  function voceScelta() {
-    let salvata = null;
-    try { salvata = localStorage.getItem("voce"); } catch (e) { /* non importa */ }
-    return vociItaliane.find(v => v.voiceURI === salvata) || vociItaliane.find(v => !VOCI_BUFFE.test(v.name)) || vociItaliane[0] || null;
-  }
-  // il menu "Voce" nella visita guidata
-  function aggiornaSceltaVoce() {
-    const sel = panel.querySelector("#tour-voce-sel"), msg = panel.querySelector("#tour-voce-msg");
-    if (!sel) return;
-    const v = voceScelta();
-    sel.innerHTML = vociItaliane.map(x => `<option value="${esc(x.voiceURI)}"${v && x.voiceURI === v.voiceURI ? " selected" : ""}>${esc(x.name.replace(/\s*\(.*?\)\s*$/, ""))}${VOCI_BUFFE.test(x.name) ? " (divertente)" : ""}</option>`).join("");
-    const caricate = speechSynthesis.getVoices().length > 0;
-    sel.parentElement.hidden = !tour.voce || vociItaliane.length < 2;
-    msg.hidden = !tour.voce || !caricate || vociItaliane.length > 0;
-  }
-  if (puoParlare) {
-    caricaVoci();
-    speechSynthesis.addEventListener ? speechSynthesis.addEventListener("voiceschanged", caricaVoci) : (speechSynthesis.onvoiceschanged = caricaVoci);
-  }
-
-  // il testo come va letto: niente emoji, sigle e unità scritte per intero
-  function testoDaLeggere(t) {
-    return t
-      .replace(/\p{Extended_Pictographic}|\uFE0F/gu, "")
-      .replace(/\ba\.C\./g, "avanti Cristo")
-      .replace(/\bd\.C\./g, "dopo Cristo")
-      .replace(/(\d)\s?km²/g, "$1 chilometri quadrati")
-      .replace(/(\d)\s?m\b/g, "$1 metri")
-      .replace(/(\d)\s?%/g, "$1 per cento")
-      .replace(/\bA5\b/g, "A 5")
-      .replace(/(\d)\.(?=\d{3}\b)/g, "$1")                 // 4.807 -> 4807 (si legge come un numero solo)
-      .replace(/\s+/g, " ")
-      .replace(/([.!?])\s*\./g, "$1")                       // niente punti rimasti da soli
-      .trim();
-  }
-
-  function parla(testo) {
-    speechSynthesis.cancel();
-    const voce = voceScelta();
-    // le voci sono già caricate ma nessuna è italiana: meglio non leggere che leggere con l'accento sbagliato
-    if (!voce && speechSynthesis.getVoices().length) { aggiornaSceltaVoce(); return; }
-    // una frase alla volta (alcuni browser interrompono le letture lunghe)
-    const frasi = testoDaLeggere(testo).split(/(?<=[.!?])\s+/).filter(f => /\p{L}|\d/u.test(f));
+  /* --- Voce: file audio della tappa --- */
+  const fileAudio = k => `audio/tour/${String(k + 1).padStart(2, "0")}.mp3?v=${AUDIO_V}`;
+  function parla() {
     const tappa = tour.i;
-    frasi.forEach((f, k) => {
-      const u = new SpeechSynthesisUtterance(f.trim());
-      u.lang = voce ? voce.lang : "it-IT";
-      if (voce) u.voice = voce;
-      u.rate = 0.92;      // un po' più lento: si capisce meglio
-      u.pitch = 1;        // tono neutro
-      if (k === frasi.length - 1) {
-        u.onend = () => { if (tour.on && tour.play && tour.voce && tour.i === tappa) { clearTimeout(tour.timer); tour.timer = setTimeout(avanti, 1200); } };
-      }
-      speechSynthesis.speak(u);
-    });
+    audioTour.onended = () => { if (tour.on && tour.play && tour.voce && tour.i === tappa) { clearTimeout(tour.timer); tour.timer = setTimeout(avanti, 1200); } };
+    audioTour.ontimeupdate = () => {
+      const sp = panel.querySelector(".tour-tempo.voce span");
+      if (sp && audioTour.duration) sp.style.width = (audioTour.currentTime / audioTour.duration) * 100 + "%";
+    };
+    if (!audioTour.src.endsWith(fileAudio(tappa).replace(/^audio/, "/audio")) || audioTour.ended) {
+      audioTour.src = fileAudio(tappa);
+    }
+    const p = audioTour.play();
+    if (p && p.catch) p.catch(() => { /* audio bloccato o non disponibile: si va avanti con il tempo */ });
+  }
+  // il file della tappa dopo si prepara in anticipo, così parte subito
+  function preparaProssimo() {
+    if (tour.voce && tour.i + 1 < window.TOUR.length) { const a = new Audio(); a.preload = "auto"; a.src = fileAudio(tour.i + 1); }
   }
 
   function programma() {
@@ -1297,7 +1240,7 @@
     const t = window.TOUR[tour.i];
     const barra = panel.querySelector(".tour-tempo");
     if (!tour.play || t.fine) { if (barra) barra.classList.add("ferma"); return; }
-    const d = tour.voce ? durata(t) * 1.8 : durata(t);     // con la voce si va avanti quando finisce di parlare
+    const d = tour.voce ? durata(t) * 2 : durata(t);       // con la voce si va avanti quando finisce di parlare (questo è solo di riserva)
     if (barra) {
       barra.classList.remove("ferma");
       const sp = barra.querySelector("span");
@@ -1305,6 +1248,7 @@
       void sp.offsetWidth;                                  // fa ripartire la barra
       sp.style.animation = "";
       sp.style.setProperty("--d", (tour.voce ? 0 : d) + "ms");
+      sp.style.width = "";
       barra.classList.toggle("voce", tour.voce);
     }
     tour.timer = setTimeout(avanti, d);
@@ -1341,10 +1285,8 @@
         <button class="btn btn-ghost" id="tour-prima" ${tour.i ? "" : "disabled"} aria-label="Tappa precedente">⏮</button>
         <button class="btn" id="tour-play" ${t.fine ? "disabled" : ""}>${tour.play ? "⏸ Pausa" : "▶ Riprendi"}</button>
         <button class="btn btn-ghost" id="tour-dopo" ${tour.i < n - 1 ? "" : "disabled"} aria-label="Tappa successiva">⏭</button>
-        ${puoParlare ? `<button class="btn btn-ghost" id="tour-voce" aria-pressed="${tour.voce}" title="Leggi ad alta voce in italiano">${tour.voce ? "🔊 Voce accesa" : "🔈 Leggi ad alta voce"}</button>` : ""}
+        <button class="btn btn-ghost" id="tour-voce" aria-pressed="${tour.voce}" title="La maestra legge la spiegazione">${tour.voce ? "🔊 Voce accesa" : "🔈 Ascolta la maestra"}</button>
       </div>
-      ${puoParlare ? `<label class="tour-voce-scelta" hidden>Voce: <select id="tour-voce-sel"></select></label>
-      <p class="tour-voce-msg" id="tour-voce-msg" hidden>🔇 Su questo dispositivo non c'è una voce italiana. Per aggiungerla: su iPhone e iPad <b>Impostazioni → Accessibilità → Contenuto letto ad alta voce → Voci → Italiano</b>; su Windows <b>Impostazioni → Ora e lingua → Voce</b>; su Android <b>Impostazioni → Sintesi vocale</b> (Google, italiano).</p>` : ""}
       <div class="tour-tempo"><span></span></div>`;
     const $ = sel => panel.querySelector(sel);
     $("#tour-esci").addEventListener("click", stopTour);
@@ -1354,32 +1296,23 @@
     $("#tour-play").addEventListener("click", () => {
       tour.play = !tour.play;
       $("#tour-play").textContent = tour.play ? "⏸ Pausa" : "▶ Riprendi";
-      if (!tour.play && puoParlare) speechSynthesis.cancel();
-      if (tour.play && tour.voce) parla(t.titolo + ". " + t.testo);
+      if (!tour.play) audioTour.pause();
+      else if (tour.voce) parla();
       programma();
     });
-    if (puoParlare) $("#tour-voce").addEventListener("click", () => {
+    $("#tour-voce").addEventListener("click", () => {
       tour.voce = !tour.voce;
       const b = $("#tour-voce");
       b.setAttribute("aria-pressed", String(tour.voce));
-      b.textContent = tour.voce ? "🔊 Voce accesa" : "🔈 Leggi ad alta voce";
-      speechSynthesis.cancel();
-      caricaVoci();
-      if (tour.voce) parla(t.titolo + ". " + t.testo);
+      b.textContent = tour.voce ? "🔊 Voce accesa" : "🔈 Ascolta la maestra";
+      if (tour.voce) { audioTour.src = fileAudio(tour.i); parla(); preparaProssimo(); } else audioTour.pause();
       programma();
     });
-    if (puoParlare) {
-      $("#tour-voce-sel").addEventListener("change", e => {
-        try { localStorage.setItem("voce", e.target.value); } catch (err) { /* non importa */ }
-        if (tour.voce && tour.play) parla(t.titolo + ". " + t.testo);
-      });
-      aggiornaSceltaVoce();
-    }
     if (t.fine) {
       $("#tour-quiz").addEventListener("click", () => { stopTour(); showQuizMenu(); });
       $("#tour-ancora").addEventListener("click", () => { tour.i = 0; tour.play = true; renderTappa(); });
     }
-    if (tour.voce && tour.play) parla(t.titolo + ". " + t.testo);
+    if (tour.voce && tour.play) { audioTour.src = fileAudio(tour.i); parla(); preparaProssimo(); }
     programma();
     panel.scrollTop = 0;
   }
