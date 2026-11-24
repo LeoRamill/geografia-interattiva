@@ -4,6 +4,12 @@
   const CAT = window.CATEGORIE;
   const LUOGHI = window.LUOGHI;
   const panel = document.getElementById("panel");
+
+  // Dimensione del testo (pulsante A+): normale, grande, molto grande
+  const SCALE = [1, 1.15, 1.3];
+  let livelloTesto = 0;
+  try { livelloTesto = Math.min(SCALE.length - 1, Math.max(0, +localStorage.getItem("testo") || 0)); } catch (e) { /* non importa */ }
+  document.documentElement.style.setProperty("--scala", SCALE[livelloTesto]);
   const quiz = { on: false, order: [], i: 0, ok: 0, done: 0, marks: {}, tries: 0 };
   const domande = { on: false, elenco: [], i: 0, ok: 0, risposto: false };
   const flash = { on: false, gruppo: null, mazzo: [], coda: [], sapute: 0, primoColpo: 0, sbagliate: new Set() };
@@ -475,6 +481,13 @@
 
   /* ---------------- Pannello ---------------- */
   const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+  // [[testo]] = approfondimento (non è nel libro di testo)
+  const SPAN_EXTRA = '<span class="extra" title="Approfondimento: non è nel libro">$1</span>';
+  const marcaExtra = html => html.replace(/\[\[(.+?)\]\]/g, SPAN_EXTRA);
+  // testo semplice -> HTML: **parola chiave** e [[approfondimento]]
+  const ricco = t => marcaExtra(esc(t).replace(/\*\*(.+?)\*\*/g, '<b class="kw" tabindex="0">$1</b>'));
+  const BADGE_EXTRA = '<span class="badge-extra">📚 Approfondimento – non è nel libro</span>';
+  const NOTA_EXTRA = '<p class="nota-extra"><span class="extra-icona">📚</span> = approfondimento: non è nel libro di testo</p>';
 
   function showHome() {
     modoStudio(false);
@@ -482,19 +495,19 @@
     attivo = null;
     refreshIcons();
     const sezioni = window.SCHEDA.map((s, i) =>
-      `<details class="sec"${i === 0 ? " open" : ""}><summary>${s.titolo}</summary><div class="body">${s.html}</div></details>`
+      `<details class="sec"${i === 0 ? " open" : ""}><summary>${s.titolo}</summary><div class="body">${marcaExtra(s.html)}</div></details>`
     ).join("");
 
     const gruppi = Object.entries(CAT).map(([key, c]) => {
       const items = LUOGHI.filter(l => l.cat === key)
-        .map(l => `<button class="place-btn" style="--c:${c.colore}" data-id="${l.id}">${esc(l.nome)}</button>`).join("");
+        .map(l => `<button class="place-btn" style="--c:${c.colore}" data-id="${l.id}">${esc(l.nome)}${l.extra ? ' <span title="Approfondimento: non è nel libro">📚</span>' : ""}</button>`).join("");
       return `<div class="place-group"><h4>${c.icona} ${c.nome}</h4><div class="place-list">${items}</div></div>`;
     }).join("");
 
     // Domande e risposte: la risposta si apre toccando la domanda
     let nq = 0;
     const qa = window.DOMANDE_RISPOSTE.map(g => `<h4 class="qa-gruppo">${g.gruppo}</h4>` +
-      g.domande.map(q => `<details class="qa"><summary><span class="qa-n">${++nq}.</span> ${esc(q.d)}</summary><p>${esc(q.r)}</p></details>`).join("")
+      g.domande.map(q => `<details class="qa"><summary><span class="qa-n">${++nq}.</span> ${esc(q.d)}</summary><p>${ricco(q.r)}</p></details>`).join("")
     ).join("");
     const sezioneQA = `
       <details class="sec sec-qa"><summary>📝 Domande e risposte</summary><div class="body">
@@ -509,10 +522,11 @@
     panel.innerHTML = `
       <h2>La Valle d'Aosta</h2>
       <p class="sub">La regione più piccola d'Italia, tra Francia, Svizzera e Piemonte.</p>
-      <p class="hint">👆 Clicca un pallino sulla mappa (o un nome qui sotto) per leggere la sua scheda. Avvicinati con lo zoom per vedere i nomi. Clicca anche la linea blu del fiume!</p>
+      <p class="hint">👆 Clicca un pallino sulla mappa (o un nome nell'elenco dei luoghi) per leggere la sua scheda. Avvicinati con lo zoom per vedere i nomi. Clicca anche la linea blu del fiume!</p>
+      ${NOTA_EXTRA}
       ${sezioni}
       ${sezioneQA}
-      <div class="places"><h3>Tutti i luoghi della mappa</h3>${gruppi}</div>`;
+      <details class="sec places"><summary>📍 Tutti i luoghi della mappa</summary><div class="body">${gruppi}</div></details>`;
     panel.querySelectorAll(".place-btn").forEach(b => b.addEventListener("click", () => select(b.dataset.id)));
     panel.querySelector("#qa-flash").addEventListener("click", () => startFlash());
     const tutte = panel.querySelector("#qa-tutte");
@@ -535,10 +549,12 @@
       <button class="btn btn-ghost btn-small back" id="back">← Torna alla regione</button>
       <div><span class="badge" style="--c:${c.colore}">${c.icona} ${c.nome}</span></div>
       <h2>${esc(l.nome)}</h2>
+      ${l.extra ? BADGE_EXTRA : ""}
       <p class="sub">${esc(l.sottotitolo)}</p>
-      <p>${esc(l.testo)}</p>
-      <div class="facts"><h3>Informazioni principali</h3><ul>${l.punti.map(p => `<li>${esc(p)}</li>`).join("")}</ul></div>
+      <p>${ricco(l.testo)}</p>
+      <div class="facts"><h3>Informazioni principali</h3><ul>${l.punti.map(p => `<li>${ricco(p)}</li>`).join("")}</ul></div>
       <div class="remember"><small>Da ricordare</small>${esc(l.ricorda)}</div>
+      ${!l.extra && (l.testo + l.punti.join("")).includes("[[") ? NOTA_EXTRA : ""}
       ${nav}`;
     panel.querySelector("#back").addEventListener("click", goHome);
     panel.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => select(LUOGHI[+b.dataset.go].id)));
@@ -775,6 +791,7 @@
       <p class="sub">Domanda ${domande.i + 1} di ${domande.elenco.length} · Risposte giuste: ${domande.ok}</p>
       <div class="qbar"><span style="width:${(domande.i / domande.elenco.length) * 100}%"></span></div>
       ${q.tipo === "vf" ? '<p class="qtipo">Vero o falso?</p>' : ""}
+      ${q.extra ? BADGE_EXTRA : ""}
       <p class="qtesto">${esc(q.d)}</p>
       <div class="qopts">${opzioni.map((o, k) => `<button class="qopt" data-k="${k}">${esc(o)}</button>`).join("")}</div>
       <div class="qfb" aria-live="polite"></div>
@@ -793,7 +810,7 @@
       if (!bene) b.classList.add("ko");
       const fb = panel.querySelector(".qfb");
       fb.className = "qfb " + (bene ? "ok" : "ko");
-      fb.innerHTML = `<b>${bene ? "✔ Giusto!" : "✘ Non è giusto."}</b> ${esc(q.spiega)}`;
+      fb.innerHTML = `<b>${bene ? "✔ Giusto!" : "✘ Non è giusto."}</b> ${ricco(q.spiega)}`;
       const next = panel.querySelector(".qnext");
       next.hidden = false;
       next.focus();
@@ -823,7 +840,7 @@
 
   /* ---------------- Interrogazione: discorso e simulazione ---------------- */
   // **parola** -> parola chiave (si può nascondere per ripassare)
-  const conChiavi = t => esc(t).replace(/\*\*(.+?)\*\*/g, '<b class="kw" tabindex="0">$1</b>');
+  const conChiavi = ricco;
 
   function fermaCrono() {
     if (interr.crono) { clearInterval(interr.crono); interr.crono = null; }
@@ -939,7 +956,7 @@
       </div>
       <p class="hint">Rispondi a voce, poi controlla.</p>
       <button class="btn" id="sim-mostra">Mostra la risposta</button>
-      <div class="sim-risposta" hidden><span>✅ Risposta</span><p>${esc(q.r)}</p>${q.mappa ? '<small>👀 Guarda la cartina</small>' : ""}</div>
+      <div class="sim-risposta" hidden><span>✅ Risposta</span><p>${ricco(q.r)}</p>${q.mappa ? '<small>👀 Guarda la cartina</small>' : ""}</div>
       <div class="nav-row">
         <button class="btn btn-ghost btn-small" id="sim-prima" ${interr.i ? "" : "disabled"}>← Indietro</button>
         <button class="btn btn-small" id="sim-dopo">${interr.i + 1 < n ? "Avanti →" : "Fine"}</button>
@@ -981,7 +998,7 @@
       <div class="qbar"><span style="width:${(flash.sapute / tot) * 100}%"></span></div>
       <button class="flashcard" aria-label="Gira la carta">
         <span class="flash-face flash-front"><small>${c.gruppo}</small><b>${esc(c.f)}</b><em>Rispondi a voce, poi tocca per girare</em></span>
-        <span class="flash-face flash-back" aria-hidden="true"><small>Risposta</small><b>${esc(c.r)}</b><em>Tocca per rigirare</em></span>
+        <span class="flash-face flash-back" aria-hidden="true"><small>Risposta</small><b>${ricco(c.r)}</b><em>Tocca per rigirare</em></span>
       </button>
       <div class="flash-azioni" hidden>
         <button class="btn btn-ghost" id="f-ko">↻ Da ripassare</button>
@@ -1044,6 +1061,23 @@
     qFb.textContent = `Saltato: ${dovEra(t)}`;
     advance();
   });
+
+  /* ---------------- Pulsante A+ (testo più grande) ---------------- */
+  const btnTesto = document.getElementById("btn-testo");
+  function aggiornaBtnTesto() {
+    const prossimo = (livelloTesto + 1) % SCALE.length;
+    btnTesto.textContent = ["A+", "A++", "A"][livelloTesto];
+    btnTesto.setAttribute("aria-label", prossimo ? "Ingrandisci il testo" : "Torna al testo normale");
+    btnTesto.title = btnTesto.getAttribute("aria-label");
+  }
+  btnTesto.addEventListener("click", () => {
+    livelloTesto = (livelloTesto + 1) % SCALE.length;
+    document.documentElement.style.setProperty("--scala", SCALE[livelloTesto]);
+    try { localStorage.setItem("testo", livelloTesto); } catch (e) { /* non importa */ }
+    aggiornaBtnTesto();
+    setTimeout(() => map.invalidateSize(), 60);
+  });
+  aggiornaBtnTesto();
 
   /* ---------------- Avvio ---------------- */
   showHome();

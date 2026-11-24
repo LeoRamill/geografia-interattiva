@@ -6,7 +6,7 @@
   <title>Valle d'Aosta interattiva</title>
   <meta name="description" content="Mappa interattiva della Valle d'Aosta: città, montagne, castelli, parchi, passi e prodotti tipici, con schede per lo studio.">
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="css/style.css?v=15">
+  <link rel="stylesheet" href="css/style.css?v=17">
 </head>
 <body>
   <header class="topbar">
@@ -19,7 +19,8 @@
     </div>
     <div class="actions">
       <button id="btn-quiz" class="btn">🎯 Quiz</button>
-      <button id="btn-home" class="btn btn-ghost">🏠 Regione</button>
+      <button id="btn-home" class="btn btn-ghost" aria-label="Torna alla regione" title="Torna alla regione">🏠<span class="btn-txt"> Regione</span></button>
+      <button id="btn-testo" class="btn btn-ghost btn-testo" aria-label="Ingrandisci il testo">A+</button>
     </div>
   </header>
 
@@ -44,11 +45,11 @@
   </main>
 
   <script src="vendor/leaflet/leaflet.js"></script>
-  <script src="data/confine.js?v=15"></script>
-  <script src="data/fiumi.js?v=15"></script>
-  <script src="data/politica.js?v=15"></script>
-  <script src="data/zone.js?v=15"></script>
-  <script src="js/data.js?v=15"></script>
-  <script src="js/app.js?v=15"></script>
+  <script src="data/confine.js?v=17"></script>
+  <script src="data/fiumi.js?v=17"></script>
+  <script src="data/politica.js?v=17"></script>
+  <script src="data/zone.js?v=17"></script>
+  <script src="js/data.js?v=17"></script>
+  <script src="js/app.js?v=17"></script>
 </body>
 </html>

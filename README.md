@@ -31,6 +31,8 @@ Si clicca un punto sulla cartina e si legge la sua scheda con le informazioni pr
   - **Flashcard**: 38 carte (domanda davanti, risposta dietro), divise per argomento; quelle "da ripassare" tornano in fondo al mazzo finché non si sanno
   - **Interrogazione**: il discorso da dire (con le parole chiave da nascondere per ripassarle e un cronometro), le domande trabocchetto, i consigli e una simulazione con 33 domande dell'insegnante in ordine; per le domande "alla cartina" il sito mostra il punto sulla mappa
 - **Paralleli e meridiani** sulla cartina (si possono nascondere dalla legenda)
+- **📚 Approfondimento – non è nel libro**: i luoghi e le frasi che vanno oltre il libro di testo sono segnati in viola con 📚 (nei dati si scrivono tra `[[` e `]]`; un luogo intero ha `extra: true`)
+- Pulsante **A+** per ingrandire il testo (normale → grande → molto grande)
 - Funziona su computer e telefono, in tema chiaro e scuro
 
 ## Come aprirlo
@@ -63,7 +65,7 @@ vendor/leaflet/     libreria Leaflet 1.9.4 per la cartina
 
 ### Dopo ogni modifica
 
-In `index.html` i file hanno un numero di versione (`app.js?v=15`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=16`, `?v=17`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
+In `index.html` i file hanno un numero di versione (`app.js?v=17`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=18`, `?v=19`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
 
 ### Aggiungere una domanda
 
