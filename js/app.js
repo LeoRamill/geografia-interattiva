@@ -487,13 +487,32 @@
       return `<div class="place-group"><h4>${c.icona} ${c.nome}</h4><div class="place-list">${items}</div></div>`;
     }).join("");
 
+    // Domande e risposte: la risposta si apre toccando la domanda
+    let nq = 0;
+    const qa = window.DOMANDE_RISPOSTE.map(g => `<h4 class="qa-gruppo">${g.gruppo}</h4>` +
+      g.domande.map(q => `<details class="qa"><summary><span class="qa-n">${++nq}.</span> ${esc(q.d)}</summary><p>${esc(q.r)}</p></details>`).join("")
+    ).join("");
+    const sezioneQA = `
+      <details class="sec sec-qa"><summary>📝 Domande e risposte</summary><div class="body">
+        <p class="hint">Prova a rispondere da solo/a, poi tocca la domanda per vedere la risposta.</p>
+        <button class="btn btn-ghost btn-small" id="qa-tutte">Mostra tutte le risposte</button>
+        ${qa}
+      </div></details>`;
+
     panel.innerHTML = `
       <h2>La Valle d'Aosta</h2>
       <p class="sub">La regione più piccola d'Italia, tra Francia, Svizzera e Piemonte.</p>
       <p class="hint">👆 Clicca un pallino sulla mappa (o un nome qui sotto) per leggere la sua scheda. Avvicinati con lo zoom per vedere i nomi. Clicca anche la linea blu del fiume!</p>
       ${sezioni}
+      ${sezioneQA}
       <div class="places"><h3>Tutti i luoghi della mappa</h3>${gruppi}</div>`;
     panel.querySelectorAll(".place-btn").forEach(b => b.addEventListener("click", () => select(b.dataset.id)));
+    const tutte = panel.querySelector("#qa-tutte");
+    tutte.addEventListener("click", () => {
+      const apri = tutte.textContent.startsWith("Mostra");
+      panel.querySelectorAll("details.qa").forEach(d => { d.open = apri; });
+      tutte.textContent = apri ? "Nascondi tutte le risposte" : "Mostra tutte le risposte";
+    });
     panel.scrollTop = 0;
   }
 

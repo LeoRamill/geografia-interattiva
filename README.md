@@ -24,6 +24,7 @@ Si clicca un punto sulla cartina e si legge la sua scheda con le informazioni pr
   - 🧀 Prodotti tipici: Fontina (Valpelline), lardo di Arnad, vigneti di Morgex e La Salle
 - **Scheda di ogni luogo**: testo, informazioni principali e una frase "Da ricordare"
 - **Scheda della regione**: carta d'identità (superficie, abitanti, densità, capoluogo, stemma), confini e territorio, popolazione e lingue, clima e fasce di vegetazione, storia, economia con gli occupati per settore, comunicazioni, tradizioni e sport. I numeri sono quelli del libro di testo (Geografia vol. 5)
+- **Domande e risposte** nella scheda della regione: 26 domande semplici (livello scuola primaria), divise per argomento; la risposta si apre toccando la domanda
 - **Esercitati** (pulsante Quiz), due modalità:
   - **Dov'è?**: compare il nome di un luogo e bisogna trovarlo sulla cartina (pallini tutti grigi). Ci sono anche la **Dora Baltea** (si clicca il fiume) e le catene montuose, **Alpi Pennine** e **Alpi Graie** (si clicca la zona giusta)
   - **Domande e vero/falso**: 12 domande su 58, come gli esercizi del libro, con la spiegazione dopo ogni risposta. A ogni partita c'è almeno una domanda per ogni sezione della scheda
@@ -47,7 +48,7 @@ Funziona anche senza internet: la carta fisica e la carta politica sono salvate 
 ```
 index.html          pagina principale
 css/style.css       grafica
-js/data.js          TUTTI i testi: luoghi, categorie, scheda della regione, domande del quiz
+js/data.js          TUTTI i testi: luoghi, categorie, scheda della regione, domande e risposte, domande del quiz
 js/app.js           logica della mappa, del pannello e del quiz
 data/confine.js     confine della regione (GeoJSON)
 data/fiumi.js       fiumi e Dora Baltea (generato con tools/genera_fiumi.py)
@@ -60,7 +61,7 @@ vendor/leaflet/     libreria Leaflet 1.9.4 per la cartina
 
 ### Dopo ogni modifica
 
-In `index.html` i file hanno un numero di versione (`app.js?v=11`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=12`, `?v=13`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
+In `index.html` i file hanno un numero di versione (`app.js?v=12`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=13`, `?v=14`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
 
 ### Aggiungere una domanda
 

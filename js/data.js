@@ -645,3 +645,70 @@ window.DOMANDE = [
   {"sez": "tradizioni", "tipo": "scelta", "d": "Che cos'è la Bataille des Reines?", "opzioni": ["una sfida tra mucche", "una battaglia di Napoleone", "una gara di sci"], "giusta": 0, "spiega": "È una sfida tra mucche, che si spingono con le corna senza farsi male, per eleggere la \"regina\"."},
   {"sez": "tradizioni", "tipo": "vf", "d": "La Fiera di Sant'Orso, ad Aosta, si tiene da più di 1000 anni.", "vero": true, "spiega": "Vero: si svolge il 30 e 31 gennaio ed è dedicata all'artigianato del legno."}
 ];
+
+/* Domande e risposte per ripassare (livello scuola primaria), come gli esercizi del libro.
+   Nella scheda della regione la risposta si apre toccando la domanda. */
+window.DOMANDE_RISPOSTE = [
+  { gruppo: "🏔️ Territorio", domande: [
+    { d: "Dove si trova la Valle d'Aosta?",
+      r: "Nella parte nord-occidentale dell'Italia, in mezzo alle Alpi." },
+    { d: "Con quali Stati e con quale regione confina?",
+      r: "A nord con la Svizzera, a ovest con la Francia, a sud e a est con il Piemonte." },
+    { d: "Il territorio è montuoso, collinare o pianeggiante?",
+      r: "È tutto montuoso (100% montagna): non ci sono né pianure né colline." },
+    { d: "Quali sono le montagne più alte?",
+      r: "Il Monte Bianco (4.807 m), il Monte Rosa (4.637 m), il Cervino (4.478 m) e il Gran Paradiso (4.061 m). Sono tra le montagne più alte d'Europa." },
+    { d: "Quali catene montuose ci sono?",
+      r: "A nord le Alpi Pennine (con il Cervino e il Monte Rosa), a ovest e a sud le Alpi Graie (con il Monte Bianco e il Gran Paradiso)." },
+    { d: "Qual è il fiume principale?",
+      r: "La Dora Baltea. Nasce ai piedi del Monte Bianco, attraversa la regione da ovest a est e si getta nel Po. Nelle sue acque confluiscono molti torrenti." },
+    { d: "Ci sono laghi?",
+      r: "Sì, ma sono piccoli laghi alpini sparsi tra le montagne. Ci sono anche laghi artificiali, creati con le dighe." },
+    { d: "Che cosa sono i ghiacciai? Perché si stanno riducendo?",
+      r: "Sono grandi masse di ghiaccio sulle cime più alte, oltre i 3.000 metri. Si stanno riducendo a causa dei cambiamenti climatici." }
+  ]},
+  { gruppo: "❄️ Clima e ambienti", domande: [
+    { d: "Com'è il clima?",
+      r: "È un clima alpino: gli inverni sono lunghi e molto freddi, con tanta neve; le estati sono brevi e fresche." },
+    { d: "Come cambiano le piante salendo in montagna?",
+      r: "In basso ci sono campi e vigneti, poi boschi di abeti e larici, poi prati e piante erbacee, poi muschi e licheni. In cima ci sono neve e ghiacciai." },
+    { d: "Quali animali vivono sulle montagne?",
+      r: "Stambecchi, camosci, marmotte e aquile reali." },
+    { d: "Qual è il parco più importante?",
+      r: "Il Parco Nazionale del Gran Paradiso, nato nel 1922: è il parco nazionale più antico d'Italia. Il suo simbolo è lo stambecco." }
+  ]},
+  { gruppo: "👥 Popolazione", domande: [
+    { d: "Quanti abitanti ha la Valle d'Aosta?",
+      r: "123.337 abitanti. È la regione più piccola e meno popolata d'Italia." },
+    { d: "Qual è il capoluogo?",
+      r: "Aosta, con circa 33.000 abitanti: ci vive circa un quarto della popolazione della regione." },
+    { d: "Dove vive la maggior parte delle persone?",
+      r: "Nel fondovalle, lungo la Dora Baltea. Gli altri abitanti vivono in piccoli comuni di montagna." },
+    { d: "Quali lingue si parlano?",
+      r: "Italiano e francese: sono tutte e due lingue ufficiali. Per questo è una regione bilingue." },
+    { d: "Che cosa vuol dire che è una regione \"a statuto speciale\"?",
+      r: "Vuol dire che ha più autonomia delle altre regioni: può decidere da sola su molte cose, anche per proteggere la sua lingua e la sua cultura. Lo è dal 1948." }
+  ]},
+  { gruppo: "💼 Lavoro e collegamenti", domande: [
+    { d: "Qual è l'attività economica più importante?",
+      r: "Il turismo: molte persone vengono per sciare, fare alpinismo e visitare i castelli e i monumenti." },
+    { d: "Che cosa si produce grazie all'acqua?",
+      r: "L'energia idroelettrica: l'acqua dei torrenti e delle dighe fa funzionare le centrali elettriche." },
+    { d: "Che cosa si coltiva e che cosa si alleva?",
+      r: "Nel fondovalle si coltivano cereali, patate, viti e alberi da frutto. Nei pascoli si allevano le mucche: con il loro latte si fa la Fontina." },
+    { d: "Che cosa sono i \"vigneti eroici\"?",
+      r: "Sono vigneti su terreni ripidi di montagna, dove tutto il lavoro si fa a mano." },
+    { d: "Come si va dalla Valle d'Aosta agli altri Paesi?",
+      r: "Con l'autostrada A5, attraverso i valichi alpini (Gran San Bernardo e Piccolo San Bernardo) e con le gallerie: il Traforo del Monte Bianco porta in Francia, quello del Gran San Bernardo in Svizzera." }
+  ]},
+  { gruppo: "🏛️ Storia e tradizioni", domande: [
+    { d: "Chi abitava la regione prima dei Romani?",
+      r: "I Salassi, un popolo gallico." },
+    { d: "Chi ha fondato Aosta? Come si chiamava?",
+      r: "L'hanno fondata i Romani nel 25 a.C. e la chiamarono Augusta Praetoria, in onore dell'imperatore Augusto. Da qui viene il nome Aosta." },
+    { d: "Quali monumenti romani si possono vedere ad Aosta?",
+      r: "Le mura, la Porta Pretoria, il teatro, l'anfiteatro, l'Arco d'Augusto e il ponte romano sul torrente Buthier." },
+    { d: "Quali sono gli sport tradizionali della Valle d'Aosta?",
+      r: "Il fiolet e il palet, e anche il tsan e la rebatta." }
+  ]}
+];
