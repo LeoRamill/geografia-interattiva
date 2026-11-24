@@ -45,6 +45,10 @@ data/confine.js     confine della regione (GeoJSON)
 vendor/leaflet/     libreria Leaflet 1.9.4 per la cartina
 ```
 
+### Dopo ogni modifica
+
+In `index.html` i file hanno un numero di versione (`app.js?v=2`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=3`, `?v=4`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
+
 ### Aggiungere o modificare un luogo
 
 Apri `js/data.js`, copia uno degli oggetti nell'elenco `LUOGHI` e cambia i campi:
