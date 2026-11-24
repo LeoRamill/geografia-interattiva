@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Geografia interattiva</title>
+  <meta name="description" content="Mappa interattiva di una regione italiana, con schede, quiz, flashcard, interrogazione e visita guidata.">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="app/style.css?v=26">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <a class="flag" href="index.html" title="Tutte le regioni" aria-label="Tutte le regioni"><i></i><i></i></a>
+      <div>
+        <h1></h1>
+        <p><a href="index.html">← Tutte le regioni</a> · clicca un punto per scoprirlo</p>
+      </div>
+    </div>
+    <div class="actions">
+      <button id="btn-quiz" class="btn">🎯 Quiz</button>
+      <button id="btn-home" class="btn btn-ghost" aria-label="Torna alla regione" title="Torna alla regione">🏠<span class="btn-txt"> Regione</span></button>
+      <button id="btn-testo" class="btn btn-ghost btn-testo" aria-label="Ingrandisci il testo">A+</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="map-wrap">
+      <div id="map" aria-label="Mappa della regione"></div>
+      <div id="quizbar" class="quizbar" hidden>
+        <div>
+          <span class="quiz-label">Trova sulla mappa:</span>
+          <strong id="quiz-target"></strong>
+        </div>
+        <div class="quiz-right">
+          <span id="quiz-score">0 / 0</span>
+          <button id="quiz-skip" class="btn btn-small btn-ghost">Salta</button>
+          <button id="quiz-stop" class="btn btn-small">Esci</button>
+        </div>
+        <div id="quiz-feedback" class="quiz-feedback" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <aside id="panel" class="panel" aria-live="polite"></aside>
+  </main>
+
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script src="regioni/regioni.js?v=26"></script>
+  <script src="app/carica.js?v=26"></script>
+</body>
+</html>

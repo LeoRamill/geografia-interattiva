@@ -1,7 +1,10 @@
 /*
- * Dati della mappa: categorie, luoghi e scheda generale della regione.
- * Per aggiungere un luogo basta copiare un oggetto dell'elenco LUOGHI
- * e cambiare nome, coordinate (lat, lng) e testi.
+ * Testi e dati della regione Valle d'Aosta: categorie, luoghi, scheda, domande, flashcard,
+ * interrogazione e visita guidata. Le impostazioni (confini, fiume, zone…) sono in regione.js.
+ *
+ * Regole (vedi CLAUDE.md): livello quinta elementare / prima media; il riferimento è il libro di testo;
+ * quello che non è nel libro va tra [[ ]] (frasi) o con extra: true (luoghi e domande).
+ * Per aggiungere un luogo basta copiare un oggetto dell'elenco LUOGHI e cambiare nome, coordinate e testi.
  */
 
 /* Categorie in ordine di importanza per lo studio (così appaiono nella legenda).
@@ -390,7 +393,8 @@ window.LUOGHI = [
   }
 ];
 
-window.DORA_INFO = {
+/* Scheda del fiume principale (si apre cliccando il fiume sulla cartina). */
+window.FIUME_INFO = {
   nome: "Dora Baltea", cat: "natura",
   sottotitolo: "Il fiume principale della regione",
   testo: "La Dora Baltea nasce vicino a Courmayeur, ai piedi del Monte Bianco, [[dall'unione della Dora di Veny e della Dora di Ferret]]. Attraversa tutta la valle centrale passando per Aosta, raccoglie l'acqua dei torrenti delle valli laterali, entra in Piemonte a Pont-Saint-Martin e si getta nel Po.",
@@ -795,8 +799,8 @@ window.FLUSSO = [
     { d: "Indicami la Valle d'Aosta sulla carta.", r: "È in alto a sinistra, nel nord-ovest dell'Italia, in mezzo alle Alpi.", mappa: { tipo: "regione" } },
     { seguito: true, d: "Con chi confina?", r: "A nord con la Svizzera, a ovest con la Francia, a sud e a est con il Piemonte.", mappa: { tipo: "regione" } },
     { seguito: true, d: "Che montagne ci sono al confine con la Svizzera?", r: "Le Alpi Pennine, con il Cervino e il Monte Rosa.", mappa: { tipo: "zona", id: "pennine" } },
-    { d: "Indicami il fiume principale.", r: "La Dora Baltea.", mappa: { tipo: "dora" } },
-    { seguito: true, d: "In che direzione scorre? Dove va a finire?", r: "Scorre da ovest a est, [[poi esce in Piemonte e si getta nel Po]].", mappa: { tipo: "dora" } },
+    { d: "Indicami il fiume principale.", r: "La Dora Baltea.", mappa: { tipo: "fiume" } },
+    { seguito: true, d: "In che direzione scorre? Dove va a finire?", r: "Scorre da ovest a est, [[poi esce in Piemonte e si getta nel Po]].", mappa: { tipo: "fiume" } },
     { d: "Dov'è il capoluogo?", r: "Aosta è al centro della regione, nel fondovalle, lungo la Dora Baltea.", mappa: { tipo: "luogo", id: "aosta" } }
   ]},
   { fase: "3️⃣ Il territorio", domande: [
@@ -861,13 +865,13 @@ window.CONSIGLI = [
 /* Visita guidata: tappe animate sulla cartina.
    vista: dove va la cartina ("larga", "regione", oppure gli id dei luoghi da inquadrare);
    carta: "fisica" o "politica"; luci: luoghi che pulsano; zone: "pennine"/"graie";
-   dora: "disegna" (il fiume si disegna) o "luce"; bordo / confini: effetti speciali. */
+   fiume: "disegna" (il fiume principale si disegna) o "luce"; bordo / confini: effetti speciali. */
 window.TOUR = [
   { titolo: "Ecco la Valle d'Aosta", carta: "fisica", vista: "larga", bordo: true,
     testo: "Siamo nel nord-ovest dell'Italia, in mezzo alle Alpi. La linea rossa è il confine della Valle d'Aosta: è la regione più piccola d'Italia ed è anche la meno popolata." },
   { titolo: "I confini", carta: "politica", vista: "larga", confini: true,
     testo: "La Valle d'Aosta confina con due Stati e con una regione: a nord con la Svizzera, a ovest con la Francia, a sud e a est con il Piemonte." },
-  { titolo: "Una regione tutta di montagna", carta: "fisica", vista: "regione", dora: "luce",
+  { titolo: "Una regione tutta di montagna", carta: "fisica", vista: "regione", fiume: "luce",
     testo: "Il territorio è tutto montuoso: 100% montagna! In mezzo c'è una grande valle, percorsa dalla Dora Baltea, da cui partono tante valli laterali." },
   { titolo: "Il Monte Bianco", carta: "fisica", vista: ["montebianco"], zoom: 11, luci: ["montebianco"],
     testo: "Qui, al confine con la Francia, c'è il Monte Bianco: con 4.807 metri è la montagna più alta delle Alpi." },
@@ -877,13 +881,13 @@ window.TOUR = [
     testo: "A sud c'è il Gran Paradiso (4.061 m). Sulle cime più alte, sopra i 3.000 metri, ci sono i ghiacciai, che si stanno riducendo a causa dei cambiamenti climatici." },
   { titolo: "Alpi Pennine e Alpi Graie", carta: "fisica", vista: "regione", zone: ["pennine", "graie"],
     testo: "Le montagne a nord, verso la Svizzera, sono le Alpi Pennine. Quelle a ovest e a sud, con il Monte Bianco e il Gran Paradiso, sono le Alpi Graie." },
-  { titolo: "La Dora Baltea", carta: "fisica", vista: "larga", dora: "disegna",
+  { titolo: "La Dora Baltea", carta: "fisica", vista: "larga", fiume: "disegna",
     testo: "Il fiume principale è la Dora Baltea. Nasce ai piedi del Monte Bianco, attraversa tutta la regione da ovest a est e raccoglie l'acqua di tanti torrenti." },
   { titolo: "Il clima e il parco", carta: "fisica", vista: ["parcogp"], zoom: 10.5, luci: ["parcogp"],
     testo: "Il clima è alpino: inverni lunghi e freddi, con tanta neve, ed estati brevi e fresche. Per proteggere gli animali, nel 1922 è nato il Parco Nazionale del Gran Paradiso: il suo simbolo è lo stambecco." },
   { titolo: "Aosta, il capoluogo", carta: "fisica", vista: ["aosta"], zoom: 12, luci: ["aosta"],
     testo: "Aosta è il capoluogo. L'hanno fondata i Romani nel 25 a.C. con il nome di Augusta Praetoria: ci sono ancora la Porta Pretoria, l'Arco d'Augusto e il teatro romano." },
-  { titolo: "Dove vive la gente", carta: "fisica", vista: "regione", dora: "luce", luci: ["aosta"],
+  { titolo: "Dove vive la gente", carta: "fisica", vista: "regione", fiume: "luce", luci: ["aosta"],
     testo: "Gli abitanti sono 123.337. La maggior parte vive nel fondovalle, lungo la Dora Baltea, e circa un quarto vive ad Aosta. Le lingue ufficiali sono l'italiano e il francese." },
   { titolo: "Il lavoro", carta: "fisica", vista: "regione", luci: ["courmayeur", "cervinia", "placemoulin", "valpelline"],
     testo: "L'attività più importante è il turismo: sci, alpinismo, castelli. Con l'acqua dei torrenti e delle dighe si produce energia idroelettrica. Nei pascoli si allevano le mucche: con il loro latte si fa la Fontina." },

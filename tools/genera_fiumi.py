@@ -5,10 +5,11 @@ Ricava il reticolo dei fiumi dai dati di altitudine (come fanno i GIS):
 2. per ogni punto calcola dove scorre l'acqua e quanta ne arriva da monte,
 3. dove l'area che drena è abbastanza grande c'è un fiume.
 
-Scrive data/fiumi.js (linee dei fiumi + tracciato della Dora Baltea).
+Scrive regioni/<id>/fiumi.js: le linee dei fiumi e il tracciato del fiume principale
+(da REGIONE.fiume.sorgente fino al punto più vicino a REGIONE.fiume.fine).
 
-Uso:  python3 tools/genera_fiumi.py
-Richiede: numpy, pillow, shapely
+Uso:  python3 tools/genera_fiumi.py --regione valle-aosta
+Richiede: numpy, pillow, shapely, node
 """
 import heapq
 import json
@@ -17,15 +18,15 @@ import os
 import sys
 
 import numpy as np
-from shapely.geometry import LineString, mapping
+from shapely.geometry import LineString
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from genera_rilievo import AREA_LARGA, RADICE, laghi, scarica, tile_xy  # noqa: E402
+from regione import argomenti, cartella, laghi, leggi_regione, scarica_dem, scrivi_js, tile_xy  # noqa: E402
 
 Z = 10                      # risoluzione dei dati usati (circa 100 m per pixel)
 SOGLIA_KM2 = 25             # area drenata minima perché sia disegnato un fiume
-SOGLIA_PIANURA_KM2 = 700    # in pianura (sotto i 450 m) solo i fiumi grandi: il terreno piatto crea falsi ruscelli
-SORGENTE_DORA = (45.812, 6.952)   # Entrèves, dove nasce la Dora Baltea
+SOGLIA_PIANURA_KM2 = 700    # in pianura solo i fiumi grandi: il terreno piatto crea falsi ruscelli
+QUOTA_PIANURA = 450         # metri: sotto questa quota vale SOGLIA_PIANURA_KM2 (in regione.js: fiumi_quota_pianura)
 
 
 def mosaico(z, area):
@@ -33,7 +34,7 @@ def mosaico(z, area):
     xa, ya = tile_xy(lng0, lat1, z)
     xb, yb = tile_xy(lng1, lat0, z)
     xs, ys = range(int(xa), int(xb) + 1), range(int(ya), int(yb) + 1)
-    elev = np.vstack([np.hstack([scarica(z, x, y) for x in xs]) for y in ys])
+    elev = np.vstack([np.hstack([scarica_dem(z, x, y) for x in xs]) for y in ys])
     return elev.astype(np.float64), xs[0], ys[0]
 
 
@@ -98,17 +99,22 @@ def accumulo(valle, ordine):
 
 
 def main():
-    elev, x0, y0 = mosaico(Z, AREA_LARGA)
+    args = argomenti("Ricava i fiumi dai dati di altitudine")
+    R = leggi_regione(args.regione)
+    area = R["area_larga"]
+    elev, x0, y0 = mosaico(Z, area)
     h, w = elev.shape
     print(f"griglia {w}x{h}", file=sys.stderr)
     valle, ordine = drenaggio(elev)
     acc = accumulo(valle, ordine)
-    lat_c = (AREA_LARGA[1] + AREA_LARGA[3]) / 2
+    lat_c = (area[1] + area[3]) / 2
     km2_cella = (2 * math.pi * 6378137 * math.cos(math.radians(lat_c)) / (256 * 2 ** Z)) ** 2 / 1e6
     soglia = SOGLIA_KM2 / km2_cella
     fiume = acc >= soglia
-    fiume &= ~((elev.ravel() < 450) & (acc < SOGLIA_PIANURA_KM2 / km2_cella))
+    quota = R.get("fiumi_quota_pianura", QUOTA_PIANURA)
+    fiume &= ~((elev.ravel() < quota) & (acc < SOGLIA_PIANURA_KM2 / km2_cella))
     fiume &= ~laghi(elev, Z).ravel()          # niente linee dentro i laghi
+    fiume &= elev.ravel() > 0                 # né in mare
 
     # quanti affluenti-fiume entrano in ogni cella
     entrate = np.zeros(valle.size, dtype=np.int32)
@@ -138,21 +144,22 @@ def main():
         km2 = acc[tratto[-1]] * km2_cella
         linee.append((LineString(coords).simplify(0.0006), km2))
 
-    # tracciato della Dora Baltea, dalla sorgente fino al Po (o al bordo dei dati)
-    ax, ay = tile_xy(SORGENTE_DORA[1], SORGENTE_DORA[0], Z)
+    # tracciato del fiume principale, dalla sorgente al punto più vicino a "fine"
+    F = R["fiume"]
+    ax, ay = tile_xy(F["sorgente"][1], F["sorgente"][0], Z)
     r0, c0 = int(ay * 256) - y0 * 256, int(ax * 256) - x0 * 256
     # parte dalla cella con più acqua nei dintorni (il fondovalle)
     finestra = [(r, c) for r in range(r0 - 6, r0 + 7) for c in range(c0 - 6, c0 + 7)]
     r0, c0 = max(finestra, key=lambda rc: acc[rc[0] * w + rc[1]])
     i = r0 * w + c0
-    dora = [i]
+    percorso = [i]
     while valle[i] >= 0:
         i = valle[i]
-        dora.append(i)
-        lng, lat = pixel_a_lnglat(*divmod(int(i), w), x0, y0, Z)
-        if lat < 45.20:   # arrivata nella pianura, vicino al Po
-            break
-    dora_line = LineString([pixel_a_lnglat(*divmod(int(j), w), x0, y0, Z) for j in dora]).simplify(0.0005)
+        percorso.append(i)
+    punti = [pixel_a_lnglat(*divmod(int(j), w), x0, y0, Z) for j in percorso]
+    fine_lat, fine_lng = F["fine"]
+    k = min(range(len(punti)), key=lambda n: (punti[n][0] - fine_lng) ** 2 + (punti[n][1] - fine_lat) ** 2)
+    principale = LineString(punti[:k + 1]).simplify(0.0005)
 
     feats = [{"type": "Feature", "properties": {"km2": round(km2)},
               "geometry": {"type": "LineString",
@@ -160,13 +167,11 @@ def main():
              for g, km2 in linee]
     dati = {
         "fiumi": {"type": "FeatureCollection", "features": feats},
-        "dora": [[round(y, 4), round(x, 4)] for x, y in dora_line.coords],
+        "principale": [[round(y, 4), round(x, 4)] for x, y in principale.coords],
     }
-    out = os.path.join(RADICE, "data", "fiumi.js")
-    with open(out, "w") as f:
-        f.write("/* Generato da tools/genera_fiumi.py: non modificare a mano */\n")
-        f.write("window.FIUMI = " + json.dumps(dati, separators=(",", ":")) + ";\n")
-    print(f"{len(feats)} tratti di fiume, Dora: {len(dati['dora'])} punti -> {out}", file=sys.stderr)
+    out = cartella(args.regione, "fiumi.js")
+    kb = scrivi_js(out, "FIUMI", dati, "genera_fiumi.py") // 1024
+    print(f"{len(feats)} tratti di fiume, {F['nome']}: {len(dati['principale'])} punti -> {out} ({kb} KB)", file=sys.stderr)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,19 @@
+/*
+ * Codice comune a tutte le regioni. Si carica da app/carica.js dopo i file della regione:
+ * regioni/<id>/regione.js (window.REGIONE), confine.js, fiumi.js, politica.js, zone.js, dati.js.
+ * Niente di specifico di una regione deve stare qui: va in regione.js o in dati.js.
+ */
 (function () {
   "use strict";
+
+  const R = window.REGIONE;
+  const BASE = `regioni/${R.id}/`;
+  const maiuscola = t => t.charAt(0).toUpperCase() + t.slice(1);
+  const areaBounds = a => L.latLngBounds([a[1], a[0]], [a[3], a[2]]);   // [lng0, lat0, lng1, lat1] -> bounds
+  document.title = R.nome + " interattiva";
+  document.querySelector(".brand h1").textContent = R.nome;
+  document.querySelectorAll(".flag i").forEach((el, k) => { el.style.background = R.bandiera[k % R.bandiera.length]; });
+  document.getElementById("map").setAttribute("aria-label", "Mappa: " + R.nome);
 
   const CAT = window.CATEGORIE;
   const LUOGHI = window.LUOGHI;
@@ -17,12 +31,13 @@
   const tour = { on: false, i: 0, play: true, voce: false, timer: null, timers: [], raf: null, cartaPrima: null };
 
   /* ---------------- Mappa ---------------- */
-  const confine = L.geoJSON(window.CONFINE_VDA);
+  const confine = L.geoJSON(window.CONFINE);
   const bounds = confine.getBounds();
 
-  // Area coperta dallo sfondo "Atlante" (vedi tools/genera_rilievo.py)
-  const AREA_LARGA = L.latLngBounds([45.10, 6.00], [46.35, 8.75]);
-  const AREA_REGIONE = L.latLngBounds([45.39, 6.63], [46.07, 8.11]);
+  // Area coperta dal rilievo della carta fisica (vedi tools/genera_rilievo.py e regione.js)
+  const AREA_LARGA = areaBounds(R.area_larga);
+  const AREA_REGIONE = areaBounds(R.area_regione);
+  const ZOOM_MIN = R.zoom_min || 8;
 
   const small = window.matchMedia("(max-width: 820px)").matches;
   const FIT = small
@@ -33,12 +48,13 @@
   const map = L.map("map", {
     zoomControl: false,
     zoomSnap: 0.25,
-    minZoom: 8,
+    minZoom: ZOOM_MIN,
     maxZoom: 16,
     maxBounds: AREA_LARGA,
     maxBoundsViscosity: 0.8
   });
   L.control.zoom({ position: "bottomright" }).addTo(map);
+  window.GEO = { map };     // per le prove automatiche (tools/prova_sito.js)
 
   // Livelli della mappa, dal basso verso l'alto
   map.createPane("politica").style.zIndex = 250;   // aree colorate della carta politica
@@ -48,13 +64,13 @@
 
   /* ---------- Carta FISICA: rilievo a colori + fiumi + nomi ---------- */
   // Rilievo creato da noi con i dati di altitudine (Terrain Tiles, AWS Open Data).
-  // Le tessere sono nella cartella tiles/rilievo: niente chiavi, funziona anche offline.
+  // Le tessere sono nella cartella regioni/<id>/tiles/rilievo: niente chiavi, funziona anche offline.
   const ATTR_RILIEVO = 'rilievo: <a href="https://registry.opendata.aws/terrain-tiles/">Terrain Tiles</a> (SRTM, EU-DEM &copy; Copernicus)';
   const rilievo = [
-    L.tileLayer("tiles/rilievo/{z}/{x}/{y}.jpg?v=5", {
-      minZoom: 8, maxNativeZoom: 11, maxZoom: 19, bounds: AREA_LARGA, className: "atlante", attribution: ATTR_RILIEVO
+    L.tileLayer(BASE + "tiles/rilievo/{z}/{x}/{y}.jpg?v=5", {
+      minZoom: ZOOM_MIN, maxNativeZoom: 11, maxZoom: 19, bounds: AREA_LARGA, className: "atlante", attribution: ATTR_RILIEVO
     }),
-    L.tileLayer("tiles/rilievo/{z}/{x}/{y}.jpg?v=5", {
+    L.tileLayer(BASE + "tiles/rilievo/{z}/{x}/{y}.jpg?v=5", {
       minZoom: 12, minNativeZoom: 12, maxNativeZoom: 12, maxZoom: 19, bounds: AREA_REGIONE, className: "atlante"
     })
   ];
@@ -71,7 +87,7 @@
   const P = window.POLITICA;
   const confineStato = () => L.geoJSON({ type: "FeatureCollection", features: [
       { type: "Feature", properties: {}, geometry: P.confini.stato },
-      { type: "Feature", properties: {}, geometry: P.confini.fr_ch }] }, {
+      { type: "Feature", properties: {}, geometry: P.confini.estero }] }, {
     style: { color: "#7a3e9d", weight: 2.5, dashArray: "8 4 2 4", opacity: 0.9, interactive: false, pane: "fiumi" }
   });
 
@@ -122,6 +138,8 @@
 
   /* ---------- Carta POLITICA: Stati, province, comuni, città, strade ---------- */
   const politica = L.layerGroup([
+    ...(P.mare ? [L.geoJSON({ type: "Feature", properties: {}, geometry: P.mare },
+                            { style: { pane: "politica", fillColor: "#b9dcf2", fillOpacity: 1, stroke: false, interactive: false } })] : []),
     L.geoJSON(P.aree, { style: f => ({ pane: "politica", fillColor: f.properties.colore, fillOpacity: 1,
                                        color: "#8a8190", weight: 1, interactive: false }) }),
     L.geoJSON(P.comuni, { style: f => ({ pane: "politica", fillColor: f.properties.colore, fillOpacity: 1,
@@ -168,28 +186,32 @@
     confineStato()
   ]);
 
-  // Velatura bianca fuori dalla regione: un grande rettangolo con un "buco" a forma di Valle d'Aosta.
-  const ring = window.CONFINE_VDA.geometry.coordinates[0].map(([lng, lat]) => [lat, lng]);
-  const world = [[44.5, 5.5], [44.5, 9.2], [47, 9.2], [47, 5.5]];
-  const velo = L.polygon([world, ring], {
+  // Velatura bianca fuori dalla regione: un grande rettangolo con dei "buchi" a forma di regione
+  // (più di uno se la regione ha delle isole).
+  const g = window.CONFINE.geometry;
+  const poligoni = g.type === "Polygon" ? [g.coordinates] : g.coordinates;
+  const anelli = poligoni.map(p => p[0].map(([lng, lat]) => [lat, lng]));
+  const fuori = AREA_LARGA.pad(1);
+  const world = [fuori.getSouthWest(), fuori.getSouthEast(), fuori.getNorthEast(), fuori.getNorthWest()];
+  const velo = L.polygon([world, ...anelli], {
     stroke: false, fillColor: "#ffffff", fillOpacity: 0.45, interactive: false
   }).addTo(map);
 
   L.featureGroup([
-    L.polygon(ring, { color: "#ffffff", weight: 7, opacity: 0.9, fill: false, interactive: false }),
-    L.polygon(ring, { color: "#c8102e", weight: 3, fill: false, interactive: false })
+    L.geoJSON(window.CONFINE, { style: { color: "#ffffff", weight: 7, opacity: 0.9, fill: false, interactive: false } }),
+    L.geoJSON(window.CONFINE, { style: { color: "#c8102e", weight: 3, fill: false, interactive: false } })
   ]).addTo(map);
 
-  // Dora Baltea: tracciato calcolato dai dati di altitudine, cliccabile
-  const dora = L.polyline(window.FIUMI.dora, {
+  // Fiume principale: tracciato calcolato dai dati di altitudine, cliccabile
+  L.polyline(window.FIUMI.principale, {
     color: "#1f63b5", weight: 5, opacity: 0.9, lineCap: "round", lineJoin: "round", interactive: false
   }).addTo(map);
   // linea invisibile più larga sopra il fiume, così è facile cliccarlo (anche con il dito)
-  const doraClic = L.polyline(window.FIUMI.dora, { color: "#000", opacity: 0, weight: 22, bubblingMouseEvents: false }).addTo(map);
-  doraClic.bindTooltip("Dora Baltea", { sticky: true, className: "tip" });
-  doraClic.on("click", e => {
+  const fiumeClic = L.polyline(window.FIUMI.principale, { color: "#000", opacity: 0, weight: 22, bubblingMouseEvents: false }).addTo(map);
+  fiumeClic.bindTooltip(R.fiume.nome, { sticky: true, className: "tip" });
+  fiumeClic.on("click", e => {
     if (quiz.on) return quizClicMappa(e.latlng, true);
-    if (!domande.on && !flash.on && !interr.on && !tour.on) showPlace(window.DORA_INFO, null);
+    if (!domande.on && !flash.on && !interr.on && !tour.on) showPlace(window.FIUME_INFO, null);
   });
 
   // Etichette dei territori confinanti
@@ -201,20 +223,24 @@
   });
 
   /* ---------- Paralleli e meridiani (reticolato geografico) ---------- */
-  const PARALLELI = [45, 45.5, 46, 46.5], MERIDIANI = [6, 6.5, 7, 7.5, 8, 8.5, 9];
+  // ogni mezzo grado dentro l'area della cartina
+  const mezzi = (a, b) => { const v = []; for (let x = Math.floor(a * 2) / 2; x <= Math.ceil(b * 2) / 2; x += 0.5) v.push(x); return v; };
+  const PARALLELI = mezzi(AREA_LARGA.getSouth(), AREA_LARGA.getNorth());
+  const MERIDIANI = mezzi(AREA_LARGA.getWest(), AREA_LARGA.getEast());
+  const ret = AREA_LARGA.pad(1);
   const gradi = (v, dir) => Math.floor(v) + "°" + (v % 1 ? "30′" : "") + " " + dir;
   map.createPane("reticolo").style.zIndex = 420;   // sopra la velatura bianca
   const stileReticolo = { color: "#1d4f86", weight: 1.3, opacity: 0.7, dashArray: "6 4", interactive: false, pane: "reticolo" };
   const reticolato = L.layerGroup();
   const scritteReticolo = [];
   PARALLELI.forEach(lat => {
-    L.polyline([[lat, 5.5], [lat, 9.2]], stileReticolo).addTo(reticolato);
-    scritteReticolo.push({ tipo: "lat", v: lat, m: L.marker([lat, 7], { pane: "scritte", interactive: false, keyboard: false,
+    L.polyline([[lat, ret.getWest()], [lat, ret.getEast()]], stileReticolo).addTo(reticolato);
+    scritteReticolo.push({ tipo: "lat", v: lat, m: L.marker([lat, AREA_LARGA.getCenter().lng], { pane: "scritte", interactive: false, keyboard: false,
       icon: L.divIcon({ className: "lbl-wrap", iconSize: [0, 0], html: `<div class="lbl lbl-grid">${gradi(lat, "N")}</div>` }) }) });
   });
   MERIDIANI.forEach(lng => {
-    L.polyline([[44.5, lng], [47, lng]], stileReticolo).addTo(reticolato);
-    scritteReticolo.push({ tipo: "lng", v: lng, m: L.marker([45.5, lng], { pane: "scritte", interactive: false, keyboard: false,
+    L.polyline([[ret.getSouth(), lng], [ret.getNorth(), lng]], stileReticolo).addTo(reticolato);
+    scritteReticolo.push({ tipo: "lng", v: lng, m: L.marker([AREA_LARGA.getCenter().lat, lng], { pane: "scritte", interactive: false, keyboard: false,
       icon: L.divIcon({ className: "lbl-wrap", iconSize: [0, 0], html: `<div class="lbl lbl-grid">${gradi(lng, "E")}</div>` }) }) });
   });
   // le scritte stanno sul bordo destro (paralleli) e in basso (meridiani) della parte visibile
@@ -237,16 +263,18 @@
   map.on("moveend zoomend resize", posizionaReticolo);
 
   /* ---------- Selettore delle cartine ---------- */
-  // "prova": una tessera di esempio; se si carica, c'è internet e la cartina è disponibile
+  // "prova": una tessera di esempio (vicino alla regione); se si carica, c'è internet e la cartina è disponibile
+  const centro8 = map.project(bounds.getCenter(), 8).divideBy(256).floor();
+  const T8 = { x: centro8.x, y: centro8.y };
   const CARTE = {
     fisica:    { nome: "Fisica",    icona: "⛰️", gruppo: fisica,    velo: 0.45 },
     politica:  { nome: "Politica",  icona: "🗺️", gruppo: politica,  velo: 0.12 },
     satellite: { nome: "Satellite", icona: "🛰️", gruppo: satellite, velo: 0.30,
-                 prova: ESRI + "World_Imagery/MapServer/tile/8/91/133" },
+                 prova: `${ESRI}World_Imagery/MapServer/tile/8/${T8.y}/${T8.x}` },
     escursionistica: { nome: "Escursionistica", icona: "🥾", gruppo: escursionistica, velo: 0.35, altre: true,
-                 prova: "https://a.tile.opentopomap.org/8/133/91.png" },
+                 prova: `https://a.tile.opentopomap.org/8/${T8.x}/${T8.y}.png` },
     semplice:  { nome: "Semplice",  icona: "🏔️", gruppo: semplice,  velo: 0.45, altre: true,
-                 prova: ESRI + "World_Shaded_Relief/MapServer/tile/8/91/133" }
+                 prova: `${ESRI}World_Shaded_Relief/MapServer/tile/8/${T8.y}/${T8.x}` }
   };
   let cartaAttiva = null;
   let cartaDesiderata = null;   // cartina salvata che aspetta internet per essere mostrata
@@ -542,8 +570,8 @@
       </div></details>`;
 
     panel.innerHTML = `
-      <h2>La Valle d'Aosta</h2>
-      <p class="sub">La regione più piccola d'Italia, tra Francia, Svizzera e Piemonte.</p>
+      <h2>${esc(maiuscola(R.con_articolo))}</h2>
+      <p class="sub">${esc(R.sottotitolo)}</p>
       <button class="btn tour-avvia" id="tour-avvia">▶ Visita guidata della regione</button>
       <p class="hint">👆 Clicca un pallino sulla mappa (o un nome nell'elenco dei luoghi) per leggere la sua scheda. Avvicinati con lo zoom per vedere i nomi. Clicca anche la linea blu del fiume!</p>
       ${NOTA_EXTRA}
@@ -615,15 +643,16 @@
   });
 
   /* ---------------- Quiz ---------------- */
-  // Bersagli del quiz che non sono pallini: il fiume e le due catene montuose (data/zone.js)
+  // Bersagli del quiz che non sono pallini: il fiume principale e le zone della regione (regione.js, zone.js)
   const EXTRA = [
-    { id: "dora", nome: "Dora Baltea", cat: "natura", tipo: "fiume", lat: 45.737, lng: 7.47,
-      aiuto: "clicca sul fiume", ricorda: "nasce ai piedi del Monte Bianco, attraversa la regione da ovest a est e si getta nel Po." },
-    { id: "pennine", nome: "Alpi Pennine", cat: "montagne", tipo: "zona", lat: 45.93, lng: 7.55,
-      aiuto: "clicca sulla zona della cartina", ricorda: "a nord, al confine con la Svizzera: Grand Combin, Cervino, Monte Rosa." },
-    { id: "graie", nome: "Alpi Graie", cat: "montagne", tipo: "zona", lat: 45.58, lng: 7.15,
-      aiuto: "clicca sulla zona della cartina", ricorda: "a ovest e a sud: Monte Bianco e Gran Paradiso." }
+    { id: "fiume", nome: R.fiume.nome, con_articolo: R.fiume.con_articolo, cat: "natura", tipo: "fiume",
+      lat: R.fiume.etichetta[0], lng: R.fiume.etichetta[1], aiuto: "clicca sul fiume", ricorda: R.fiume.ricorda },
+    ...(R.zone || []).map(z => ({ id: z.id, nome: z.nome, con_articolo: z.con_articolo, plurale: z.plurale, colore: z.colore,
+      cat: z.cat || "montagne", tipo: "zona", lat: z.etichetta[0], lng: z.etichetta[1],
+      aiuto: "clicca sulla zona della cartina", ricorda: z.ricorda }))
   ];
+  const FIUME = EXTRA[0];
+  const ZONE_QUIZ = EXTRA.filter(x => x.tipo === "zona");
 
   function dentroAnello(ll, anello) {          // anello: [[lng, lat], ...]
     let c = false;
@@ -637,7 +666,7 @@
     const poligoni = g.type === "Polygon" ? [g.coordinates] : g.coordinates;
     return poligoni.some(p => dentroAnello(ll, p[0]) && !p.slice(1).some(buco => dentroAnello(ll, buco)));
   }
-  const zonaDi = ll => ["pennine", "graie"].find(id => dentroGeom(ll, window.ZONE[id])) || null;
+  const zonaDi = ll => ZONE_QUIZ.map(z => z.id).find(id => window.ZONE[id] && dentroGeom(ll, window.ZONE[id])) || null;
 
   // mostra per un attimo in verde la zona o il fiume
   let evidenziato = null;
@@ -645,13 +674,13 @@
     if (evidenziato) map.removeLayer(evidenziato);
     evidenziato = t.tipo === "zona"
       ? L.geoJSON(window.ZONE[t.id], { style: { color: "#15803d", weight: 2, fillColor: "#22c55e", fillOpacity: 0.35, interactive: false } })
-      : L.polyline(window.FIUMI.dora, { color: "#22c55e", weight: 10, opacity: 0.85, interactive: false });
+      : L.polyline(window.FIUMI.principale, { color: "#22c55e", weight: 10, opacity: 0.85, interactive: false });
     const questo = evidenziato.addTo(map);
     setTimeout(() => { if (evidenziato === questo) { map.removeLayer(questo); evidenziato = null; } }, 2500);
   }
-  const descrivi = l => (l.tipo === "zona" ? "le " : l.tipo === "fiume" ? "la " : "") + l.nome;
+  const descrivi = l => l.con_articolo || l.nome;
   const dovEra = t => markers[t.id] ? `${t.nome} è il pallino verde.`
-    : t.tipo === "zona" ? `Le ${t.nome} sono la zona verde.` : `La ${t.nome} è la linea verde.`;
+    : `${maiuscola(descrivi(t))} ${t.plurale ? "sono" : "è"} ${t.tipo === "zona" ? "la zona verde" : "la linea verde"}.`;
   function rivela(t) {
     if (markers[t.id]) quiz.marks[t.id] = "correct"; else evidenzia(t);
     map.panTo([t.lat, t.lng]);
@@ -663,10 +692,10 @@
     if (!t) return;
     if (t.tipo === "zona") {
       const z = zonaDi(ll);
-      if (!z) { qFb.className = "quiz-feedback ko"; qFb.textContent = "Clicca dentro la Valle d'Aosta."; return; }
+      if (!z) { qFb.className = "quiz-feedback ko"; qFb.textContent = `Clicca dentro ${R.con_articolo}.`; return; }
       return quizAnswer(EXTRA.find(x => x.id === z));
     }
-    if (sulFiume) quizAnswer(EXTRA[0]);   // ha cliccato la Dora Baltea
+    if (sulFiume) quizAnswer(FIUME);      // ha cliccato il fiume principale
   }
   map.on("click", e => { if (quiz.on) quizClicMappa(e.latlng, false); });
 
@@ -700,7 +729,7 @@
       <h2>🎯 Quiz: dov'è?</h2>
       <p class="sub">Esercitati per l'interrogazione.</p>
       <p>In basso sulla mappa compare il nome di un luogo: clicca il pallino giusto. Hai <b>due tentativi</b> per ogni luogo.</p>
-      <p>Ci sono anche la <b>Dora Baltea</b> (clicca sul fiume) e le catene montuose, <b>Alpi Pennine</b> e <b>Alpi Graie</b> (clicca sulla zona della cartina dove si trovano).</p>
+      <p>Ci sono anche ${esc(FIUME.con_articolo)} (clicca sul fiume)${ZONE_QUIZ.length ? ` e ${ZONE_QUIZ.map(z => `<b>${esc(z.nome)}</b>`).join(", ")} (clicca sulla zona della cartina dove si trovano)` : ""}.</p>
       <p class="hint">Ci sono solo i luoghi delle categorie accese nella legenda.</p>
       <p class="hint">I pallini sono tutti grigi e senza icona, così non puoi barare! 😉</p>`;
     nextQuestion();
@@ -953,7 +982,7 @@
   function mostraSullaMappa(m) {
     if (!m) return;
     if (m.tipo === "regione") map.flyToBounds(bounds, Object.assign({ duration: 0.6 }, FIT));
-    else if (m.tipo === "dora") { evidenzia(EXTRA[0]); map.flyToBounds(bounds, Object.assign({ duration: 0.6 }, FIT)); }
+    else if (m.tipo === "fiume") { evidenzia(FIUME); map.flyToBounds(bounds, Object.assign({ duration: 0.6 }, FIT)); }
     else if (m.tipo === "zona") { evidenzia(EXTRA.find(x => x.id === m.id)); map.flyToBounds(bounds, Object.assign({ duration: 0.6 }, FIT)); }
     else if (m.tipo === "luogo") {
       const l = LUOGHI.find(x => x.id === m.id);
@@ -1188,17 +1217,16 @@
   }
 
   function zona(id) {
-    const colore = id === "pennine" ? "#7c3aed" : "#ea580c";
+    const c = EXTRA.find(x => x.id === id), colore = c.colore || "#7c3aed";
     L.geoJSON(window.ZONE[id], { pane: "tour", style: { color: colore, weight: 3, fillColor: colore, fillOpacity: 0.32, className: "tour-zona" } }).addTo(tourLayer);
-    const c = EXTRA.find(x => x.id === id);
     etichettaTour([c.lat, c.lng], c.nome.toUpperCase(), "tour-zona-nome");
   }
 
-  function disegnaDora() {
-    const pts = window.FIUMI.dora;
+  function disegnaFiume() {
+    const pts = window.FIUMI.principale;
     const linea = L.polyline([pts[0], pts[0]], { pane: "tour", color: "#06b6d4", weight: 8, opacity: 0.95, lineCap: "round", lineJoin: "round", className: "tour-glow" }).addTo(tourLayer);
     etichettaTour(pts[0], "💧 Nasce qui", "tour-zona-nome piccolo");
-    const fine = () => etichettaTour(pts[pts.length - 1], "verso il Po ↓", "tour-zona-nome piccolo");
+    const fine = () => etichettaTour(pts[pts.length - 1], `${esc(R.fiume.foce || "")} ↓`, "tour-zona-nome piccolo");
     if (pocoMoto) { linea.setLatLngs(pts); fine(); return; }
     const t0 = performance.now(), durata = 5000;
     const passo = now => {
@@ -1212,11 +1240,11 @@
   // quanto dura una tappa (più testo = più tempo)
   function durata(t) {
     const parole = t.testo.split(/\s+/).length;
-    return Math.max(8000, parole * 400 + 2500) + (t.zone ? 2500 : 0) + (t.dora === "disegna" ? 3000 : 0);
+    return Math.max(8000, parole * 400 + 2500) + (t.zone ? 2500 : 0) + (t.fiume === "disegna" ? 3000 : 0);
   }
 
   /* --- Voce: file audio della tappa --- */
-  const fileAudio = k => `audio/tour/${String(k + 1).padStart(2, "0")}.mp3?v=${AUDIO_V}`;
+  const fileAudio = k => `${BASE}audio/tour/${String(k + 1).padStart(2, "0")}.mp3?v=${AUDIO_V}`;
   function parla() {
     const tappa = tour.i;
     audioTour.onended = () => { if (tour.on && tour.play && tour.voce && tour.i === tappa) { clearTimeout(tour.timer); tour.timer = setTimeout(avanti, 1200); } };
@@ -1264,12 +1292,12 @@
     if (t.carta && t.carta !== cartaAttiva) mostraCarta(t.carta, false);
     vaiA(t);
     dopo(pocoMoto ? 50 : 1500, () => {
-      if (t.bordo) L.polygon(ring, { pane: "tour", color: "#facc15", weight: 8, fill: false, className: "tour-bordo" }).addTo(tourLayer);
+      if (t.bordo) L.geoJSON(window.CONFINE, { pane: "tour", style: { color: "#facc15", weight: 8, fill: false, className: "tour-bordo" } }).addTo(tourLayer);
       if (t.confini) map.getContainer().classList.add("tour-confini");
       (t.luci || []).forEach((id, k) => dopo(k * 450, () => luce(LUOGHI.find(l => l.id === id))));
       (t.zone || []).forEach((z, k) => dopo(k * 2500, () => zona(z)));
-      if (t.dora === "disegna") disegnaDora();
-      else if (t.dora === "luce") L.polyline(window.FIUMI.dora, { pane: "tour", color: "#06b6d4", weight: 8, opacity: 0.85, className: "tour-glow" }).addTo(tourLayer);
+      if (t.fiume === "disegna") disegnaFiume();
+      else if (t.fiume === "luce") L.polyline(window.FIUMI.principale, { pane: "tour", color: "#06b6d4", weight: 8, opacity: 0.85, className: "tour-glow" }).addTo(tourLayer);
     });
 
     panel.innerHTML = `

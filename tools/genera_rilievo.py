@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Genera lo sfondo "Rilievo" del sito: tessere (tile) 256x256 in stile atlante
-scolastico (colori per altitudine + ombreggiatura delle montagne).
+Genera lo sfondo della carta fisica: tessere (tile) 256x256 in stile atlante
+scolastico (colori per altitudine + ombreggiatura delle montagne, laghi e mare in blu).
 
 Dati di altitudine: Terrain Tiles su AWS Open Data (formato Terrarium),
 fonti SRTM, EU-DEM (Copernicus), ETOPO1 e altre. Gratuiti, nessuna chiave.
@@ -9,33 +9,27 @@ https://registry.opendata.aws/terrain-tiles/
 
 Uso:
     pip install numpy pillow
-    python3 tools/genera_rilievo.py            # scrive in tiles/rilievo/{z}/{x}/{y}.jpg
+    python3 tools/genera_rilievo.py --regione valle-aosta
+    # scrive regioni/<id>/tiles/rilievo/{z}/{x}/{y}.jpg
 
-Le tessere scaricate vengono messe in cache in tools/.cache (ignorata da git).
+Aree e zoom vengono da regioni/<id>/regione.js (area_larga, area_regione, zoom_min).
+Le tessere scaricate restano in cache in tools/.cache (ignorata da git).
 """
-import io
 import math
 import os
-import ssl
+import shutil
 import sys
-import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
 from PIL import Image
 
-QUI = os.path.dirname(os.path.abspath(__file__))
-RADICE = os.path.dirname(QUI)
-OUT = os.path.join(RADICE, "tiles", "rilievo")
-CACHE = os.environ.get("CACHE_DEM", os.path.join(QUI, ".cache"))
-URL = "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from regione import argomenti, cartella, laghi, leggi_regione, scarica_dem, tile_xy  # noqa: E402
 
-# Area coperta (lng_min, lat_min, lng_max, lat_max)
-AREA_LARGA = (6.00, 45.10, 8.75, 46.35)       # zoom 8–11
-AREA_REGIONE = (6.63, 45.39, 8.11, 46.07)     # zoom 12 (solo intorno alla regione)
-LIVELLI = {8: AREA_LARGA, 9: AREA_LARGA, 10: AREA_LARGA, 11: AREA_LARGA, 12: AREA_REGIONE}
+ZOOM_DETTAGLIO = 12          # l'ultimo livello solo su area_regione (più dettagliato)
 # Esagerazione verticale: un po' di più a zoom bassi, dove il rilievo si vede meno
-ESAGERAZIONE = {8: 2.2, 9: 1.8, 10: 1.5, 11: 1.25, 12: 1.0}
+ESAGERAZIONE = {6: 2.8, 7: 2.5, 8: 2.2, 9: 1.8, 10: 1.5, 11: 1.25, 12: 1.0}
 
 # Scala dei colori per altitudine (metri -> RGB), stile atlante
 SCALA = [
@@ -53,30 +47,6 @@ SCALA = [
 ]
 
 ACQUA = (150, 196, 228)
-
-_ctx = ssl.create_default_context(cafile=os.environ.get("SSL_CERT_FILE") or None)
-
-
-def tile_xy(lng, lat, z):
-    n = 2 ** z
-    x = (lng + 180) / 360 * n
-    y = (1 - math.asinh(math.tan(math.radians(lat))) / math.pi) / 2 * n
-    return x, y
-
-
-def scarica(z, x, y):
-    path = os.path.join(CACHE, str(z), str(x), f"{y}.png")
-    if not os.path.exists(path):
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        req = urllib.request.Request(URL.format(z=z, x=x, y=y), headers={"User-Agent": "geografia-interattiva"})
-        with urllib.request.urlopen(req, context=_ctx, timeout=60) as r:
-            data = r.read()
-        with open(path + ".tmp", "wb") as f:
-            f.write(data)
-        os.replace(path + ".tmp", path)
-    rgb = np.asarray(Image.open(path).convert("RGB"), dtype=np.float32)
-    return rgb[..., 0] * 256 + rgb[..., 1] + rgb[..., 2] / 256 - 32768
-
 
 def colori(elev):
     soglie = np.array([s[0] for s in SCALA], dtype=np.float32)
@@ -101,34 +71,7 @@ def ombreggiatura(elev, z, lat):
     return np.clip(tot, 0, 1)
 
 
-def _sposta(m, dy, dx):
-    return np.roll(np.roll(m, dy, axis=0), dx, axis=1)
-
-
-def _min_max(m, r, fn):
-    out = m.copy()
-    for dy in range(-r, r + 1):
-        for dx in range(-r, r + 1):
-            out = fn(out, _sposta(m, dy, dx))
-    return out
-
-
-def laghi(elev, z):
-    """Le superfici dei laghi nei dati sono perfettamente piatte: le trova così."""
-    # a zoom alti i laghi di montagna nei dati sono un po' "mossi": tolleranza di 0,4 m,
-    # ma solo sopra i 500 m, perché in pianura creerebbe falsi laghi
-    tolleranza = np.where((z >= 11) & (elev > 500), 0.4, 0.0)
-    piatto = np.ones(elev.shape, dtype=bool)
-    for dy in (-1, 0, 1):
-        for dx in (-1, 0, 1):
-            piatto &= np.abs(_sposta(elev, dy, dx) - elev) <= tolleranza
-    r = 2 if z >= 11 else 1
-    piatto = _min_max(piatto, r, np.logical_and)       # toglie le piccole zone piatte
-    piatto = _min_max(piatto, r + 1, np.logical_or)    # e riallarga i laghi veri
-    return piatto & (elev > 0)
-
-
-def genera_livello(z, area):
+def genera_livello(z, area, out):
     lng0, lat0, lng1, lat1 = area
     xa, ya = tile_xy(lng0, lat1, z)
     xb, yb = tile_xy(lng1, lat0, z)
@@ -138,25 +81,36 @@ def genera_livello(z, area):
     fy = list(range(ty0 - 1, ty1 + 2))
     with ThreadPoolExecutor(16) as ex:
         blocchi = dict(zip([(x, y) for y in fy for x in fx],
-                           ex.map(lambda p: scarica(z, *p), [(x, y) for y in fy for x in fx])))
-    elev = np.vstack([np.hstack([blocchi[(x, y)] for x in fx]) for y in fy])
-    elev = np.maximum(elev, 0)
+                           ex.map(lambda p: scarica_dem(z, *p), [(x, y) for y in fy for x in fx])))
+    grezzo = np.vstack([np.hstack([blocchi[(x, y)] for x in fx]) for y in fy])
+    mare = grezzo <= 0                                  # nei dati il mare è sotto lo zero
+    elev = np.maximum(grezzo, 0)
     lat_c = (lat0 + lat1) / 2
     hs = ombreggiatura(elev, z, lat_c)
     rgb = colori(elev) * (0.42 + 0.68 * hs)[..., None]
-    rgb[laghi(elev, z)] = ACQUA
+    rgb[laghi(elev, z) | mare] = ACQUA
     img = np.clip(rgb, 0, 255).astype(np.uint8)
     n = 0
     for j, y in enumerate(range(ty0, ty1 + 1), start=1):
         for i, x in enumerate(range(tx0, tx1 + 1), start=1):
             pezzo = img[j * 256:(j + 1) * 256, i * 256:(i + 1) * 256]
-            dest = os.path.join(OUT, str(z), str(x))
+            dest = os.path.join(out, str(z), str(x))
             os.makedirs(dest, exist_ok=True)
             Image.fromarray(pezzo).save(os.path.join(dest, f"{y}.jpg"), quality=80, optimize=True, progressive=True)
             n += 1
     print(f"zoom {z}: {n} tessere", file=sys.stderr)
 
 
+def main():
+    args = argomenti("Genera il rilievo a colori della carta fisica")
+    r = leggi_regione(args.regione)
+    out = cartella(args.regione, "tiles", "rilievo")
+    if os.path.isdir(out):
+        shutil.rmtree(out)                              # niente tessere vecchie
+    for z in range(r.get("zoom_min", 8), ZOOM_DETTAGLIO):
+        genera_livello(z, r["area_larga"], out)
+    genera_livello(ZOOM_DETTAGLIO, r["area_regione"], out)
+
+
 if __name__ == "__main__":
-    for z, area in LIVELLI.items():
-        genera_livello(z, area)
+    main()

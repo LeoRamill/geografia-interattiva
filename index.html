@@ -3,53 +3,38 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Valle d'Aosta interattiva</title>
-  <meta name="description" content="Mappa interattiva della Valle d'Aosta: città, montagne, castelli, parchi, passi e prodotti tipici, con schede per lo studio.">
+  <title>Geografia interattiva</title>
+  <meta name="description" content="Le regioni italiane da studiare con cartine interattive, schede, quiz, flashcard e visite guidate.">
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="css/style.css?v=25">
+  <link rel="stylesheet" href="app/style.css?v=26">
+  <link rel="stylesheet" href="app/home.css?v=26">
 </head>
-<body>
+<body class="home">
   <header class="topbar">
     <div class="brand">
-      <span class="flag" aria-hidden="true"><i></i><i></i></span>
+      <span class="flag" aria-hidden="true"><i style="background:#009246"></i><i style="background:#fff"></i><i style="background:#ce2b37"></i></span>
       <div>
-        <h1>Valle d'Aosta</h1>
-        <p>Mappa interattiva · clicca un punto per scoprirlo</p>
+        <h1>Geografia interattiva</h1>
+        <p>Le regioni italiane da esplorare e ripassare</p>
       </div>
-    </div>
-    <div class="actions">
-      <button id="btn-quiz" class="btn">🎯 Quiz</button>
-      <button id="btn-home" class="btn btn-ghost" aria-label="Torna alla regione" title="Torna alla regione">🏠<span class="btn-txt"> Regione</span></button>
-      <button id="btn-testo" class="btn btn-ghost btn-testo" aria-label="Ingrandisci il testo">A+</button>
     </div>
   </header>
 
-  <main class="layout">
-    <section class="map-wrap">
-      <div id="map" aria-label="Mappa della Valle d'Aosta"></div>
-      <div id="quizbar" class="quizbar" hidden>
-        <div>
-          <span class="quiz-label">Trova sulla mappa:</span>
-          <strong id="quiz-target"></strong>
-        </div>
-        <div class="quiz-right">
-          <span id="quiz-score">0 / 0</span>
-          <button id="quiz-skip" class="btn btn-small btn-ghost">Salta</button>
-          <button id="quiz-stop" class="btn btn-small">Esci</button>
-        </div>
-        <div id="quiz-feedback" class="quiz-feedback" aria-live="polite"></div>
-      </div>
+  <main class="home-layout">
+    <section class="home-map-wrap">
+      <div id="italia" aria-label="Cartina d'Italia: clicca una regione colorata"></div>
     </section>
-
-    <aside id="panel" class="panel" aria-live="polite"></aside>
+    <aside class="home-panel">
+      <h2>Scegli una regione</h2>
+      <p class="sub">Clicca una regione colorata sulla cartina o nell'elenco.</p>
+      <ul id="elenco" class="elenco"></ul>
+      <p class="hint">Per ogni regione: cartina fisica e politica, schede dei luoghi, visita guidata con la voce della maestra, quiz, flashcard e prova di interrogazione.</p>
+    </aside>
   </main>
 
   <script src="vendor/leaflet/leaflet.js"></script>
-  <script src="data/confine.js?v=25"></script>
-  <script src="data/fiumi.js?v=25"></script>
-  <script src="data/politica.js?v=25"></script>
-  <script src="data/zone.js?v=25"></script>
-  <script src="js/data.js?v=25"></script>
-  <script src="js/app.js?v=25"></script>
+  <script src="app/italia.js?v=26"></script>
+  <script src="regioni/regioni.js?v=26"></script>
+  <script src="app/home.js?v=26"></script>
 </body>
 </html>

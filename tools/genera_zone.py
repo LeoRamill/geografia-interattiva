@@ -1,54 +1,47 @@
 #!/usr/bin/env python3
 """
-Divide la Valle d'Aosta tra Alpi Pennine e Alpi Graie, per il quiz "Dov'è?".
+Zone della regione per il quiz "Dov'è?" e la visita guidata (per esempio le catene montuose).
 
-Il confine tra le due catene segue (semplificando) la Dora Baltea e la Val Ferret
-fino al Col Ferret:
-  - Alpi Pennine: a nord della Dora Baltea e a est del Col Ferret
-    (Grand Combin, Cervino, Monte Rosa, valli del Lys e di Ayas)
-  - Alpi Graie: a ovest e a sud (massiccio del Monte Bianco, Gran Paradiso)
+Le zone sono descritte in regioni/<id>/regione.js (REGIONE.zone):
+  - poligono: [[lng, lat], …] -> la zona è la parte di regione dentro il poligono
+  - resto: true              -> la zona è la parte di regione che avanza dalle altre
 
-Usa data/confine.js e data/fiumi.js; scrive data/zone.js.
-Uso:  python3 tools/genera_zone.py      (richiede shapely)
+Scrive regioni/<id>/zone.js.
+Uso:  python3 tools/genera_zone.py --regione valle-aosta      (richiede shapely, node)
 """
-import json
 import os
+import sys
 
-from shapely.geometry import Polygon, mapping
+from shapely.geometry import Polygon, mapping, shape
+from shapely.ops import unary_union
 
-RADICE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
-def leggi_js(nome, var):
-    s = open(os.path.join(RADICE, "data", nome)).read()
-    return json.loads(s[s.index("=", s.index(var)) + 1:].strip().rstrip(";"))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from regione import argomenti, cartella, leggi_js, leggi_regione, scrivi_js  # noqa: E402
 
 
 def arrotonda(m):
     def r(c):
         return [round(c[0], 4), round(c[1], 4)] if isinstance(c[0], (int, float)) else [r(x) for x in c]
-    return {"type": m["type"], "coordinates": r(json.loads(json.dumps(m["coordinates"])))}
+    return {"type": m["type"], "coordinates": r(m["coordinates"])}
 
 
 def main():
-    regione = Polygon(leggi_js("confine.js", "CONFINE_VDA")["geometry"]["coordinates"][0])
-    dora = leggi_js("fiumi.js", "FIUMI")["dora"]          # [[lat, lng], ...]
-    lungo_dora = [(lng, lat) for lat, lng in dora if lat >= 45.585]   # fino a Pont-Saint-Martin
-
-    col_ferret = (7.072, 45.894)
-    pennine = Polygon([col_ferret, (7.03, 45.85), *lungo_dora,
-                       (7.85, 45.50), (8.30, 45.50), (8.30, 46.30), (7.072, 46.30)]).buffer(0)
-    zone = {
-        "pennine": pennine.intersection(regione),
-        "graie": regione.difference(pennine),
-    }
-    out = os.path.join(RADICE, "data", "zone.js")
-    with open(out, "w") as f:
-        f.write("/* Generato da tools/genera_zone.py: zone di Alpi Pennine e Alpi Graie (per il quiz) */\n")
-        f.write("window.ZONE = " + json.dumps({k: arrotonda(mapping(g.simplify(0.001))) for k, g in zone.items()},
-                                              separators=(",", ":")) + ";\n")
+    args = argomenti("Prepara le zone della regione (quiz e visita guidata)")
+    R = leggi_regione(args.regione)
+    regione = shape(leggi_js(cartella(args.regione, "confine.js"), "CONFINE")["geometry"]).buffer(0)
+    zone, fatte = {}, []
+    for z in R.get("zone", []):
+        if z.get("poligono"):
+            g = Polygon(z["poligono"]).buffer(0).intersection(regione)
+            zone[z["id"]] = g
+            fatte.append(g)
+    for z in R.get("zone", []):
+        if z.get("resto"):
+            zone[z["id"]] = regione.difference(unary_union(fatte)) if fatte else regione
+    out = cartella(args.regione, "zone.js")
+    scrivi_js(out, "ZONE", {k: arrotonda(mapping(g.simplify(0.001))) for k, g in zone.items()}, "genera_zone.py")
     for k, g in zone.items():
-        print(k, g.geom_type, round(g.area / regione.area * 100), "% della regione")
+        print(f"{k}: {g.geom_type}, {round(g.area / regione.area * 100)}% della regione")
 
 
 if __name__ == "__main__":

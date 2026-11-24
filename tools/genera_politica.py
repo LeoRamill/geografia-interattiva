@@ -1,43 +1,59 @@
 #!/usr/bin/env python3
 """
-Prepara i dati della carta politica: Stati, regioni, province, cantoni e
-dipartimenti, comuni della Valle d'Aosta, strade principali e laghi.
+Prepara i dati della carta politica di una regione: Stati, regioni e province italiane,
+cantoni svizzeri, dipartimenti francesi, Länder austriaci, comuni (se la regione ne ha pochi),
+strade principali, laghi e mare.
 
 Fonti (dati aperti):
   - openpolis/geojson-italy (dati ISTAT): regioni, province, comuni
-  - Natural Earth 1:10m: Stati, cantoni svizzeri, dipartimenti francesi, strade, laghi
+  - Natural Earth 1:10m: Stati e loro suddivisioni, strade, laghi
 
-Scrive data/politica.js.
+Scrive regioni/<id>/politica.js.
 
-Uso:  python3 tools/genera_politica.py
-Richiede: shapely
+Uso:  python3 tools/genera_politica.py --regione valle-aosta
+Richiede: shapely, node
 """
 import json
 import os
 import ssl
 import sys
 import urllib.request
+from itertools import combinations
 
 from shapely.geometry import box, mapping, shape
 from shapely.ops import unary_union
 
-QUI = os.path.dirname(os.path.abspath(__file__))
-RADICE = os.path.dirname(QUI)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from regione import QUI, argomenti, cartella, leggi_regione, scrivi_js  # noqa: E402
+
 CACHE = os.environ.get("CACHE_GIS", os.path.join(QUI, ".cache", "gis"))
 NE = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/"
 OP = "https://raw.githubusercontent.com/openpolis/geojson-italy/master/geojson/"
 
-AREA = box(6.00, 45.10, 8.75, 46.35)
+AREA = None                # impostata in main() da REGIONE.area_larga
 SEMPLIFICA = 0.0015        # gradi (circa 150 m): basta per la scala della cartina
+MARE_MIN = 0.01            # gradi² (circa 80 km²): zone vuote più piccole non sono mare
 
 # colori pastello come nelle carte politiche di scuola
-COLORI = {
-    "VdA": ["#d9ead3", "#c7e0bf", "#e3f0d8", "#cfe5c4", "#bcd9b0"],
-    "Piemonte": ["#f6c9d6", "#fbe7a1", "#cfe3f5", "#f9d4b0", "#e3d3f0", "#d6ecc4"],
-    "Lombardia": ["#efe3c8", "#f3e9d6", "#e8dcc0"],
+REGIONE_COLORI = ["#d9ead3", "#c7e0bf", "#e3f0d8", "#cfe5c4", "#bcd9b0"]          # la regione studiata: verdi
+ITALIA_COLORI = [                                                                 # una tavolozza per regione vicina
+    ["#f6c9d6", "#fbe7a1", "#cfe3f5", "#f9d4b0", "#e3d3f0", "#d6ecc4"],
+    ["#efe3c8", "#f3e9d6", "#e8dcc0"],
+    ["#d4e6f1", "#c5ddee", "#e1eef6", "#bfd8ea"],
+    ["#fde2c4", "#fbd5ab", "#fee9d3", "#f9cb98"],
+    ["#e8d5ef", "#dec6e8", "#f0e2f4", "#d4b8e0"],
+    ["#f4f1bb", "#ece7a0", "#f8f6d0", "#e4de8a"],
+]
+ESTERO_COLORI = {
     "FR": ["#f3d3cc", "#f7e0d9", "#eec6be", "#f9e6e1", "#f1cfc7"],
     "CH": ["#ddd6f0", "#e8e3f6", "#d2cbe9", "#ece8f8", "#d8d0ee"],
+    "AT": ["#f8dcc4", "#fbe7d6", "#f4d0b1", "#fdeee2"],
+    "SI": ["#cfe9e4"], "SM": ["#e5e7eb"], "VA": ["#e5e7eb"], "MC": ["#e5e7eb"],
 }
+ALTRO_ESTERO = ["#e5e7eb", "#eceef1", "#dfe2e6"]
+# Stati divisi nelle loro suddivisioni (gli altri si disegnano interi)
+SUDDIVISIONI = {"FR": "dipartimento", "CH": "cantone", "AT": "Land"}
+NOMI_LAGHI = {"Lake Geneva": "Lago Lemano", "Lac d' Annecy": "Lago di Annecy", "Lake Constance": "Lago di Costanza"}
 
 _ctx = ssl.create_default_context(cafile=os.environ.get("SSL_CERT_FILE") or None)
 
@@ -68,9 +84,8 @@ def arrotonda(geom):
     return {"type": m["type"], "coordinates": r(json.loads(json.dumps(m["coordinates"])))}
 
 
-def colora(items, gruppo):
+def colora(items, tavolozza):
     """Colori diversi per aree confinanti (colorazione 'golosa' del grafo)."""
-    tavolozza = COLORI[gruppo]
     for i, it in enumerate(items):
         usati = {o["colore"] for o in items[:i] if o["geom"].buffer(0.002).intersects(it["geom"])}
         it["colore"] = next((c for c in tavolozza if c not in usati), tavolozza[i % len(tavolozza)])
@@ -82,44 +97,82 @@ def etichetta(g):
 
 
 def main():
-    # --- Italia: regioni e province (openpolis/ISTAT) ---
-    regioni = {f["properties"]["reg_name"]: shape(f["geometry"]) for f in carica(OP + "limits_IT_regions.geojson")}
-    italia = unary_union([g for g in regioni.values() if g.intersects(AREA)]).buffer(0)
+    global AREA
+    args = argomenti("Prepara i dati della carta politica")
+    R = leggi_regione(args.regione)
+    AREA = box(*R["area_larga"])
+    target = R["istat"]
+    con_comuni = R.get("politica", {}).get("comuni", False)
 
-    aree = []
+    # --- Italia: regioni e province (openpolis/ISTAT) ---
+    regioni = {f["properties"]["reg_istat_code_num"]: (f["properties"]["reg_name"], shape(f["geometry"]))
+               for f in carica(OP + "limits_IT_regions.geojson")}
+    if target not in regioni:
+        raise SystemExit(f"codice ISTAT {target} non trovato")
+    italia = unary_union([g for _, g in regioni.values() if g.intersects(AREA)]).buffer(0)
+
+    aree, tavolozze = [], {"REGIONE": REGIONE_COLORI}
     for f in carica(OP + "limits_IT_provinces.geojson"):
         p, g = f["properties"], shape(f["geometry"])
-        if not g.intersects(AREA) or p["reg_name"].startswith("Valle"):
+        if not g.intersects(AREA):
             continue
-        gruppo = "Piemonte" if p["reg_name"] == "Piemonte" else "Lombardia"
-        aree.append({"nome": p["prov_name"], "tipo": "provincia", "gruppo": gruppo, "geom": g})
+        if p["reg_istat_code_num"] == target:
+            if con_comuni:
+                continue                     # al posto delle province si disegnano i comuni
+            gruppo = "REGIONE"
+        else:
+            gruppo = p["reg_name"]
+            if gruppo not in tavolozze:
+                tavolozze[gruppo] = ITALIA_COLORI[(len(tavolozze) - 1) % len(ITALIA_COLORI)]
+        nome = p["prov_name"].split("/")[0]
+        aree.append({"nome": nome, "tipo": "provincia", "gruppo": gruppo, "geom": g})
 
-    # --- Francia e Svizzera: dipartimenti e cantoni (Natural Earth), tagliati sul confine italiano ---
+    # --- Stati vicini (Natural Earth), con le loro suddivisioni, tagliati sul confine italiano ---
+    stati = {}
+    for f in carica(NE + "ne_10m_admin_0_countries.geojson"):
+        p, g = f["properties"], shape(f["geometry"])
+        iso = p.get("ISO_A2_EH") or p.get("ISO_A2")
+        if iso != "IT" and g.intersects(AREA):
+            stati[iso] = (p.get("NAME_IT") or p["NAME"], g)
+    terra = unary_union([g for _, g in stati.values()] + [italia]).buffer(0)
+    # mare: le parti dell'area che non sono terra, ma solo quelle grandi (le strisce sottili
+    # tra i confini delle due fonti di dati non sono mare)
+    vuoto_area = AREA.difference(terra)
+    parti = getattr(vuoto_area, "geoms", [vuoto_area])
+    mare = unary_union([g for g in parti if g.area > MARE_MIN]) if any(g.area > MARE_MIN for g in parti) else None
+    for iso, (nome, g) in stati.items():
+        tavolozze[iso] = ESTERO_COLORI.get(iso, ALTRO_ESTERO)
+        if iso not in SUDDIVISIONI:
+            aree.append({"nome": nome, "tipo": "Stato", "gruppo": iso, "geom": g.difference(italia)})
     for f in carica(NE + "ne_10m_admin_1_states_provinces.geojson"):
         p = f["properties"]
-        if p["iso_a2"] not in ("FR", "CH"):
+        iso = p["iso_a2"]
+        if iso not in SUDDIVISIONI or iso not in stati:
             continue
         g = shape(f["geometry"])
         if not g.intersects(AREA):
             continue
-        g = g.difference(italia)
         nome = (p.get("name_it") or p["name"]).replace("Canton ", "").replace("canton ", "")
-        aree.append({"nome": nome, "tipo": "cantone" if p["iso_a2"] == "CH" else "dipartimento",
-                     "gruppo": p["iso_a2"], "geom": g})
+        aree.append({"nome": nome, "tipo": SUDDIVISIONI[iso], "gruppo": iso, "geom": g.difference(italia)})
 
-    # I confini di Natural Earth sono meno precisi di quelli ISTAT: tra Francia/Svizzera e
-    # Italia restano piccoli "buchi". Li riempiamo allargando le aree straniere solo dentro i buchi.
-    straniere = [a for a in aree if a["gruppo"] in ("FR", "CH")]
-    buchi = AREA.difference(italia).difference(unary_union([a["geom"] for a in straniere]))
-    for a in straniere:
-        a["geom"] = a["geom"].union(a["geom"].buffer(0.05).intersection(buchi))
+    # I confini di Natural Earth sono meno precisi di quelli ISTAT: tra gli Stati vicini e l'Italia
+    # restano piccoli "buchi" sulla terraferma. Li riempiamo allargando le aree straniere solo lì.
+    straniere = [a for a in aree if a["gruppo"] in stati]
+    if straniere:
+        buchi = AREA.difference(italia).difference(unary_union([a["geom"] for a in straniere]))
+        if mare is not None:
+            buchi = buchi.difference(mare)
+        for a in straniere:
+            a["geom"] = a["geom"].union(a["geom"].buffer(0.05).intersection(buchi))
 
-    # --- comuni della Valle d'Aosta ---
-    comuni = [{"nome": f["properties"]["name"], "tipo": "comune", "gruppo": "VdA", "geom": shape(f["geometry"])}
-              for f in carica(OP + "limits_R_2_municipalities.geojson")]
+    # --- comuni della regione (solo se sono pochi: con tanti comuni la cartina diventa illeggibile) ---
+    comuni = []
+    if con_comuni:
+        comuni = [{"nome": f["properties"]["name"], "tipo": "comune", "gruppo": "REGIONE", "geom": shape(f["geometry"])}
+                  for f in carica(OP + f"limits_R_{target}_municipalities.geojson")]
 
-    for gruppo in COLORI:
-        colora([a for a in aree + comuni if a["gruppo"] == gruppo], gruppo)
+    for gruppo, tavolozza in tavolozze.items():
+        colora([a for a in aree + comuni if a["gruppo"] == gruppo], tavolozza)
 
     def fc(items, tol=SEMPLIFICA):
         out = []
@@ -134,13 +187,17 @@ def main():
         return {"type": "FeatureCollection", "features": out}
 
     # --- confini (linee) ---
-    vda = regioni[next(k for k in regioni if k.startswith("Valle"))]
-    confine_stato = taglia(italia.boundary)
-    confine_regioni = taglia(unary_union([g.boundary for k, g in regioni.items()
-                                          if g.intersects(AREA)]).difference(italia.boundary.buffer(0.003)))
-    paesi = {f["properties"]["NAME_IT"]: shape(f["geometry"]) for f in carica(NE + "ne_10m_admin_0_countries.geojson")
-             if f["properties"]["NAME"] in ("France", "Switzerland")}
-    confine_fr_ch = taglia(paesi["Francia"].boundary.intersection(paesi["Svizzera"].buffer(0.01)).difference(italia.buffer(0.01)))
+    vuoto = {"type": "MultiLineString", "coordinates": []}
+    linea = lambda g: arrotonda(g) if not g.is_empty else vuoto
+    # confine di Stato: il bordo dell'Italia, tranne la costa
+    confine_stato = italia.boundary if mare is None else italia.boundary.difference(mare.buffer(0.01))
+    confine_stato = taglia(confine_stato) if stati else box(0, 0, 0, 0).boundary
+    confine_regioni = taglia(unary_union([g.boundary for _, g in regioni.values() if g.intersects(AREA)])
+                             .difference(italia.boundary.buffer(0.003)))
+    tra_stati = [a.boundary.intersection(b.buffer(0.01)) for (_, a), (_, b) in combinations(stati.values(), 2)]
+    confine_estero = taglia(unary_union(tra_stati).difference(italia.buffer(0.01))) if tra_stati else box(0, 0, 0, 0).boundary
+
+    mare = taglia(mare, 0.002) if mare is not None else None
 
     # --- strade principali ---
     strade = []
@@ -164,26 +221,21 @@ def main():
         # in Natural Earth il Lago Maggiore è chiamato per errore "Lago di Como"
         if nome == "Lago di Como" and g.bounds[0] < 8.9:
             nome = "Lago Maggiore"
-        nome = {"Lake Geneva": "Lago Lemano", "Lac d' Annecy": "Lago di Annecy"}.get(nome, nome)
+        nome = NOMI_LAGHI.get(nome, nome)
         laghi.append({"type": "Feature", "properties": {"nome": nome}, "geometry": arrotonda(taglia(g, 0.001))})
 
     dati = {
         "aree": fc(aree),
         "comuni": fc(comuni, 0.0008),
-        "confini": {
-            "stato": arrotonda(confine_stato),
-            "fr_ch": arrotonda(confine_fr_ch),
-            "regioni": arrotonda(confine_regioni),
-        },
+        "confini": {"stato": linea(confine_stato), "estero": linea(confine_estero), "regioni": linea(confine_regioni)},
+        "mare": arrotonda(mare) if mare is not None and not mare.is_empty else None,
         "strade": {"type": "FeatureCollection", "features": strade},
         "laghi": {"type": "FeatureCollection", "features": laghi},
     }
-    out = os.path.join(RADICE, "data", "politica.js")
-    with open(out, "w") as f:
-        f.write("/* Generato da tools/genera_politica.py: non modificare a mano */\n")
-        f.write("window.POLITICA = " + json.dumps(dati, separators=(",", ":"), ensure_ascii=False) + ";\n")
+    out = cartella(args.regione, "politica.js")
+    kb = scrivi_js(out, "POLITICA", dati, "genera_politica.py") // 1024
     print(f"{len(dati['aree']['features'])} aree, {len(dati['comuni']['features'])} comuni, "
-          f"{len(strade)} strade, {len(laghi)} laghi -> {out} ({os.path.getsize(out) // 1024} KB)", file=sys.stderr)
+          f"{len(strade)} strade, {len(laghi)} laghi, mare: {'sì' if dati['mare'] else 'no'} -> {out} ({kb} KB)", file=sys.stderr)
 
 
 if __name__ == "__main__":
