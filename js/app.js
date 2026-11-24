@@ -14,6 +14,7 @@
   const domande = { on: false, elenco: [], i: 0, ok: 0, risposto: false };
   const flash = { on: false, gruppo: null, mazzo: [], coda: [], sapute: 0, primoColpo: 0, sbagliate: new Set() };
   const interr = { on: false, scheda: "discorso", passi: [], i: 0, nascondi: false, crono: null, inizio: 0 };
+  const tour = { on: false, i: 0, play: true, voce: false, timer: null, timers: [], raf: null, cartaPrima: null };
 
   /* ---------------- Mappa ---------------- */
   const confine = L.geoJSON(window.CONFINE_VDA);
@@ -188,7 +189,7 @@
   doraClic.bindTooltip("Dora Baltea", { sticky: true, className: "tip" });
   doraClic.on("click", e => {
     if (quiz.on) return quizClicMappa(e.latlng, true);
-    if (!domande.on && !flash.on && !interr.on) showPlace(window.DORA_INFO, null);
+    if (!domande.on && !flash.on && !interr.on && !tour.on) showPlace(window.DORA_INFO, null);
   });
 
   // Etichette dei territori confinanti
@@ -543,6 +544,7 @@
     panel.innerHTML = `
       <h2>La Valle d'Aosta</h2>
       <p class="sub">La regione più piccola d'Italia, tra Francia, Svizzera e Piemonte.</p>
+      <button class="btn tour-avvia" id="tour-avvia">▶ Visita guidata della regione</button>
       <p class="hint">👆 Clicca un pallino sulla mappa (o un nome nell'elenco dei luoghi) per leggere la sua scheda. Avvicinati con lo zoom per vedere i nomi. Clicca anche la linea blu del fiume!</p>
       ${NOTA_EXTRA}
       ${sezioni}
@@ -550,6 +552,7 @@
       <details class="sec places"><summary>📍 Tutti i luoghi della mappa</summary><div class="body">${gruppi}</div></details>`;
     panel.querySelectorAll(".place-btn").forEach(b => b.addEventListener("click", () => select(b.dataset.id)));
     panel.querySelector("#qa-flash").addEventListener("click", () => startFlash());
+    panel.querySelector("#tour-avvia").addEventListener("click", startTour);
     const tutte = panel.querySelector("#qa-tutte");
     tutte.addEventListener("click", () => {
       const apri = tutte.textContent.startsWith("Mostra");
@@ -583,7 +586,7 @@
   }
 
   function select(id) {
-    if (domande.on || flash.on || interr.on) return;   // in modalità studio la scheda non si apre (sarebbe un aiutino!)
+    if (domande.on || flash.on || interr.on || tour.on) return;   // in modalità studio e nella visita la scheda non si apre
     const idx = LUOGHI.findIndex(l => l.id === id);
     if (idx < 0) return;
     const l = LUOGHI[idx];
@@ -604,7 +607,12 @@
     map.flyToBounds(bounds, Object.assign({ duration: 0.6 }, FIT));
   }
 
-  document.getElementById("btn-home").addEventListener("click", () => { if (quiz.on) stopQuiz(); domande.on = flash.on = interr.on = false; goHome(); });
+  document.getElementById("btn-home").addEventListener("click", () => {
+    if (tour.on) return stopTour();
+    if (quiz.on) stopQuiz();
+    domande.on = flash.on = interr.on = false;
+    goHome();
+  });
 
   /* ---------------- Quiz ---------------- */
   // Bersagli del quiz che non sono pallini: il fiume e le due catene montuose (data/zone.js)
@@ -1076,6 +1084,7 @@
   }
 
   document.getElementById("btn-quiz").addEventListener("click", () => {
+    if (tour.on) { stopTour(); showQuizMenu(); return; }
     if (quiz.on) stopQuiz();
     else if (domande.on || flash.on || interr.on) { domande.on = flash.on = interr.on = false; goHome(); }
     else showQuizMenu();
@@ -1090,6 +1099,211 @@
     qFb.textContent = `Saltato: ${dovEra(t)}`;
     advance();
   });
+
+  /* ---------------- Visita guidata ---------------- */
+  map.createPane("tour").style.zIndex = 640;
+  map.getPane("tour").style.pointerEvents = "none";
+  const tourLayer = L.layerGroup().addTo(map);
+  const pocoMoto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const puoParlare = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+
+  const BottoneTour = L.Control.extend({
+    options: { position: "bottomleft" },
+    onAdd() {
+      const b = L.DomUtil.create("button", "tour-btn");
+      b.innerHTML = "▶ Visita guidata";
+      b.title = "Una visita animata alle parti principali della regione";
+      b.addEventListener("click", () => (tour.on ? stopTour() : startTour()));
+      L.DomEvent.disableClickPropagation(b);
+      return b;
+    }
+  });
+  new BottoneTour().addTo(map);
+
+  const dopo = (ms, f) => tour.timers.push(setTimeout(f, ms));
+  function pulisciTour() {
+    clearTimeout(tour.timer);
+    tour.timer = null;
+    tour.timers.forEach(clearTimeout);
+    tour.timers = [];
+    if (tour.raf) cancelAnimationFrame(tour.raf);
+    tour.raf = null;
+    tourLayer.clearLayers();
+    map.getContainer().classList.remove("tour-confini");
+    if (puoParlare) speechSynthesis.cancel();
+  }
+
+  function startTour() {
+    if (quiz.on) stopQuiz();
+    domande.on = flash.on = interr.on = false;
+    fermaCrono();
+    modoStudio(false);
+    Object.assign(tour, { on: true, i: 0, play: true, cartaPrima: cartaAttiva });
+    attivo = null;
+    refreshIcons();
+    document.body.classList.add("tour-on");
+    setTimeout(() => map.invalidateSize(), 60);
+    renderTappa();
+    // sul telefono: torna in cima, così si vedono la cartina e la spiegazione
+    if (small) window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function stopTour() {
+    pulisciTour();
+    tour.on = false;
+    document.body.classList.remove("tour-on");
+    setTimeout(() => map.invalidateSize(), 60);
+    if (tour.cartaPrima && tour.cartaPrima !== cartaAttiva) mostraCarta(tour.cartaPrima, false);
+    goHome();
+  }
+
+  // dove va la cartina in ogni tappa
+  function vaiA(t) {
+    const anima = !pocoMoto, opz = { duration: 1.4 };
+    const centro = (ll, z) => anima ? map.flyTo(ll, z, opz) : map.setView(ll, z, { animate: false });
+    const inquadra = (b, extra) => anima ? map.flyToBounds(b, Object.assign({}, FIT, extra, opz)) : map.fitBounds(b, Object.assign({}, FIT, extra));
+    if (t.vista === "larga") {
+      // la vista più larga possibile senza uscire dall'area della cartina
+      const z = Math.max(map.getMinZoom(), Math.ceil(map.getBoundsZoom(AREA_LARGA, true) * 4) / 4);
+      centro(AREA_LARGA.getCenter(), z);
+    }
+    else if (t.vista === "regione") inquadra(bounds);
+    else {
+      const ll = t.vista.map(id => LUOGHI.find(l => l.id === id)).map(l => [l.lat, l.lng]);
+      if (ll.length === 1) centro(ll[0], t.zoom || 11);
+      else inquadra(L.latLngBounds(ll).pad(0.8), { maxZoom: 11 });
+    }
+  }
+
+  const etichettaTour = (ll, html, cls) => L.marker(ll, {
+    pane: "tour", interactive: false, keyboard: false,
+    icon: L.divIcon({ className: "", iconSize: [0, 0], html: `<div class="${cls}">${html}</div>` })
+  }).addTo(tourLayer);
+
+  function luce(l) {
+    etichettaTour([l.lat, l.lng], `<span></span><b>${CAT[l.cat].icona} ${esc(l.nome)}</b>`, "tour-luce");
+  }
+
+  function zona(id) {
+    const colore = id === "pennine" ? "#7c3aed" : "#ea580c";
+    L.geoJSON(window.ZONE[id], { pane: "tour", style: { color: colore, weight: 3, fillColor: colore, fillOpacity: 0.32, className: "tour-zona" } }).addTo(tourLayer);
+    const c = EXTRA.find(x => x.id === id);
+    etichettaTour([c.lat, c.lng], c.nome.toUpperCase(), "tour-zona-nome");
+  }
+
+  function disegnaDora() {
+    const pts = window.FIUMI.dora;
+    const linea = L.polyline([pts[0], pts[0]], { pane: "tour", color: "#06b6d4", weight: 8, opacity: 0.95, lineCap: "round", lineJoin: "round", className: "tour-glow" }).addTo(tourLayer);
+    etichettaTour(pts[0], "💧 Nasce qui", "tour-zona-nome piccolo");
+    const fine = () => etichettaTour(pts[pts.length - 1], "verso il Po ↓", "tour-zona-nome piccolo");
+    if (pocoMoto) { linea.setLatLngs(pts); fine(); return; }
+    const t0 = performance.now(), durata = 5000;
+    const passo = now => {
+      const k = Math.min(1, (now - t0) / durata);
+      linea.setLatLngs(pts.slice(0, Math.max(2, Math.round(k * pts.length))));
+      if (k < 1) tour.raf = requestAnimationFrame(passo); else { tour.raf = null; fine(); }
+    };
+    tour.raf = requestAnimationFrame(passo);
+  }
+
+  // quanto dura una tappa (più testo = più tempo)
+  function durata(t) {
+    const parole = t.testo.split(/\s+/).length;
+    return Math.max(8000, parole * 400 + 2500) + (t.zone ? 2500 : 0) + (t.dora === "disegna" ? 3000 : 0);
+  }
+
+  function parla(testo) {
+    const u = new SpeechSynthesisUtterance(testo);
+    u.lang = "it-IT";
+    u.rate = 0.95;
+    const voce = speechSynthesis.getVoices().find(v => v.lang && v.lang.toLowerCase().startsWith("it"));
+    if (voce) u.voice = voce;
+    const tappa = tour.i;
+    u.onend = () => { if (tour.on && tour.play && tour.voce && tour.i === tappa) { clearTimeout(tour.timer); tour.timer = setTimeout(avanti, 1200); } };
+    speechSynthesis.speak(u);
+  }
+
+  function programma() {
+    clearTimeout(tour.timer);
+    const t = window.TOUR[tour.i];
+    const barra = panel.querySelector(".tour-tempo");
+    if (!tour.play || t.fine) { if (barra) barra.classList.add("ferma"); return; }
+    const d = tour.voce ? durata(t) * 1.8 : durata(t);     // con la voce si va avanti quando finisce di parlare
+    if (barra) {
+      barra.classList.remove("ferma");
+      const sp = barra.querySelector("span");
+      sp.style.animation = "none";
+      void sp.offsetWidth;                                  // fa ripartire la barra
+      sp.style.animation = "";
+      sp.style.setProperty("--d", (tour.voce ? 0 : d) + "ms");
+      barra.classList.toggle("voce", tour.voce);
+    }
+    tour.timer = setTimeout(avanti, d);
+  }
+
+  function avanti() {
+    if (tour.i < window.TOUR.length - 1) { tour.i++; renderTappa(); }
+  }
+
+  function renderTappa() {
+    pulisciTour();
+    const T = window.TOUR, t = T[tour.i], n = T.length;
+    if (t.carta && t.carta !== cartaAttiva) mostraCarta(t.carta, false);
+    vaiA(t);
+    dopo(pocoMoto ? 50 : 1500, () => {
+      if (t.bordo) L.polygon(ring, { pane: "tour", color: "#facc15", weight: 8, fill: false, className: "tour-bordo" }).addTo(tourLayer);
+      if (t.confini) map.getContainer().classList.add("tour-confini");
+      (t.luci || []).forEach((id, k) => dopo(k * 450, () => luce(LUOGHI.find(l => l.id === id))));
+      (t.zone || []).forEach((z, k) => dopo(k * 2500, () => zona(z)));
+      if (t.dora === "disegna") disegnaDora();
+      else if (t.dora === "luce") L.polyline(window.FIUMI.dora, { pane: "tour", color: "#06b6d4", weight: 8, opacity: 0.85, className: "tour-glow" }).addTo(tourLayer);
+    });
+
+    panel.innerHTML = `
+      <div class="tour-testa"><h2>🧭 Visita guidata</h2><button class="btn btn-ghost btn-small" id="tour-esci">✕ Esci</button></div>
+      <div class="tour-punti">${T.map((x, k) => `<button class="tour-punto${k === tour.i ? " attivo" : k < tour.i ? " fatto" : ""}" data-k="${k}" aria-label="Tappa ${k + 1}: ${esc(x.titolo)}" title="${esc(x.titolo)}"></button>`).join("")}</div>
+      <p class="sub">Tappa ${tour.i + 1} di ${n}</p>
+      <div class="tour-card">
+        <h3>${esc(t.titolo)}</h3>
+        <p>${esc(t.testo)}</p>
+        ${t.fine ? `<div class="tour-fine"><button class="btn" id="tour-quiz">🎯 Esercitati</button><button class="btn btn-ghost" id="tour-ancora">↺ Rivedi la visita</button></div>` : ""}
+      </div>
+      <div class="tour-comandi">
+        <button class="btn btn-ghost" id="tour-prima" ${tour.i ? "" : "disabled"} aria-label="Tappa precedente">⏮</button>
+        <button class="btn" id="tour-play" ${t.fine ? "disabled" : ""}>${tour.play ? "⏸ Pausa" : "▶ Riprendi"}</button>
+        <button class="btn btn-ghost" id="tour-dopo" ${tour.i < n - 1 ? "" : "disabled"} aria-label="Tappa successiva">⏭</button>
+        ${puoParlare ? `<button class="btn btn-ghost" id="tour-voce" aria-pressed="${tour.voce}" title="Leggi ad alta voce">${tour.voce ? "🔊 Voce accesa" : "🔈 Leggi ad alta voce"}</button>` : ""}
+      </div>
+      <div class="tour-tempo"><span></span></div>`;
+    const $ = sel => panel.querySelector(sel);
+    $("#tour-esci").addEventListener("click", stopTour);
+    $("#tour-prima").addEventListener("click", () => { tour.i--; renderTappa(); });
+    $("#tour-dopo").addEventListener("click", avanti);
+    panel.querySelectorAll(".tour-punto").forEach(b => b.addEventListener("click", () => { tour.i = +b.dataset.k; renderTappa(); }));
+    $("#tour-play").addEventListener("click", () => {
+      tour.play = !tour.play;
+      $("#tour-play").textContent = tour.play ? "⏸ Pausa" : "▶ Riprendi";
+      if (!tour.play && puoParlare) speechSynthesis.cancel();
+      if (tour.play && tour.voce) parla(t.testo);
+      programma();
+    });
+    if (puoParlare) $("#tour-voce").addEventListener("click", () => {
+      tour.voce = !tour.voce;
+      const b = $("#tour-voce");
+      b.setAttribute("aria-pressed", String(tour.voce));
+      b.textContent = tour.voce ? "🔊 Voce accesa" : "🔈 Leggi ad alta voce";
+      speechSynthesis.cancel();
+      if (tour.voce) parla(t.testo);
+      programma();
+    });
+    if (t.fine) {
+      $("#tour-quiz").addEventListener("click", () => { stopTour(); showQuizMenu(); });
+      $("#tour-ancora").addEventListener("click", () => { tour.i = 0; tour.play = true; renderTappa(); });
+    }
+    if (tour.voce && tour.play) parla(t.testo);
+    programma();
+    panel.scrollTop = 0;
+  }
 
   /* ---------------- Pulsante A+ (testo più grande) ---------------- */
   const btnTesto = document.getElementById("btn-testo");

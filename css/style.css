@@ -232,6 +232,9 @@ body.quiz-on .leaflet-tooltip.name-label { display: none !important; }
   .brand p { display: none; }
   .map-wrap { flex-basis: 62vh; }
   body.studio .map-wrap { flex-basis: 30vh; }   /* flashcard e domande: più spazio al pannello */
+  body.tour-on .map-wrap { flex-basis: 46vh; }   /* visita guidata: cartina e spiegazione insieme */
+  body.tour-on .tour-card h3 { font-size: 1.05rem; }
+  body.tour-on .tour-card p { font-size: .95rem; }
   .pin { border-width: 1.5px; }
   .legend-item { font-size: .78rem; padding: 3px 6px 3px 3px; }
   .leaflet-control-attribution { font-size: 9px; }
@@ -521,3 +524,63 @@ table.trab td:first-child { width: 55%; }
 .legend-tutti .sw { background: var(--surface-2); border-color: var(--border); box-shadow: 0 0 0 1px var(--border); }
 .legend-item.legend-tutti[aria-pressed="false"] .nm { text-decoration: none; }
 .legend-item.legend-tutti[aria-pressed="mixed"] .sw { opacity: .7; }
+
+/* ---------- Visita guidata ---------- */
+.tour-btn {
+  font: inherit; font-size: .88rem; font-weight: 700; cursor: pointer;
+  color: #fff; background: var(--accent); border: 0; border-radius: 999px; padding: 8px 14px;
+  box-shadow: var(--shadow);
+}
+.tour-btn:hover { filter: brightness(1.08); }
+body.tour-on .tour-btn, body.quiz-on .tour-btn { display: none; }
+.tour-avvia { margin: 0 0 12px; width: 100%; padding: 10px 14px; font-size: .95rem; }
+body.tour-on .leaflet-marker-pane { opacity: .3; transition: opacity .4s; }
+body.tour-on .leaflet-tooltip.name-label { display: none !important; }
+body.tour-on .lbl-catena { display: none; }   /* le scritte delle catene le mostra la visita */
+
+.tour-luce span {
+  position: absolute; left: -20px; top: -20px; width: 40px; height: 40px; border-radius: 50%;
+  border: 4px solid #facc15; box-shadow: 0 0 10px rgba(250, 204, 21, .8);
+  animation: tour-pulsa 1.6s ease-out infinite;
+}
+.tour-luce b {
+  position: absolute; left: 0; top: 24px; transform: translateX(-50%); white-space: nowrap;
+  font: 700 calc(12.5px * var(--scala, 1)) system-ui, sans-serif; color: #fff; background: #111827;
+  padding: 4px 10px; border-radius: 999px; box-shadow: 0 2px 8px rgba(0,0,0,.35);
+  animation: tour-appari .5s ease-out both;
+}
+@keyframes tour-pulsa { 0% { transform: scale(.55); opacity: 1; } 100% { transform: scale(2.1); opacity: 0; } }
+@keyframes tour-appari { from { opacity: 0; margin-top: 8px; } to { opacity: 1; margin-top: 0; } }
+.tour-zona { animation: tour-appari-zona .9s ease-out both; }
+@keyframes tour-appari-zona { from { opacity: 0; } to { opacity: 1; } }
+.tour-zona-nome {
+  position: absolute; transform: translate(-50%, -50%); white-space: nowrap;
+  font: 800 calc(15px * var(--scala, 1)) Georgia, "Times New Roman", serif; letter-spacing: .3em; color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,.9), 0 0 8px rgba(0,0,0,.6);
+  animation: tour-appari .6s ease-out both;
+}
+.tour-zona-nome.piccolo { font: 700 calc(12.5px * var(--scala, 1)) system-ui, sans-serif; letter-spacing: 0; }
+.tour-bordo { animation: tour-lampeggia 1.1s ease-in-out infinite alternate; }
+@keyframes tour-lampeggia { from { stroke-opacity: .15; } to { stroke-opacity: 1; } }
+.tour-glow { filter: drop-shadow(0 0 5px #22d3ee); }
+#map.tour-confini .country-label { animation: tour-confine 1s ease-in-out infinite alternate; color: #c8102e; }
+@keyframes tour-confine { from { transform: scale(1); } to { transform: scale(1.4); } }
+
+.tour-testa { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.tour-punti { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 4px; }
+.tour-punto { width: 12px; height: 12px; padding: 0; border: 0; border-radius: 50%; background: var(--border); cursor: pointer; }
+.tour-punto.fatto { background: color-mix(in srgb, var(--accent) 45%, var(--surface)); }
+.tour-punto.attivo { background: var(--accent); transform: scale(1.35); }
+.tour-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px; }
+.tour-card h3 { margin: 0 0 6px; font-size: 1.2rem; }
+.tour-card p { font-size: 1.03rem; line-height: 1.55; margin: 0 !important; }
+.tour-fine { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.tour-comandi { display: flex; flex-wrap: wrap; gap: 8px; }
+.tour-comandi .btn { padding: 8px 14px; }
+.tour-tempo { height: 4px; margin-top: 12px; background: var(--surface-2); border-radius: 2px; overflow: hidden; }
+.tour-tempo span { display: block; height: 100%; width: 0; background: var(--accent); animation: tour-tempo var(--d, 8000ms) linear forwards; }
+.tour-tempo.ferma span, .tour-tempo.voce span { animation-play-state: paused; }
+@keyframes tour-tempo { to { width: 100%; } }
+@media (prefers-reduced-motion: reduce) {
+  .tour-luce span, .tour-bordo, #map.tour-confini .country-label, .tour-luce b, .tour-zona, .tour-zona-nome { animation: none; }
+}

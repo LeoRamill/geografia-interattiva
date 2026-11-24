@@ -857,3 +857,38 @@ window.CONSIGLI = [
   "Alla cartina **indica con il dito** mentre parli.",
   "Le domande di **ragionamento** (💭) chiedono il **perché**: alle medie piacciono molto."
 ];
+
+/* Visita guidata: tappe animate sulla cartina.
+   vista: dove va la cartina ("larga", "regione", oppure gli id dei luoghi da inquadrare);
+   carta: "fisica" o "politica"; luci: luoghi che pulsano; zone: "pennine"/"graie";
+   dora: "disegna" (il fiume si disegna) o "luce"; bordo / confini: effetti speciali. */
+window.TOUR = [
+  { titolo: "Ecco la Valle d'Aosta", carta: "fisica", vista: "larga", bordo: true,
+    testo: "Siamo nel nord-ovest dell'Italia, in mezzo alle Alpi. La linea rossa è il confine della Valle d'Aosta: è la regione più piccola d'Italia ed è anche la meno popolata." },
+  { titolo: "I confini", carta: "politica", vista: "larga", confini: true,
+    testo: "La Valle d'Aosta confina con due Stati e con una regione: a nord con la Svizzera, a ovest con la Francia, a sud e a est con il Piemonte." },
+  { titolo: "Una regione tutta di montagna", carta: "fisica", vista: "regione", dora: "luce",
+    testo: "Il territorio è tutto montuoso: 100% montagna! In mezzo c'è una grande valle, percorsa dalla Dora Baltea, da cui partono tante valli laterali." },
+  { titolo: "Il Monte Bianco", carta: "fisica", vista: ["montebianco"], zoom: 11, luci: ["montebianco"],
+    testo: "Qui, al confine con la Francia, c'è il Monte Bianco: con 4.807 metri è la montagna più alta delle Alpi." },
+  { titolo: "Il Cervino e il Monte Rosa", carta: "fisica", vista: ["cervino", "monterosa"], luci: ["cervino", "monterosa"],
+    testo: "A nord, al confine con la Svizzera, ci sono il Cervino (4.478 m), con la sua forma a piramide, e il Monte Rosa (4.637 m)." },
+  { titolo: "Il Gran Paradiso e i ghiacciai", carta: "fisica", vista: ["granparadiso"], zoom: 10.5, luci: ["granparadiso"],
+    testo: "A sud c'è il Gran Paradiso (4.061 m). Sulle cime più alte, sopra i 3.000 metri, ci sono i ghiacciai, che si stanno riducendo a causa dei cambiamenti climatici." },
+  { titolo: "Alpi Pennine e Alpi Graie", carta: "fisica", vista: "regione", zone: ["pennine", "graie"],
+    testo: "Le montagne a nord, verso la Svizzera, sono le Alpi Pennine. Quelle a ovest e a sud, con il Monte Bianco e il Gran Paradiso, sono le Alpi Graie." },
+  { titolo: "La Dora Baltea", carta: "fisica", vista: "larga", dora: "disegna",
+    testo: "Il fiume principale è la Dora Baltea. Nasce ai piedi del Monte Bianco, attraversa tutta la regione da ovest a est e raccoglie l'acqua di tanti torrenti." },
+  { titolo: "Il clima e il parco", carta: "fisica", vista: ["parcogp"], zoom: 10.5, luci: ["parcogp"],
+    testo: "Il clima è alpino: inverni lunghi e freddi, con tanta neve, ed estati brevi e fresche. Per proteggere gli animali, nel 1922 è nato il Parco Nazionale del Gran Paradiso: il suo simbolo è lo stambecco." },
+  { titolo: "Aosta, il capoluogo", carta: "fisica", vista: ["aosta"], zoom: 12, luci: ["aosta"],
+    testo: "Aosta è il capoluogo. L'hanno fondata i Romani nel 25 a.C. con il nome di Augusta Praetoria: ci sono ancora la Porta Pretoria, l'Arco d'Augusto e il teatro romano." },
+  { titolo: "Dove vive la gente", carta: "fisica", vista: "regione", dora: "luce", luci: ["aosta"],
+    testo: "Gli abitanti sono 123.337. La maggior parte vive nel fondovalle, lungo la Dora Baltea, e circa un quarto vive ad Aosta. Le lingue ufficiali sono l'italiano e il francese." },
+  { titolo: "Il lavoro", carta: "fisica", vista: "regione", luci: ["courmayeur", "cervinia", "placemoulin", "valpelline"],
+    testo: "L'attività più importante è il turismo: sci, alpinismo, castelli. Con l'acqua dei torrenti e delle dighe si produce energia idroelettrica. Nei pascoli si allevano le mucche: con il loro latte si fa la Fontina." },
+  { titolo: "Le strade tra le montagne", carta: "politica", vista: "regione", luci: ["traforomb", "gsb", "psb"],
+    testo: "Per uscire dalla regione ci sono l'autostrada A5, i valichi del Gran San Bernardo e del Piccolo San Bernardo e due grandi gallerie: il Traforo del Monte Bianco porta in Francia, quello del Gran San Bernardo in Svizzera." },
+  { titolo: "Fine della visita! 🎉", carta: "fisica", vista: "regione", fine: true,
+    testo: "Hai visto le parti principali della Valle d'Aosta. Ora prova a esercitarti: con il quiz, le flashcard o l'interrogazione!" }
+];
