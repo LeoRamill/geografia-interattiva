@@ -1,1 +1,65 @@
-# geografia-interattiva
+# Geografia interattiva – Valle d'Aosta
+
+Sito statico per studiare la Valle d'Aosta (livello quinta elementare / medie).
+Si clicca un punto sulla cartina e si legge la sua scheda con le informazioni principali.
+
+## Cosa contiene
+
+- **Cartina** con il confine ufficiale della regione, il rilievo (OpenTopoMap) e la **Dora Baltea**
+- **31 luoghi** divisi in 7 categorie, ciascuna filtrabile:
+  - 🏘️ Città e paesi: Aosta, Cogne, Valle del Lys (Walser), Pont-Saint-Martin
+  - ⛰️ Montagne e ghiacciai: Monte Bianco, Cervino, Monte Rosa, Gran Paradiso, Miage
+  - 🏰 Castelli e monumenti: Fénis, Issogne, Verrès, Forte di Bard, Sarre, Castel Savoia
+  - 🦌 Parchi, laghi e fiumi: Parco del Gran Paradiso, Mont Avic, Place-Moulin, Dora Baltea
+  - 🚗 Passi e trafori: Traforo del Monte Bianco, Gran San Bernardo, Piccolo San Bernardo
+  - ⛷️ Sci e terme: Courmayeur, Cervinia, La Thuile, Pila, Monterosa Ski, Pré-Saint-Didier, Saint-Vincent
+  - 🧀 Prodotti tipici: Fontina (Valpelline), lardo di Arnad, vigneti di Morgex e La Salle
+- **Scheda di ogni luogo**: testo, informazioni principali e una frase "Da ricordare"
+- **Scheda della regione**: dati, confini, lingue, clima, storia, economia, comunicazioni, cucina e tradizioni
+- **Quiz "Dov'è?"**: compare il nome di un luogo e bisogna trovarlo sulla cartina (segnaposto tutti grigi)
+- Funziona su computer e telefono, in tema chiaro e scuro
+
+## Come aprirlo
+
+Non serve installare niente: basta aprire `index.html` con il browser.
+Serve la connessione a internet solo per lo sfondo della cartina; confine, segnaposto e schede funzionano anche offline.
+
+### Pubblicarlo online con GitHub Pages
+
+1. Carica questa cartella in un repository su GitHub
+2. Vai su **Settings → Pages**
+3. In "Branch" scegli `main` e la cartella `/ (root)`, poi **Save**
+4. Dopo un minuto il sito sarà online su `https://<tuo-utente>.github.io/<nome-repo>/`
+
+## Struttura
+
+```
+index.html          pagina principale
+css/style.css       grafica
+js/data.js          TUTTI i testi: luoghi, categorie, scheda della regione
+js/app.js           logica della mappa, del pannello e del quiz
+data/confine.js     confine della regione (GeoJSON)
+vendor/leaflet/     libreria Leaflet 1.9.4 per la cartina
+```
+
+### Aggiungere o modificare un luogo
+
+Apri `js/data.js`, copia uno degli oggetti nell'elenco `LUOGHI` e cambia i campi:
+
+```js
+{
+  id: "esempio", nome: "Nome del luogo", cat: "castelli",   // categoria: citta, montagne, castelli, natura, passi, turismo, sapori
+  lat: 45.70, lng: 7.40,                                    // coordinate (da Google Maps: tasto destro sul punto)
+  sottotitolo: "Una riga di descrizione",
+  testo: "Il paragrafo principale...",
+  punti: ["Informazione 1", "Informazione 2"],
+  ricorda: "La frase da ricordare per l'interrogazione"
+}
+```
+
+## Fonti e licenze
+
+- Confine regionale: [openpolis/geojson-italy](https://github.com/openpolis/geojson-italy) (dati ISTAT, CC-BY)
+- Cartina: © contributori [OpenStreetMap](https://www.openstreetmap.org/copyright), stile [OpenTopoMap](https://opentopomap.org) (CC-BY-SA)
+- Libreria [Leaflet](https://leafletjs.com) (licenza BSD-2, vedi `vendor/leaflet/LICENSE`)
+- Il tracciato della Dora Baltea è semplificato

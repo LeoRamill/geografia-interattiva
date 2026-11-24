@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Valle d'Aosta interattiva</title>
+  <meta name="description" content="Mappa interattiva della Valle d'Aosta: città, montagne, castelli, parchi, passi e prodotti tipici, con schede per lo studio.">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="flag" aria-hidden="true"><i></i><i></i></span>
+      <div>
+        <h1>Valle d'Aosta</h1>
+        <p>Mappa interattiva · clicca un punto per scoprirlo</p>
+      </div>
+    </div>
+    <div class="actions">
+      <button id="btn-quiz" class="btn">🎯 Quiz</button>
+      <button id="btn-home" class="btn btn-ghost">🏠 Regione</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="map-wrap">
+      <div id="map" aria-label="Mappa della Valle d'Aosta"></div>
+      <div id="filters" class="filters" role="group" aria-label="Filtra per categoria"></div>
+      <div id="quizbar" class="quizbar" hidden>
+        <div>
+          <span class="quiz-label">Trova sulla mappa:</span>
+          <strong id="quiz-target"></strong>
+        </div>
+        <div class="quiz-right">
+          <span id="quiz-score">0 / 0</span>
+          <button id="quiz-skip" class="btn btn-small btn-ghost">Salta</button>
+          <button id="quiz-stop" class="btn btn-small">Esci</button>
+        </div>
+        <div id="quiz-feedback" class="quiz-feedback" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <aside id="panel" class="panel" aria-live="polite"></aside>
+  </main>
+
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script src="data/confine.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
