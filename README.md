@@ -23,7 +23,7 @@ Si clicca un punto sulla cartina e si legge la sua scheda con le informazioni pr
   - ⛷️ Sci e terme: Courmayeur, Cervinia, La Thuile, Pila, Monterosa Ski, Pré-Saint-Didier, Saint-Vincent
   - 🧀 Prodotti tipici: Fontina (Valpelline), lardo di Arnad, vigneti di Morgex e La Salle
 - **Scheda di ogni luogo**: testo, informazioni principali e una frase "Da ricordare"
-- **Scheda della regione**: carta d'identità (superficie, abitanti, densità, capoluogo, stemma), confini e territorio, popolazione, lingue, clima e fasce di vegetazione, storia, economia con gli occupati per settore, comunicazioni, cucina e tradizioni. I numeri sono quelli del libro di testo (Geografia vol. 5)
+- **Scheda della regione**: carta d'identità (superficie, abitanti, densità, capoluogo, stemma), confini e territorio, popolazione e lingue, clima e fasce di vegetazione, storia, economia con gli occupati per settore, comunicazioni, tradizioni e sport. I numeri sono quelli del libro di testo (Geografia vol. 5)
 - **Esercitati** (pulsante Quiz), due modalità:
   - **Dov'è?**: compare il nome di un luogo e bisogna trovarlo sulla cartina (pallini tutti grigi)
   - **Domande e vero/falso**: 12 domande a caso su 32, come gli esercizi del libro, con la spiegazione dopo ogni risposta
@@ -59,7 +59,7 @@ vendor/leaflet/     libreria Leaflet 1.9.4 per la cartina
 
 ### Dopo ogni modifica
 
-In `index.html` i file hanno un numero di versione (`app.js?v=8`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=9`, `?v=10`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
+In `index.html` i file hanno un numero di versione (`app.js?v=9`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=10`, `?v=11`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
 
 ### Aggiungere una domanda
 

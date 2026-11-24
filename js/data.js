@@ -504,12 +504,9 @@ window.SCHEDA = [
       <li>La maggior parte degli abitanti vive nel <b>fondovalle</b>, lungo la valle della Dora Baltea</li>
       <li><b>Aosta</b> (33.186 ab.) ha circa <b>un quarto</b> della popolazione; gli altri vivono in <b>piccoli comuni</b></li>
       <li>Nel Novecento molte valli laterali si sono <b>spopolate</b>: la gente è scesa in città o in pianura per lavorare</li>
-      <li>È una regione <b>bilingue</b>: italiano e francese sono lingue ufficiali</li>
+      <li>È una regione <b>bilingue</b>: le lingue ufficiali sono l'<b>italiano</b> e il <b>francese</b></li>
+      <li><i>Curiosità:</i> molti parlano anche il <b>patois</b> (un dialetto francoprovenzale); nella valle del Lys i <b>Walser</b> parlano una lingua di origine tedesca</li>
     </ul>`
-  },
-  {
-    titolo: "🗣️ Lingue",
-    html: `<p>Lingue ufficiali: <b>italiano e francese</b>. Molti parlano il <b>patois</b> (francoprovenzale); nella valle del Lys i <b>Walser</b> parlano una lingua di origine tedesca.</p>`
   },
   {
     titolo: "❄️ Clima e ambienti",
@@ -528,15 +525,10 @@ window.SCHEDA = [
   {
     titolo: "🏛️ Storia in breve",
     html: `<ol class="timeline">
-      <li><b>Preistoria</b> – area megalitica di Saint-Martin-de-Corléans (Aosta)</li>
-      <li><b>Salassi</b> – popolo celtico (gallico) che controllava passi e miniere</li>
-      <li><b>25 a.C.</b> – i Romani sconfiggono i Salassi e fondano <i>Augusta Praetoria</i>, in onore di Augusto: da qui vengono i nomi di <b>Aosta</b> e della regione</li>
-      <li><b>Medioevo</b> – Burgundi, Franchi, poi dal 1000 circa i <b>Savoia</b>; gli Challant costruiscono i castelli</li>
-      <li><b>1800</b> – Napoleone passa il Gran San Bernardo; il Forte di Bard lo blocca</li>
-      <li><b>1861</b> – entra nel Regno d'Italia</li>
-      <li><b>Fascismo</b> – vietato il francese, nomi italianizzati</li>
-      <li><b>Resistenza</b> – Émile Chanoux, simbolo dell'autonomia</li>
-      <li><b>1948</b> – statuto speciale</li>
+      <li><b>Salassi</b> – un popolo gallico (celtico) che abitava la valle</li>
+      <li><b>25 a.C.</b> – i Romani sconfiggono i Salassi e fondano <i>Augusta Praetoria</i>, in onore di Augusto: da qui vengono i nomi di <b>Aosta</b> e della regione. Restano le mura, la Porta Pretoria, il teatro, l'anfiteatro, il foro, le terme, l'Arco d'Augusto e il ponte romano sul Buthier.</li>
+      <li><b>Medioevo</b> – la regione passa per secoli ai <b>Savoia</b>; le famiglie nobili costruiscono i castelli</li>
+      <li><b>1948</b> – diventa regione autonoma a <b>statuto speciale</b>, bilingue</li>
     </ol>`
   },
   {
@@ -572,9 +564,18 @@ window.SCHEDA = [
     </ul>`
   },
   {
-    titolo: "🍲 Cucina e tradizioni",
-    html: `<p><b>Fontina DOP</b>, fonduta, polenta concia, carbonade, zuppa alla valpellinese, lardo di Arnad, tegole, <b>caffè alla valdostana</b> nella <b>coppa dell'amicizia</b>.</p>
-      <p><b>Fiera di Sant'Orso</b> (30–31 gennaio), <b>Bataille des Reines</b>, sport tradizionali (tsan, rebatta, fiolet, palet), carnevali storici, merletti di Cogne.</p>`
+    titolo: "🎉 Tradizioni e sport",
+    html: `<ul>
+      <li><b>Sport tradizionali</b> tipici della Valle d'Aosta:
+        <ul>
+          <li><b>fiolet</b>: con una mazza si colpisce un piccolo pezzo di legno a forma di uovo (il <i>fiolet</i>), appoggiato su una pietra, per lanciarlo il più lontano possibile</li>
+          <li><b>palet</b>: si lanciano dei dischi di metallo cercando di avvicinarli il più possibile a un bersaglio</li>
+          <li>e poi il <b>tsan</b> e la <b>rebatta</b></li>
+        </ul>
+      </li>
+      <li><b>Fiera di Sant'Orso</b> (30–31 gennaio, Aosta): fiera dell'artigianato del legno, che si tiene da oltre 1000 anni</li>
+      <li><b>Bataille des Reines</b>: sfide tra mucche, che si spingono con le corna senza farsi male, per eleggere la "regina"</li>
+    </ul>`
   }
 ];
 
