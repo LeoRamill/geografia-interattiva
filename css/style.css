@@ -445,3 +445,45 @@ details.qa p {
 .flash-azioni .btn { flex: 1; padding: 10px 12px; font-size: .95rem; }
 .btn-ok { background: var(--ok); border-color: var(--ok); }
 .flash-lista { margin-bottom: 14px !important; }
+
+/* ---------- Interrogazione ---------- */
+.tabs { display: flex; gap: 6px; margin: 6px 0 12px; }
+.tab {
+  flex: 1; font: inherit; font-size: .88rem; font-weight: 700; cursor: pointer; padding: 8px 10px;
+  color: var(--text); background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px;
+}
+.tab[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.discorso-azioni { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 8px; }
+.crono { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 1.05rem; min-width: 44px; }
+.discorso h4 { margin: 14px 0 4px; font-size: .95rem; color: var(--accent); }
+.discorso p { line-height: 1.6; }
+.kw { background: color-mix(in srgb, #f5c542 35%, transparent); border-radius: 4px; padding: 0 2px; }
+.discorso.nascondi .kw:not(.vista) {
+  color: transparent; background: var(--surface-2); cursor: pointer;
+  box-shadow: inset 0 -2px 0 var(--accent); user-select: none;
+}
+.discorso.nascondi .kw.vista { background: color-mix(in srgb, var(--ok) 20%, transparent); }
+table.trab { width: 100%; border-collapse: collapse; font-size: .88rem; margin-bottom: 8px; }
+table.trab td { padding: 6px 4px; border-bottom: 1px solid var(--border); vertical-align: top; }
+table.trab td:first-child { width: 55%; }
+#vai-sim { margin-top: 4px; }
+.sim-fase { font-size: .8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+.sim-domanda {
+  background: var(--surface); border: 2px solid var(--border); border-radius: 14px; padding: 12px 14px; margin-bottom: 8px;
+}
+.sim-domanda.seguito { margin-left: 18px; border-style: dashed; }
+.sim-chi { font-size: .78rem; color: var(--muted); }
+.sim-domanda p { font-size: 1.12rem; font-weight: 700; margin: 4px 0 6px !important; }
+.sim-badge { display: inline-block; font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+.sim-badge.trab { background: color-mix(in srgb, #f59e0b 22%, var(--surface)); }
+.sim-badge.rag { background: color-mix(in srgb, #6366f1 18%, var(--surface)); }
+#sim-mostra { margin-bottom: 10px; }
+.sim-risposta {
+  border-left: 4px solid var(--ok); background: color-mix(in srgb, var(--ok) 9%, var(--surface));
+  border-radius: 0 10px 10px 0; padding: 8px 12px; margin-bottom: 10px;
+}
+.sim-risposta[hidden], #sim-mostra[hidden] { display: none; }
+.sim-risposta span { font-size: .78rem; font-weight: 700; color: var(--ok); }
+.sim-risposta p { margin: 4px 0 !important; }
+.sim-risposta small { color: var(--muted); }
+.btn:disabled { opacity: .45; cursor: default; }

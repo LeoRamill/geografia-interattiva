@@ -766,3 +766,94 @@ window.FLASHCARD = [
     { f: "Quali sono gli sport tradizionali?", r: "Il fiolet e il palet (e anche il tsan e la rebatta)." }
   ]}
 ];
+
+/* ---------------- Interrogazione ----------------
+   Discorso da dire all'interrogazione (circa 3 minuti). Le parole tra **asterischi**
+   sono le parole chiave: nel sito si possono nascondere per ripassarle a memoria. */
+window.DISCORSO = [
+  { titolo: "Dove si trova", testo: "Oggi vi parlo della Valle d'Aosta. Si trova nel **nord-ovest dell'Italia**, in mezzo alle **Alpi**. Confina a **nord con la Svizzera**, a **ovest con la Francia** e a **sud e a est con il Piemonte**. È la **regione più piccola d'Italia**, con 3.261 km², ed è anche la **meno popolata**. Il capoluogo è **Aosta**. Dal **1948** è una regione **a statuto speciale**, cioè ha più autonomia delle altre regioni, ed è **bilingue**: le lingue ufficiali sono l'**italiano** e il **francese**." },
+  { titolo: "Il territorio", testo: "Il territorio è **tutto montuoso**: c'è una grande valle centrale da cui partono tante valli laterali. Qui ci sono le **montagne più alte d'Europa**: il **Monte Bianco**, alto **4.807 metri**, il **Monte Rosa** (4.637 m), il **Cervino** (4.478 m), che ha la forma di una piramide, e il **Gran Paradiso** (4.061 m), l'unico \"quattromila\" tutto in Italia. A nord ci sono le **Alpi Pennine**, a ovest e a sud le **Alpi Graie**. Sulle cime sopra i 3.000 metri ci sono i **ghiacciai**, che si stanno riducendo a causa dei **cambiamenti climatici**." },
+  { titolo: "Il fiume e i laghi", testo: "Il fiume principale è la **Dora Baltea**: nasce ai piedi del Monte Bianco, attraversa la regione **da ovest a est** e si getta nel **Po**. Nella Dora confluiscono molti **torrenti** che scendono dalle valli laterali. Tra le montagne ci sono tanti piccoli **laghi alpini**." },
+  { titolo: "Clima e ambienti", testo: "Il clima è **alpino**: gli inverni sono lunghi e freddi, con tanta neve, e le estati sono brevi e fresche. Le piante cambiano con l'altitudine: salendo si trovano **boschi di abeti e larici**, poi **prati**, poi **muschi e licheni**, e in cima neve e ghiacciai. Sulle montagne vivono **stambecchi**, camosci, marmotte e aquile. Per proteggerli, nel **1922** è nato il **Parco Nazionale del Gran Paradiso**, il più antico d'Italia; il suo simbolo è lo **stambecco**." },
+  { titolo: "La popolazione", testo: "Gli abitanti sono **123.337**, circa **38 per km²**. La maggior parte vive nel **fondovalle**, lungo la Dora Baltea. Ad **Aosta**, che ha circa 33.000 abitanti, vive circa **un quarto** della popolazione; gli altri vivono in piccoli comuni." },
+  { titolo: "L'economia", testo: "L'attività più importante è il **turismo**: molte persone vengono a **sciare**, a fare **alpinismo** e a visitare castelli e monumenti. Infatti il **settore terziario** dà lavoro a circa **tre persone su quattro**. Grazie ai tanti corsi d'acqua si produce molta **energia idroelettrica**. L'**agricoltura** si fa nel fondovalle e dà lavoro a poche persone: si coltivano cereali, patate, alberi da frutto e le viti dei **vigneti eroici**, su terreni ripidi e lavorati a mano. Nei pascoli si **allevano le mucche**: con il loro latte si fa la **Fontina**. È importante anche l'**artigianato del legno**." },
+  { titolo: "I collegamenti", testo: "Anche se ci sono tante montagne, la regione è ben collegata: nel fondovalle c'è l'**autostrada A5**, ci sono i **valichi alpini** del Gran San Bernardo e del Piccolo San Bernardo e due grandi gallerie: il **Traforo del Monte Bianco** porta in **Francia** e quello del **Gran San Bernardo** in **Svizzera**." },
+  { titolo: "La storia", testo: "Anticamente qui vivevano i **Salassi**, un popolo gallico. Nel **25 a.C.** i **Romani** li sconfissero e fondarono **Augusta Praetoria**, in onore dell'imperatore **Augusto**: da qui viene il nome **Aosta**. Ad Aosta si vedono ancora la **Porta Pretoria**, l'**Arco d'Augusto**, il teatro e l'anfiteatro romani. Nel Medioevo la regione passò ai **Savoia** e furono costruiti molti **castelli**." },
+  { titolo: "Le tradizioni", testo: "Ci sono sport tradizionali come il **fiolet** e il **palet**, e ogni anno ad Aosta si tiene la **Fiera di Sant'Orso**, dedicata all'artigianato del legno, che esiste da più di mille anni." },
+  { titolo: "Per concludere", testo: "La Valle d'Aosta è una regione piccola, ma ha le **montagne più alte d'Europa**, una **natura protetta** e una **storia antica**, che va dai Romani ai castelli." }
+];
+
+/* Flusso di domande dell'interrogazione: si parte dal generale, si va alla cartina, poi nei dettagli.
+   seguito = domanda che l'insegnante fa subito dopo la precedente;
+   tipo: "trabocchetto" o "ragionamento" (domande che chiedono il perché);
+   mappa: che cosa mostrare sulla cartina quando si vede la risposta. */
+window.FLUSSO = [
+  { fase: "1️⃣ Si parte", domande: [
+    { d: "Parlami della Valle d'Aosta.", r: "Comincia dal discorso: dove si trova, i confini, che è la regione più piccola d'Italia e che il capoluogo è Aosta.", mappa: { tipo: "regione" } }
+  ]},
+  { fase: "2️⃣ Alla cartina", domande: [
+    { d: "Indicami la Valle d'Aosta sulla carta.", r: "È in alto a sinistra, nel nord-ovest dell'Italia, in mezzo alle Alpi.", mappa: { tipo: "regione" } },
+    { seguito: true, d: "Con chi confina?", r: "A nord con la Svizzera, a ovest con la Francia, a sud e a est con il Piemonte.", mappa: { tipo: "regione" } },
+    { seguito: true, d: "Che montagne ci sono al confine con la Svizzera?", r: "Le Alpi Pennine, con il Cervino e il Monte Rosa.", mappa: { tipo: "zona", id: "pennine" } },
+    { d: "Indicami il fiume principale.", r: "La Dora Baltea.", mappa: { tipo: "dora" } },
+    { seguito: true, d: "In che direzione scorre? Dove va a finire?", r: "Scorre da ovest a est, poi esce in Piemonte e si getta nel Po.", mappa: { tipo: "dora" } },
+    { d: "Dov'è il capoluogo?", r: "Aosta è al centro della regione, nel fondovalle, lungo la Dora Baltea.", mappa: { tipo: "luogo", id: "aosta" } }
+  ]},
+  { fase: "3️⃣ Il territorio", domande: [
+    { d: "Com'è il territorio?", r: "È tutto montuoso: 100% montagna. Non ci sono pianure né colline." },
+    { seguito: true, d: "Quali sono le montagne più alte? Quanto sono alte?", r: "Il Monte Bianco (4.807 m), il Monte Rosa (4.637 m), il Cervino (4.478 m) e il Gran Paradiso (4.061 m).", mappa: { tipo: "luogo", id: "montebianco" } },
+    { seguito: true, tipo: "trabocchetto", d: "Il Gran Paradiso è la montagna più alta?", r: "No, la più alta è il Monte Bianco. Il Gran Paradiso è l'unico \"4000\" che si trova tutto in Italia.", mappa: { tipo: "luogo", id: "granparadiso" } },
+    { d: "Che cosa sono i ghiacciai? Perché si stanno riducendo?", r: "Sono grandi masse di ghiaccio sulle cime sopra i 3.000 m. Si riducono a causa dei cambiamenti climatici." }
+  ]},
+  { fase: "4️⃣ Clima e ambienti", domande: [
+    { d: "Che clima c'è?", r: "Clima alpino: inverni lunghi, freddi e con tanta neve; estati brevi e fresche." },
+    { seguito: true, tipo: "ragionamento", d: "Perché fa così freddo?", r: "Perché siamo in alta montagna: più si sale, più fa freddo." },
+    { seguito: true, d: "Come cambiano le piante salendo in montagna?", r: "Prima boschi di abeti e larici, poi prati e piante erbacee, poi muschi e licheni; in cima neve e ghiacciai." },
+    { d: "Quale parco c'è? Quando è nato? Qual è il suo simbolo?", r: "Il Parco Nazionale del Gran Paradiso, nato nel 1922: è il più antico d'Italia. Il simbolo è lo stambecco.", mappa: { tipo: "luogo", id: "parcogp" } }
+  ]},
+  { fase: "5️⃣ La popolazione", domande: [
+    { d: "È una regione molto popolata?", r: "No, è la meno popolata d'Italia: 123.337 abitanti, circa 38 per km²." },
+    { seguito: true, tipo: "ragionamento", d: "Perché secondo te ci vive poca gente?", r: "Perché è tutta montagna: fa freddo e c'è poco spazio piano per costruire e coltivare." },
+    { seguito: true, tipo: "ragionamento", d: "Dove vive la maggior parte delle persone? Perché?", r: "Nel fondovalle, lungo la Dora Baltea: è più piano, il clima è meno duro e ci sono le strade e il lavoro." },
+    { d: "Che lingue si parlano?", r: "Italiano e francese: sono tutte e due lingue ufficiali, è una regione bilingue (è vicina alla Francia)." },
+    { seguito: true, d: "Che cosa vuol dire \"regione a statuto speciale\"?", r: "Che ha più autonomia delle altre regioni, anche per proteggere la sua lingua e la sua cultura. Lo è dal 1948." }
+  ]},
+  { fase: "6️⃣ L'economia", domande: [
+    { d: "Di che cosa vive la gente?", r: "Soprattutto di turismo: il settore terziario dà lavoro a circa 3 persone su 4." },
+    { seguito: true, tipo: "ragionamento", d: "Perché il turismo è così importante?", r: "Per le montagne (sci e alpinismo), la natura, i castelli e i monumenti romani." },
+    { seguito: true, tipo: "ragionamento", d: "Che cosa si produce con l'acqua? Perché proprio qui?", r: "Energia idroelettrica, perché ci sono tanti torrenti, ghiacciai e dighe." },
+    { d: "E l'agricoltura?", r: "Dà lavoro a poche persone e si fa nel fondovalle: cereali, patate, frutta e i vigneti eroici." },
+    { seguito: true, d: "Che cosa si alleva? Che cosa si produce?", r: "Le mucche, nei pascoli: con il loro latte si fa la Fontina." }
+  ]},
+  { fase: "7️⃣ I collegamenti", domande: [
+    { tipo: "ragionamento", d: "Se è circondata dalle montagne, come si va in Francia o in Svizzera?", r: "Con l'autostrada A5, i valichi alpini (Gran e Piccolo San Bernardo) e le gallerie." },
+    { seguito: true, tipo: "trabocchetto", d: "Quale galleria porta in Francia?", r: "Il Traforo del Monte Bianco. Quello del Gran San Bernardo porta in Svizzera.", mappa: { tipo: "luogo", id: "traforomb" } }
+  ]},
+  { fase: "8️⃣ La storia", domande: [
+    { d: "Chi abitava qui anticamente?", r: "I Salassi, un popolo gallico." },
+    { seguito: true, d: "Poi chi arrivò?", r: "I Romani, nel 25 a.C." },
+    { seguito: true, d: "Da dove viene il nome Aosta?", r: "Da Augusta Praetoria, la città che i Romani fondarono in onore dell'imperatore Augusto.", mappa: { tipo: "luogo", id: "aosta" } },
+    { seguito: true, d: "Che cosa hanno lasciato i Romani?", r: "La Porta Pretoria, l'Arco d'Augusto, il teatro e l'anfiteatro." }
+  ]},
+  { fase: "9️⃣ Per chiudere", domande: [
+    { d: "Che cosa ti ha colpito di più?", r: "Prepara una risposta tua, per esempio: \"Che ci sono le montagne più alte d'Europa\" oppure \"Il Parco del Gran Paradiso, che ha salvato gli stambecchi\"." },
+    { tipo: "ragionamento", d: "Confrontala con la nostra regione.", r: "Prepara 2–3 differenze: montagne o pianura, clima, numero di abitanti, lavori più diffusi." }
+  ]}
+];
+
+window.TRABOCCHETTI = [
+  ["Il Gran Paradiso è il monte più alto?", "No, è il **Monte Bianco**"],
+  ["La Dora Baltea sfocia nel mare?", "No, si getta nel **Po**"],
+  ["È divisa in province?", "No, non ha province"],
+  ["Il clima è mediterraneo?", "No, è **alpino**"],
+  ["Si parla il tedesco come lingua ufficiale?", "No: **italiano e francese**"],
+  ["Il Traforo del Monte Bianco va in Svizzera?", "No, in **Francia**"]
+];
+
+window.CONSIGLI = [
+  "Rispondi con **frasi complete**: \"Il fiume principale è la Dora Baltea\", non solo \"la Dora\".",
+  "Parti dal **generale** e poi aggiungi i **dettagli**, come nel discorso.",
+  "Se non ricordi un numero preciso, va bene dire **\"circa\"** (per esempio \"circa 120.000 abitanti\").",
+  "Alla cartina **indica con il dito** mentre parli.",
+  "Le domande di **ragionamento** (💭) chiedono il **perché**: alle medie piacciono molto."
+];
