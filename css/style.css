@@ -584,3 +584,11 @@ body.tour-on .lbl-catena { display: none; }   /* le scritte delle catene le most
 @media (prefers-reduced-motion: reduce) {
   .tour-luce span, .tour-bordo, #map.tour-confini .country-label, .tour-luce b, .tour-zona, .tour-zona-nome { animation: none; }
 }
+
+.tour-voce-scelta { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: .88rem; color: var(--muted); }
+.tour-voce-scelta[hidden], .tour-voce-msg[hidden] { display: none; }
+.tour-voce-scelta select {
+  font: inherit; font-size: .88rem; color: var(--text); background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px; padding: 5px 8px; max-width: 100%;
+}
+.tour-voce-msg { font-size: .85rem; margin: 10px 0 0 !important; padding: 8px 10px; border-radius: 8px; background: var(--surface-2); }
