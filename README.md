@@ -6,7 +6,7 @@ Si clicca un punto sulla cartina e si legge la sua scheda con le informazioni pr
 ## Cosa contiene
 
 - **Cartina pulita**: sfondo chiaro con solo l'ombreggiatura delle montagne, senza strade né scritte, la regione in evidenza (il resto è sbiadito) e la **Dora Baltea**
-- **Quattro sfondi** a scelta: Semplice, Rilievo a colori, Satellite, Escursionistica (dettagliata)
+- **Quattro sfondi** a scelta: Rilievo a colori (iniziale), Semplice, Satellite, Escursionistica (dettagliata)
 - **Nomi dei luoghi** che compaiono quando ti avvicini con lo zoom (o passando sopra col mouse)
 - **Legenda** sulla cartina: tocca una categoria per mostrarla o nasconderla
 - **30 luoghi** divisi in 7 categorie:
@@ -47,7 +47,7 @@ vendor/leaflet/     libreria Leaflet 1.9.4 per la cartina
 
 ### Dopo ogni modifica
 
-In `index.html` i file hanno un numero di versione (`app.js?v=3`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=4`, `?v=5`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
+In `index.html` i file hanno un numero di versione (`app.js?v=4`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=5`, `?v=6`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
 
 ### Aggiungere o modificare un luogo
 

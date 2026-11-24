@@ -47,7 +47,7 @@
     maxZoom: 17,
     attribution: OSM + ' · &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)'
   });
-  semplice.addTo(map);
+  colori.addTo(map);
 
   // Ombra fuori dalla regione: un grande rettangolo con un "buco" a forma di Valle d'Aosta.
   const ring = window.CONFINE_VDA.geometry.coordinates[0].map(([lng, lat]) => [lat, lng]);
@@ -77,7 +77,7 @@
   });
 
   L.control.layers(
-    { "Semplice": semplice, "Rilievo a colori": colori, "Satellite": satellite, "Escursionistica (dettagliata)": topo },
+    { "Rilievo a colori": colori, "Semplice": semplice, "Satellite": satellite, "Escursionistica (dettagliata)": topo },
     { "Confine regionale": bordo, "Dora Baltea": dora },
     { position: "bottomright", collapsed: true }
   ).addTo(map);
