@@ -25,8 +25,8 @@ Si clicca un punto sulla cartina e si legge la sua scheda con le informazioni pr
 - **Scheda di ogni luogo**: testo, informazioni principali e una frase "Da ricordare"
 - **Scheda della regione**: carta d'identità (superficie, abitanti, densità, capoluogo, stemma), confini e territorio, popolazione e lingue, clima e fasce di vegetazione, storia, economia con gli occupati per settore, comunicazioni, tradizioni e sport. I numeri sono quelli del libro di testo (Geografia vol. 5)
 - **Esercitati** (pulsante Quiz), due modalità:
-  - **Dov'è?**: compare il nome di un luogo e bisogna trovarlo sulla cartina (pallini tutti grigi)
-  - **Domande e vero/falso**: 12 domande a caso su 32, come gli esercizi del libro, con la spiegazione dopo ogni risposta
+  - **Dov'è?**: compare il nome di un luogo e bisogna trovarlo sulla cartina (pallini tutti grigi). Ci sono anche la **Dora Baltea** (si clicca il fiume) e le catene montuose, **Alpi Pennine** e **Alpi Graie** (si clicca la zona giusta)
+  - **Domande e vero/falso**: 12 domande su 58, come gli esercizi del libro, con la spiegazione dopo ogni risposta. A ogni partita c'è almeno una domanda per ogni sezione della scheda
 - **Paralleli e meridiani** sulla cartina (si possono nascondere dalla legenda)
 - Funziona su computer e telefono, in tema chiaro e scuro
 
@@ -52,6 +52,7 @@ js/app.js           logica della mappa, del pannello e del quiz
 data/confine.js     confine della regione (GeoJSON)
 data/fiumi.js       fiumi e Dora Baltea (generato con tools/genera_fiumi.py)
 data/politica.js    aree, comuni, confini, strade, laghi (generato con tools/genera_politica.py)
+data/zone.js        zone di Alpi Pennine e Alpi Graie per il quiz (generato con tools/genera_zone.py)
 tiles/rilievo/      rilievo della carta fisica (generato con tools/genera_rilievo.py)
 tools/              script per rigenerare i dati
 vendor/leaflet/     libreria Leaflet 1.9.4 per la cartina
@@ -59,15 +60,15 @@ vendor/leaflet/     libreria Leaflet 1.9.4 per la cartina
 
 ### Dopo ogni modifica
 
-In `index.html` i file hanno un numero di versione (`app.js?v=10`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=11`, `?v=12`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
+In `index.html` i file hanno un numero di versione (`app.js?v=11`). Quando modifichi CSS o JavaScript, aumenta il numero (`?v=12`, `?v=13`…): così i browser scaricano i file nuovi invece di usare quelli vecchi salvati in memoria.
 
 ### Aggiungere una domanda
 
-In `js/data.js`, nell'elenco `DOMANDE`:
+In `js/data.js`, nell'elenco `DOMANDE`. `sez` è la sezione della scheda (una di quelle in `SEZIONI_DOMANDE`); `giusta` conta da 0:
 
 ```js
-{ tipo: "scelta", d: "La domanda?", opzioni: ["A", "B", "C"], giusta: 1, spiega: "Perché è B." },
-{ tipo: "vf", d: "Un'affermazione.", vero: false, spiega: "Perché è falsa." }
+{ sez: "storia", tipo: "scelta", d: "La domanda?", opzioni: ["A", "B", "C"], giusta: 1, spiega: "Perché è B." },
+{ sez: "clima", tipo: "vf", d: "Un'affermazione.", vero: false, spiega: "Perché è falsa." }
 ```
 
 ### Aggiungere o modificare un luogo
@@ -92,6 +93,7 @@ pip install numpy pillow shapely
 python3 tools/genera_rilievo.py     # rilievo a colori (tessere in tiles/rilievo)
 python3 tools/genera_fiumi.py       # fiumi e Dora Baltea dai dati di altitudine
 python3 tools/genera_politica.py    # dati della carta politica
+python3 tools/genera_zone.py        # zone di Alpi Pennine e Graie (dopo genera_fiumi.py)
 ```
 
 Colori, area coperta e soglie si cambiano all'inizio di ogni script. Le scritte della carta fisica (catene, valli, cime, fiumi) e le città della carta politica sono in `js/data.js` (`ETICHETTE_FISICHE` e `CITTA`).

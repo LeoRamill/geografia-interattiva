@@ -382,3 +382,7 @@ body.quiz-on .lbl-cima { display: none; }
 }
 .legend-grid { margin-top: 4px; border-top: 1px solid var(--border); border-radius: 0; padding-top: 6px; }
 .legend-grid .sw { color: #fff; font-size: 12px; }
+
+/* durante il quiz "Dov'è?" le scritte della cartina darebbero la risposta */
+body.quiz-on .lbl { display: none; }
+.quiz-aiuto { font-size: .78rem; font-weight: 500; color: var(--muted); }

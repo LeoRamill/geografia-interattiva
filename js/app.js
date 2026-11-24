@@ -173,10 +173,15 @@
 
   // Dora Baltea: tracciato calcolato dai dati di altitudine, cliccabile
   const dora = L.polyline(window.FIUMI.dora, {
-    color: "#1f63b5", weight: 5, opacity: 0.9, lineCap: "round", lineJoin: "round"
+    color: "#1f63b5", weight: 5, opacity: 0.9, lineCap: "round", lineJoin: "round", interactive: false
   }).addTo(map);
-  dora.bindTooltip("Dora Baltea", { sticky: true, className: "tip" });
-  dora.on("click", () => { if (!quiz.on && !domande.on) showPlace(window.DORA_INFO, null); });
+  // linea invisibile più larga sopra il fiume, così è facile cliccarlo (anche con il dito)
+  const doraClic = L.polyline(window.FIUMI.dora, { color: "#000", opacity: 0, weight: 22, bubblingMouseEvents: false }).addTo(map);
+  doraClic.bindTooltip("Dora Baltea", { sticky: true, className: "tip" });
+  doraClic.on("click", e => {
+    if (quiz.on) return quizClicMappa(e.latlng, true);
+    if (!domande.on) showPlace(window.DORA_INFO, null);
+  });
 
   // Etichette dei territori confinanti
   window.CONFINANTI.forEach(c => {
@@ -538,6 +543,61 @@
   document.getElementById("btn-home").addEventListener("click", () => { if (quiz.on) stopQuiz(); domande.on = false; goHome(); });
 
   /* ---------------- Quiz ---------------- */
+  // Bersagli del quiz che non sono pallini: il fiume e le due catene montuose (data/zone.js)
+  const EXTRA = [
+    { id: "dora", nome: "Dora Baltea", cat: "natura", tipo: "fiume", lat: 45.737, lng: 7.47,
+      aiuto: "clicca sul fiume", ricorda: "nasce ai piedi del Monte Bianco, attraversa la regione da ovest a est e si getta nel Po." },
+    { id: "pennine", nome: "Alpi Pennine", cat: "montagne", tipo: "zona", lat: 45.93, lng: 7.55,
+      aiuto: "clicca sulla zona della cartina", ricorda: "a nord, al confine con la Svizzera: Grand Combin, Cervino, Monte Rosa." },
+    { id: "graie", nome: "Alpi Graie", cat: "montagne", tipo: "zona", lat: 45.58, lng: 7.15,
+      aiuto: "clicca sulla zona della cartina", ricorda: "a ovest e a sud: Monte Bianco e Gran Paradiso." }
+  ];
+
+  function dentroAnello(ll, anello) {          // anello: [[lng, lat], ...]
+    let c = false;
+    for (let a = 0, b = anello.length - 1; a < anello.length; b = a++) {
+      const [xa, ya] = anello[a], [xb, yb] = anello[b];
+      if ((ya > ll.lat) !== (yb > ll.lat) && ll.lng < (xb - xa) * (ll.lat - ya) / (yb - ya) + xa) c = !c;
+    }
+    return c;
+  }
+  function dentroGeom(ll, g) {
+    const poligoni = g.type === "Polygon" ? [g.coordinates] : g.coordinates;
+    return poligoni.some(p => dentroAnello(ll, p[0]) && !p.slice(1).some(buco => dentroAnello(ll, buco)));
+  }
+  const zonaDi = ll => ["pennine", "graie"].find(id => dentroGeom(ll, window.ZONE[id])) || null;
+
+  // mostra per un attimo in verde la zona o il fiume
+  let evidenziato = null;
+  function evidenzia(t) {
+    if (evidenziato) map.removeLayer(evidenziato);
+    evidenziato = t.tipo === "zona"
+      ? L.geoJSON(window.ZONE[t.id], { style: { color: "#15803d", weight: 2, fillColor: "#22c55e", fillOpacity: 0.35, interactive: false } })
+      : L.polyline(window.FIUMI.dora, { color: "#22c55e", weight: 10, opacity: 0.85, interactive: false });
+    const questo = evidenziato.addTo(map);
+    setTimeout(() => { if (evidenziato === questo) { map.removeLayer(questo); evidenziato = null; } }, 2500);
+  }
+  const descrivi = l => (l.tipo === "zona" ? "le " : l.tipo === "fiume" ? "la " : "") + l.nome;
+  const dovEra = t => markers[t.id] ? `${t.nome} è il pallino verde.`
+    : t.tipo === "zona" ? `Le ${t.nome} sono la zona verde.` : `La ${t.nome} è la linea verde.`;
+  function rivela(t) {
+    if (markers[t.id]) quiz.marks[t.id] = "correct"; else evidenzia(t);
+    map.panTo([t.lat, t.lng]);
+  }
+
+  // clic sulla cartina (non su un pallino) durante il quiz
+  function quizClicMappa(ll, sulFiume) {
+    const t = quiz.order[quiz.i];
+    if (!t) return;
+    if (t.tipo === "zona") {
+      const z = zonaDi(ll);
+      if (!z) { qFb.className = "quiz-feedback ko"; qFb.textContent = "Clicca dentro la Valle d'Aosta."; return; }
+      return quizAnswer(EXTRA.find(x => x.id === z));
+    }
+    if (sulFiume) quizAnswer(EXTRA[0]);   // ha cliccato la Dora Baltea
+  }
+  map.on("click", e => { if (quiz.on) quizClicMappa(e.latlng, false); });
+
   const qbar = document.getElementById("quizbar");
   const qTarget = document.getElementById("quiz-target");
   const qScore = document.getElementById("quiz-score");
@@ -550,7 +610,7 @@
   }
 
   function startQuiz() {
-    Object.assign(quiz, { on: true, order: shuffle(LUOGHI.filter(l => visibili.has(l.cat))), i: 0, ok: 0, done: 0, marks: {}, tries: 0 });
+    Object.assign(quiz, { on: true, order: shuffle([...LUOGHI, ...EXTRA].filter(l => visibili.has(l.cat))), i: 0, ok: 0, done: 0, marks: {}, tries: 0 });
     document.body.classList.add("quiz-on");
     qbar.hidden = false;
     applyFilters();
@@ -560,6 +620,7 @@
       <h2>🎯 Quiz: dov'è?</h2>
       <p class="sub">Esercitati per l'interrogazione.</p>
       <p>In basso sulla mappa compare il nome di un luogo: clicca il pallino giusto. Hai <b>due tentativi</b> per ogni luogo.</p>
+      <p>Ci sono anche la <b>Dora Baltea</b> (clicca sul fiume) e le catene montuose, <b>Alpi Pennine</b> e <b>Alpi Graie</b> (clicca sulla zona della cartina dove si trovano).</p>
       <p class="hint">Ci sono solo i luoghi delle categorie accese nella legenda.</p>
       <p class="hint">I pallini sono tutti grigi e senza icona, così non puoi barare! 😉</p>`;
     nextQuestion();
@@ -568,15 +629,16 @@
   function nextQuestion() {
     if (quiz.i >= quiz.order.length) return endQuiz();
     quiz.tries = 0;
-    qTarget.textContent = quiz.order[quiz.i].nome;
+    const t = quiz.order[quiz.i];
+    qTarget.innerHTML = esc(t.nome) + (t.aiuto ? ` <small class="quiz-aiuto">(${t.aiuto})</small>` : "");
     qScore.textContent = `${quiz.ok} / ${quiz.done}`;
   }
 
   function quizAnswer(l) {
     const target = quiz.order[quiz.i];
-    if (!target || quiz.marks[l.id] === "correct") return;
+    if (!target || (markers[l.id] && quiz.marks[l.id] === "correct")) return;
     if (l.id === target.id) {
-      quiz.marks[l.id] = "correct";
+      if (markers[l.id]) quiz.marks[l.id] = "correct"; else evidenzia(target);
       if (quiz.tries === 0) quiz.ok++;
       quiz.done++;
       qFb.className = "quiz-feedback ok";
@@ -584,19 +646,20 @@
       advance();
     } else {
       quiz.tries++;
-      quiz.marks[l.id] = "wrong";
-      refreshIcons();
-      setTimeout(() => { if (quiz.marks[l.id] === "wrong") { delete quiz.marks[l.id]; refreshIcons(); } }, 700);
+      if (markers[l.id]) {
+        quiz.marks[l.id] = "wrong";
+        refreshIcons();
+        setTimeout(() => { if (quiz.marks[l.id] === "wrong") { delete quiz.marks[l.id]; refreshIcons(); } }, 700);
+      }
       if (quiz.tries >= 2) {
         quiz.done++;
-        quiz.marks[target.id] = "correct";
+        rivela(target);
         qFb.className = "quiz-feedback ko";
-        qFb.textContent = `✘ No: quello era ${l.nome}. ${target.nome} è il pallino verde.`;
-        map.panTo([target.lat, target.lng]);
+        qFb.textContent = `✘ No: hai cliccato ${descrivi(l)}. ${dovEra(target)}`;
         advance();
       } else {
         qFb.className = "quiz-feedback ko";
-        qFb.textContent = `✘ Quello è ${l.nome}. Riprova!`;
+        qFb.textContent = `✘ Hai cliccato ${descrivi(l)}. Riprova!`;
       }
     }
   }
@@ -618,6 +681,7 @@
 
   function stopQuiz() {
     quiz.on = false;
+    if (evidenziato) { map.removeLayer(evidenziato); evidenziato = null; }
     document.body.classList.remove("quiz-on");
     qbar.hidden = true;
     qFb.textContent = "";
@@ -643,7 +707,12 @@
 
   const QUANTE = 12;   // domande per partita
   function startDomande() {
-    Object.assign(domande, { on: true, elenco: shuffle(window.DOMANDE.slice()).slice(0, QUANTE), i: 0, ok: 0, risposto: false });
+    // almeno una domanda per ogni sezione della scheda, poi le altre a caso
+    const perSezione = {};
+    window.DOMANDE.forEach(q => (perSezione[q.sez] = perSezione[q.sez] || []).push(q));
+    const una = window.SEZIONI_DOMANDE.map(sz => perSezione[sz] && shuffle(perSezione[sz].slice())[0]).filter(Boolean);
+    const altre = shuffle(window.DOMANDE.filter(q => !una.includes(q))).slice(0, Math.max(0, QUANTE - una.length));
+    Object.assign(domande, { on: true, elenco: shuffle(una.concat(altre)), i: 0, ok: 0, risposto: false });
     attivo = null;
     refreshIcons();
     renderDomanda();
@@ -714,10 +783,9 @@
     if (!quiz.on || quiz.i >= quiz.order.length) return;
     const t = quiz.order[quiz.i];
     quiz.done++;
-    quiz.marks[t.id] = "correct";
+    rivela(t);
     qFb.className = "quiz-feedback ko";
-    qFb.textContent = `Saltato: ${t.nome} è il pallino verde.`;
-    map.panTo([t.lat, t.lng]);
+    qFb.textContent = `Saltato: ${dovEra(t)}`;
     advance();
   });
 
