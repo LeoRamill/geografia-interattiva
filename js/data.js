@@ -373,15 +373,6 @@ window.LUOGHI = [
   }
 ];
 
-/* Tracciato semplificato della Dora Baltea (da Entrèves al confine con il Piemonte). */
-window.DORA_BALTEA = [
-  [45.812, 6.950], [45.795, 6.973], [45.765, 6.988], [45.757, 7.040], [45.744, 7.075],
-  [45.708, 7.140], [45.700, 7.170], [45.702, 7.205], [45.712, 7.240], [45.722, 7.275],
-  [45.730, 7.315], [45.738, 7.380], [45.736, 7.430], [45.742, 7.500], [45.745, 7.550],
-  [45.742, 7.610], [45.735, 7.655], [45.700, 7.675], [45.668, 7.690], [45.645, 7.715],
-  [45.618, 7.740], [45.600, 7.770], [45.590, 7.800], [45.570, 7.812]
-];
-
 window.DORA_INFO = {
   nome: "Dora Baltea", cat: "natura",
   sottotitolo: "Il fiume principale della regione",
@@ -390,10 +381,71 @@ window.DORA_INFO = {
     "Affluenti: Buthier, Grand Eyvia, Savara, Marmore, Évançon, Lys…",
     "È un affluente di sinistra del Po",
     "Le sue acque e quelle dei torrenti producono energia idroelettrica",
-    "Sulla mappa il tracciato è semplificato"
+    "Il tracciato sulla mappa è calcolato dai dati di altitudine"
   ],
   ricorda: "Dora Baltea → sfocia nel Po."
 };
+
+/* Scritte della carta fisica (come negli atlanti di scuola).
+   min = zoom da cui compaiono; r = rotazione in gradi (positivo = in senso orario).
+   Le scritte dei fiumi vengono "agganciate" al fiume più vicino (vedi app.js). */
+window.ETICHETTE_FISICHE = [
+  // catene montuose e pianure
+  { t: "ALPI PENNINE",   tipo: "catena",  lat: 46.03, lng: 7.55, r: -8,  min: 8 },
+  { t: "ALPI GRAIE",     tipo: "catena",  lat: 45.43, lng: 6.98, r: -12, min: 8 },
+  { t: "ALPI LEPONTINE", tipo: "catena",  lat: 46.27, lng: 8.38, r: -10, min: 8 },
+  { t: "Pianura Padana", tipo: "pianura", lat: 45.24, lng: 8.38, r: -6,  min: 8 },
+  { t: "Canavese",       tipo: "regione", lat: 45.40, lng: 7.78, r: 0,   min: 9 },
+  // valli della Valle d'Aosta
+  { t: "Valpelline",                 tipo: "valle", lat: 45.865, lng: 7.405, r: -35, min: 9.75 },
+  { t: "Valtournenche",              tipo: "valle", lat: 45.845, lng: 7.612, r: -86, min: 9.75 },
+  { t: "Val d'Ayas",                 tipo: "valle", lat: 45.765, lng: 7.705, r: -80, min: 9.75 },
+  { t: "Valle di Gressoney",         tipo: "valle", lat: 45.715, lng: 7.818, r: -86, min: 9.75 },
+  { t: "Valle del Gran San Bernardo", tipo: "valle", lat: 45.800, lng: 7.245, r: 45, min: 9.75 },
+  { t: "Valgrisenche",               tipo: "valle", lat: 45.640, lng: 7.095, r: -50, min: 9.75 },
+  { t: "Val di Rhêmes",              tipo: "valle", lat: 45.610, lng: 7.150, r: -70, min: 9.75 },
+  { t: "Valsavarenche",              tipo: "valle", lat: 45.605, lng: 7.212, r: -86, min: 9.75 },
+  { t: "Valle di Cogne",             tipo: "valle", lat: 45.655, lng: 7.300, r: 45,  min: 9.75 },
+  { t: "Val Veny",                   tipo: "valle", lat: 45.772, lng: 6.915, r: -23, min: 10.5 },
+  { t: "Val Ferret",                 tipo: "valle", lat: 45.850, lng: 7.025, r: -50, min: 10.5 },
+  // cime (quelle principali hanno già il loro pallino)
+  { t: "▲ Grandes Jorasses 4208", tipo: "cima", lat: 45.8689, lng: 6.9875, min: 9.75 },
+  { t: "▲ Grand Combin 4314",     tipo: "cima", lat: 45.9375, lng: 7.2992, min: 9.75 },
+  { t: "▲ Grivola 3969",          tipo: "cima", lat: 45.5958, lng: 7.2569, min: 10 },
+  { t: "▲ Mont Émilius 3559",     tipo: "cima", lat: 45.6786, lng: 7.3847, min: 10 },
+  // fiumi e laghi
+  { t: "Dora Baltea", tipo: "fiume", lat: 45.737, lng: 7.470, min: 8,  km2: 2000 },
+  { t: "Dora Baltea", tipo: "fiume", lat: 45.470, lng: 7.900, min: 9,  km2: 2000 },
+  { t: "Po",          tipo: "fiume", lat: 45.165, lng: 7.960, min: 8,  km2: 5000 },
+  { t: "Sesia",       tipo: "fiume", lat: 45.560, lng: 8.360, min: 8.5, km2: 500 },
+  { t: "Orco",        tipo: "fiume", lat: 45.340, lng: 7.760, min: 9,  km2: 300 },
+  { t: "Rodano",      tipo: "fiume", lat: 46.190, lng: 7.250, min: 8,  km2: 2000 },
+  { t: "Isère",       tipo: "fiume", lat: 45.580, lng: 6.700, min: 8.5, km2: 500 },
+  { t: "Arve",        tipo: "fiume", lat: 45.935, lng: 6.730, min: 9,  km2: 300 },
+  { t: "Toce",        tipo: "fiume", lat: 46.050, lng: 8.320, min: 9,  km2: 500 },
+  { t: "Lago Maggiore", tipo: "lago", lat: 45.950, lng: 8.640, r: -60, min: 8 },
+  { t: "Lago Lemano",   tipo: "lago", lat: 46.300, lng: 6.330, r: -15, min: 8 }
+];
+
+/* Città fuori dalla Valle d'Aosta, per la carta politica
+   (quelle della Valle sono i nomi dei comuni e i pallini). */
+window.CITTA = [
+  { nome: "Biella",      lat: 45.5665, lng: 8.0531, tipo: "provincia" },
+  { nome: "Vercelli",    lat: 45.3202, lng: 8.4185, tipo: "provincia" },
+  { nome: "Novara",      lat: 45.4469, lng: 8.6219, tipo: "provincia" },
+  { nome: "Verbania",    lat: 45.9214, lng: 8.5519, tipo: "provincia" },
+  { nome: "Ivrea",       lat: 45.4667, lng: 7.8756, tipo: "citta" },
+  { nome: "Cuorgnè",     lat: 45.3906, lng: 7.6486, tipo: "citta" },
+  { nome: "Varallo",     lat: 45.8167, lng: 8.2583, tipo: "citta" },
+  { nome: "Domodossola", lat: 46.1167, lng: 8.2917, tipo: "citta" },
+  { nome: "Chamonix",    lat: 45.9237, lng: 6.8694, tipo: "citta" },
+  { nome: "Bourg-Saint-Maurice", lat: 45.6186, lng: 6.7690, tipo: "citta" },
+  { nome: "Albertville", lat: 45.6758, lng: 6.3925, tipo: "citta" },
+  { nome: "Annecy",      lat: 45.8992, lng: 6.1294, tipo: "provincia" },
+  { nome: "Martigny",    lat: 46.1028, lng: 7.0725, tipo: "citta" },
+  { nome: "Sion",        lat: 46.2331, lng: 7.3606, tipo: "provincia" },
+  { nome: "Zermatt",     lat: 46.0207, lng: 7.7491, tipo: "citta" }
+];
 
 /* Etichette dei territori confinanti. */
 window.CONFINANTI = [

@@ -30,46 +30,135 @@
   });
   L.control.zoom({ position: "bottomright" }).addTo(map);
 
-  const OSM = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+  // Livelli della mappa, dal basso verso l'alto
+  map.createPane("politica").style.zIndex = 250;   // aree colorate della carta politica
+  map.createPane("fiumi").style.zIndex = 380;      // fiumi, confini, strade
+  map.createPane("scritte").style.zIndex = 450;    // nomi (sopra la velatura bianca)
+  map.getPane("scritte").style.pointerEvents = "none";
 
-  // Sfondo "Atlante": rilievo a colori creato da noi con i dati di altitudine
-  // (Terrain Tiles, AWS Open Data). Le tessere sono nella cartella tiles/rilievo,
-  // quindi funziona anche senza internet e senza chiavi.
+  /* ---------- Carta FISICA: rilievo a colori + fiumi + nomi ---------- */
+  // Rilievo creato da noi con i dati di altitudine (Terrain Tiles, AWS Open Data).
+  // Le tessere sono nella cartella tiles/rilievo: niente chiavi, funziona anche offline.
   const ATTR_RILIEVO = 'rilievo: <a href="https://registry.opendata.aws/terrain-tiles/">Terrain Tiles</a> (SRTM, EU-DEM &copy; Copernicus)';
-  const atlante = L.layerGroup([
-    // zoom 8–11 su tutta l'area (ingrandite oltre l'11)
+  const rilievo = [
     L.tileLayer("tiles/rilievo/{z}/{x}/{y}.jpg?v=5", {
       minZoom: 8, maxNativeZoom: 11, maxZoom: 19, bounds: AREA_LARGA, className: "atlante", attribution: ATTR_RILIEVO
     }),
-    // zoom 12 più dettagliato, solo intorno alla regione
     L.tileLayer("tiles/rilievo/{z}/{x}/{y}.jpg?v=5", {
       minZoom: 12, minNativeZoom: 12, maxNativeZoom: 12, maxZoom: 19, bounds: AREA_REGIONE, className: "atlante"
     })
-  ]);
-  const satellite = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
-    maxZoom: 18, attribution: 'immagini &copy; <a href="https://www.esri.com">Esri</a>'
-  });
-  const topo = L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
-    maxZoom: 17,
-    attribution: OSM + ' · &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)'
-  });
-  atlante.addTo(map);
+  ];
 
-  // Ombra fuori dalla regione: un grande rettangolo con un "buco" a forma di Valle d'Aosta.
+  // Fiumi ricavati dai dati di altitudine (tools/genera_fiumi.py)
+  function stileFiume(km2, sottile) {
+    const w = km2 < 100 ? 1 : km2 < 500 ? 1.6 : km2 < 2000 ? 2.4 : 3.2;
+    return { color: "#2f7fc8", weight: sottile ? w * 0.7 : w, opacity: 0.9, lineCap: "round", lineJoin: "round",
+             className: km2 < 150 ? "fiume-piccolo" : "", interactive: false, pane: "fiumi" };
+  }
+  const fiumi = sottile => L.geoJSON(window.FIUMI.fiumi, { style: f => stileFiume(f.properties.km2, sottile) });
+
+  // Confine di Stato tratteggiato (come negli atlanti)
+  const P = window.POLITICA;
+  const confineStato = () => L.geoJSON({ type: "FeatureCollection", features: [
+      { type: "Feature", properties: {}, geometry: P.confini.stato },
+      { type: "Feature", properties: {}, geometry: P.confini.fr_ch }] }, {
+    style: { color: "#7a3e9d", weight: 2.5, dashArray: "8 4 2 4", opacity: 0.9, interactive: false, pane: "fiumi" }
+  });
+
+  // Scritte che compaiono solo da un certo zoom in su
+  const scritte = [];   // { marker, min, gruppo }
+  function scritta(lat, lng, html, cls, min, gruppo, rot) {
+    const m = L.marker([lat, lng], {
+      pane: "scritte", interactive: false, keyboard: false,
+      icon: L.divIcon({ className: "lbl-wrap", iconSize: [0, 0],
+                        html: `<div class="lbl ${cls}" style="--r:${rot || 0}deg">${html}</div>` })
+    });
+    scritte.push({ marker: m, min: min || 0, gruppo });
+    return m;
+  }
+
+  // aggancia la scritta di un fiume al punto più vicino del fiume e la ruota come il fiume
+  const puntiFiume = [];
+  window.FIUMI.fiumi.features.forEach(f => {
+    const c = f.geometry.coordinates;
+    for (let k = 0; k < c.length - 1; k++) {
+      // la direzione si calcola su un tratto più lungo, così la scritta non è storta
+      const a = c[Math.max(0, k - 4)], b = c[Math.min(c.length - 1, k + 5)];
+      puntiFiume.push({ a: c[k], b: c[k + 1], da: a, a2: b, km2: f.properties.km2 });
+    }
+  });
+  function agganciaAlFiume(e) {
+    let best = null, dmin = Infinity;
+    puntiFiume.forEach(p => {
+      if (p.km2 < e.km2) return;
+      const mx = (p.a[0] + p.b[0]) / 2, my = (p.a[1] + p.b[1]) / 2;
+      const d = (mx - e.lng) ** 2 + ((my - e.lat) * 1.43) ** 2;
+      if (d < dmin) { dmin = d; best = p; }
+    });
+    if (!best || dmin > 0.05) return { lat: e.lat, lng: e.lng, r: 0 };
+    const dx = best.a2[0] - best.da[0], dy = (best.a2[1] - best.da[1]) * 1.43;
+    let r = -Math.atan2(dy, dx) * 180 / Math.PI;
+    if (r > 90) r -= 180;
+    if (r < -90) r += 180;
+    return { lat: (best.a[1] + best.b[1]) / 2, lng: (best.a[0] + best.b[0]) / 2, r };
+  }
+
+  const fisica = L.layerGroup([...rilievo, fiumi(false), confineStato()]);
+  window.ETICHETTE_FISICHE.forEach(e => {
+    let { lat, lng, r } = e;
+    if (e.tipo === "fiume") ({ lat, lng, r } = agganciaAlFiume(e));
+    scritta(lat, lng, e.t, "lbl-" + e.tipo, e.min, fisica, r);
+  });
+
+  /* ---------- Carta POLITICA: Stati, province, comuni, città, strade ---------- */
+  const politica = L.layerGroup([
+    L.geoJSON(P.aree, { style: f => ({ pane: "politica", fillColor: f.properties.colore, fillOpacity: 1,
+                                       color: "#8a8190", weight: 1, interactive: false }) }),
+    L.geoJSON(P.comuni, { style: f => ({ pane: "politica", fillColor: f.properties.colore, fillOpacity: 1,
+                                         color: "#8fa58a", weight: 0.7, dashArray: "3 3", interactive: false }) }),
+    L.geoJSON(P.laghi, { style: { pane: "politica", fillColor: "#a9d0ef", fillOpacity: 1, color: "#6aa6d6", weight: 1, interactive: false } }),
+    fiumi(true),
+    L.geoJSON({ type: "Feature", properties: {}, geometry: P.confini.regioni },
+              { style: { pane: "fiumi", color: "#6b6170", weight: 2.2, opacity: 0.9, interactive: false } }),
+    L.geoJSON(P.strade, { style: f => ({ pane: "fiumi", color: "#d23c2f", opacity: 0.85, interactive: false, className: "strada",
+                                         weight: f.properties.tipo === "Major Highway" ? 2.4 : 1.4 }) }),
+    confineStato()
+  ]);
+  P.aree.features.forEach(f => {
+    const [lat, lng] = f.properties.etichetta;
+    scritta(lat, lng, f.properties.nome, "lbl-area", 8, politica);
+  });
+  P.comuni.features.forEach(f => {
+    const [lat, lng] = f.properties.etichetta;
+    scritta(lat, lng, f.properties.nome, "lbl-comune", 11, politica);
+  });
+  window.CITTA.forEach(c => {
+    scritta(c.lat, c.lng, `<span class="dot dot-${c.tipo}"></span>${c.nome}`, "lbl-citta", c.tipo === "provincia" ? 8 : 9, politica);
+  });
+
+  /* ---------- SATELLITE ---------- */
+  const satellite = L.layerGroup([
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+      maxZoom: 18, attribution: 'immagini &copy; <a href="https://www.esri.com">Esri</a>'
+    }),
+    confineStato()
+  ]);
+
+  // Velatura bianca fuori dalla regione: un grande rettangolo con un "buco" a forma di Valle d'Aosta.
   const ring = window.CONFINE_VDA.geometry.coordinates[0].map(([lng, lat]) => [lat, lng]);
   const world = [[44.5, 5.5], [44.5, 9.2], [47, 9.2], [47, 5.5]];
-  L.polygon([world, ring], {
+  const velo = L.polygon([world, ring], {
     stroke: false, fillColor: "#ffffff", fillOpacity: 0.45, interactive: false
   }).addTo(map);
 
-  const bordo = L.featureGroup([
+  L.featureGroup([
     L.polygon(ring, { color: "#ffffff", weight: 7, opacity: 0.9, fill: false, interactive: false }),
     L.polygon(ring, { color: "#c8102e", weight: 3, fill: false, interactive: false })
   ]).addTo(map);
 
-  // Dora Baltea (tracciato semplificato, cliccabile)
-  const dora = L.polyline(window.DORA_BALTEA, {
-    color: "#2563eb", weight: 4, opacity: 0.8, lineCap: "round", lineJoin: "round"
+  // Dora Baltea: tracciato calcolato dai dati di altitudine, cliccabile
+  const dora = L.polyline(window.FIUMI.dora, {
+    color: "#1f63b5", weight: 5, opacity: 0.9, lineCap: "round", lineJoin: "round"
   }).addTo(map);
   dora.bindTooltip("Dora Baltea", { sticky: true, className: "tip" });
   dora.on("click", () => { if (!quiz.on) showPlace(window.DORA_INFO, null); });
@@ -77,16 +166,61 @@
   // Etichette dei territori confinanti
   window.CONFINANTI.forEach(c => {
     L.marker([c.lat, c.lng], {
-      interactive: false,
+      pane: "scritte", interactive: false, keyboard: false,
       icon: L.divIcon({ className: "", html: `<div class="country-label">${c.nome}</div>`, iconSize: [120, 20], iconAnchor: [60, 10] })
     }).addTo(map);
   });
 
-  L.control.layers(
-    { "Atlante (rilievo a colori)": atlante, "Satellite": satellite, "Escursionistica (dettagliata)": topo },
-    { "Confine regionale": bordo, "Dora Baltea": dora },
-    { position: "bottomright", collapsed: true }
-  ).addTo(map);
+  /* ---------- Selettore delle cartine ---------- */
+  const CARTE = {
+    fisica:    { nome: "Fisica",    icona: "⛰️", gruppo: fisica,    velo: 0.45 },
+    politica:  { nome: "Politica",  icona: "🗺️", gruppo: politica,  velo: 0.12 },
+    satellite: { nome: "Satellite", icona: "🛰️", gruppo: satellite, velo: 0.30 }
+  };
+  let cartaAttiva = null;
+  const bottoniCarta = {};
+
+  function aggiornaScritte() {
+    if (!cartaAttiva) return;
+    const z = map.getZoom();
+    scritte.forEach(s => {
+      const on = s.gruppo === CARTE[cartaAttiva].gruppo && z >= s.min;
+      if (on && !map.hasLayer(s.marker)) s.marker.addTo(map);
+      if (!on && map.hasLayer(s.marker)) map.removeLayer(s.marker);
+    });
+    map.getContainer().classList.toggle("zoom-basso", z < 9.75);
+    map.getContainer().classList.toggle("zoom-alto", z >= 10.5);
+  }
+
+  function mostraCarta(id) {
+    if (cartaAttiva) map.removeLayer(CARTE[cartaAttiva].gruppo);
+    cartaAttiva = id;
+    CARTE[id].gruppo.addTo(map);
+    velo.setStyle({ fillOpacity: CARTE[id].velo });
+    document.body.dataset.carta = id;
+    Object.entries(bottoniCarta).forEach(([k, b]) => b.setAttribute("aria-pressed", String(k === id)));
+    aggiornaScritte();
+    try { localStorage.setItem("carta", id); } catch (e) { /* non importa */ }
+  }
+
+  const Selettore = L.Control.extend({
+    options: { position: "topright" },
+    onAdd() {
+      const div = L.DomUtil.create("div", "carta-switch");
+      div.setAttribute("role", "group");
+      div.setAttribute("aria-label", "Tipo di cartina");
+      Object.entries(CARTE).forEach(([id, c]) => {
+        const b = L.DomUtil.create("button", "", div);
+        b.innerHTML = `<span aria-hidden="true">${c.icona}</span> ${c.nome}`;
+        b.addEventListener("click", () => mostraCarta(id));
+        bottoniCarta[id] = b;
+      });
+      L.DomEvent.disableClickPropagation(div);
+      return div;
+    }
+  });
+  new Selettore().addTo(map);
+  map.on("zoomend", aggiornaScritte);
   L.control.scale({ imperial: false, position: "bottomleft" }).addTo(map);
 
   /* ---------------- Marker ---------------- */
@@ -176,6 +310,14 @@
         <div class="alt-bar"></div>
         <div class="alt-ticks"><span>0</span><span>1000</span><span>2000</span><span>3000</span><span>4000 m</span></div>
         <div class="alt-note">⬜ sopra i 3.000 m: nevi e ghiacciai · 🟦 laghi</div>`;
+      const pol = L.DomUtil.create("div", "pol-scale", items);
+      pol.innerHTML = `<div class="alt-title">Confini e strade</div>
+        <div class="pol-row"><span class="ln ln-stato"></span>Confine di Stato</div>
+        <div class="pol-row"><span class="ln ln-regione"></span>Confine di regione</div>
+        <div class="pol-row"><span class="ln ln-prov"></span>Provincia, cantone, dipartimento</div>
+        <div class="pol-row"><span class="ln ln-comune"></span>Comune</div>
+        <div class="pol-row"><span class="ln ln-strada"></span>Strada principale</div>
+        <div class="pol-row"><span class="dot dot-provincia"></span>Capoluogo</div>`;
       L.DomEvent.disableClickPropagation(div);
       L.DomEvent.disableScrollPropagation(div);
       return div;
@@ -185,6 +327,9 @@
 
   map.fitBounds(bounds, FIT);
   onZoom();
+  let cartaIniziale = "fisica";
+  try { const c = localStorage.getItem("carta"); if (CARTE[c]) cartaIniziale = c; } catch (e) { /* non importa */ }
+  mostraCarta(cartaIniziale);
 
   /* ---------------- Pannello ---------------- */
   const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
