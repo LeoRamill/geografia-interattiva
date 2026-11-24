@@ -712,3 +712,57 @@ window.DOMANDE_RISPOSTE = [
       r: "Il fiolet e il palet, e anche il tsan e la rebatta." }
   ]}
 ];
+
+/* Flashcard per ripassare (livello scuola primaria): domanda breve davanti, risposta breve dietro. */
+window.FLASHCARD = [
+  { gruppo: "📍 Carta d'identità", carte: [
+    { f: "Qual è il capoluogo?", r: "Aosta (circa 33.000 abitanti)." },
+    { f: "Quanti abitanti ha la regione?", r: "123.337: è la regione meno popolata d'Italia." },
+    { f: "Quanto è grande?", r: "3.261 km²: è la regione più piccola d'Italia." },
+    { f: "Qual è la densità di popolazione?", r: "38 abitanti per km²." },
+    { f: "Di che colori è la bandiera?", r: "Nera e rossa." },
+    { f: "Che cosa c'è nello stemma?", r: "Un leone d'argento su sfondo nero, con una corona." },
+    { f: "Da quando è una regione a statuto speciale?", r: "Dal 1948." }
+  ]},
+  { gruppo: "🏔️ Territorio", carte: [
+    { f: "Dove si trova?", r: "Nel nord-ovest dell'Italia, in mezzo alle Alpi." },
+    { f: "Con quale Stato confina a nord?", r: "Con la Svizzera." },
+    { f: "Con quale Stato confina a ovest?", r: "Con la Francia." },
+    { f: "Con quale regione italiana confina?", r: "Con il Piemonte, a sud e a est." },
+    { f: "Com'è il territorio?", r: "Tutto montuoso: 100% montagna." },
+    { f: "Qual è la montagna più alta?", r: "Il Monte Bianco: 4.807 m." },
+    { f: "Quanto è alto il Monte Rosa?", r: "4.637 m (Punta Dufour)." },
+    { f: "Quanto è alto il Cervino?", r: "4.478 m. Ha la forma di una piramide." },
+    { f: "Che cosa ha di speciale il Gran Paradiso?", r: "È alto 4.061 m ed è l'unico \"4000\" tutto in Italia." },
+    { f: "Quali sono le catene montuose?", r: "Le Alpi Pennine (a nord) e le Alpi Graie (a ovest e a sud)." },
+    { f: "Qual è il fiume principale?", r: "La Dora Baltea, che si getta nel Po." },
+    { f: "Dove si trovano i ghiacciai?", r: "Sulle cime oltre i 3.000 m. Si stanno riducendo." }
+  ]},
+  { gruppo: "❄️ Clima e ambienti", carte: [
+    { f: "Che clima c'è?", r: "Clima alpino: inverni freddi e nevosi, estati brevi e fresche." },
+    { f: "Quali alberi ci sono nei boschi di montagna?", r: "Abeti e larici." },
+    { f: "Che cosa si trova sopra i boschi?", r: "Prati e piante erbacee, poi muschi e licheni." },
+    { f: "Qual è il parco nazionale più antico d'Italia?", r: "Il Parco Nazionale del Gran Paradiso (1922)." },
+    { f: "Qual è il simbolo del Parco del Gran Paradiso?", r: "Lo stambecco." }
+  ]},
+  { gruppo: "👥 Popolazione", carte: [
+    { f: "Dove vive la maggior parte delle persone?", r: "Nel fondovalle, lungo la Dora Baltea." },
+    { f: "Quanti abitanti vivono ad Aosta?", r: "Circa un quarto di quelli della regione." },
+    { f: "Quali sono le lingue ufficiali?", r: "Italiano e francese: è una regione bilingue." }
+  ]},
+  { gruppo: "💼 Lavoro e collegamenti", carte: [
+    { f: "Qual è l'attività più importante?", r: "Il turismo: sci, alpinismo, castelli e monumenti." },
+    { f: "Che energia si produce con l'acqua?", r: "Energia idroelettrica." },
+    { f: "Qual è il formaggio più famoso?", r: "La Fontina." },
+    { f: "Che cosa sono i vigneti eroici?", r: "Vigneti su terreni ripidi, lavorati a mano." },
+    { f: "Quale galleria porta in Francia?", r: "Il Traforo del Monte Bianco." },
+    { f: "Quale galleria porta in Svizzera?", r: "Il Traforo del Gran San Bernardo." },
+    { f: "Quale autostrada percorre la valle?", r: "La A5: Torino – Aosta – Monte Bianco." }
+  ]},
+  { gruppo: "🏛️ Storia e tradizioni", carte: [
+    { f: "Chi abitava qui prima dei Romani?", r: "I Salassi, un popolo gallico." },
+    { f: "Come si chiamava Aosta al tempo dei Romani?", r: "Augusta Praetoria, in onore dell'imperatore Augusto (25 a.C.)." },
+    { f: "Dimmi due monumenti romani di Aosta.", r: "Ad esempio la Porta Pretoria e l'Arco d'Augusto (e anche il teatro e l'anfiteatro)." },
+    { f: "Quali sono gli sport tradizionali?", r: "Il fiolet e il palet (e anche il tsan e la rebatta)." }
+  ]}
+];

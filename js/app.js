@@ -6,6 +6,7 @@
   const panel = document.getElementById("panel");
   const quiz = { on: false, order: [], i: 0, ok: 0, done: 0, marks: {}, tries: 0 };
   const domande = { on: false, elenco: [], i: 0, ok: 0, risposto: false };
+  const flash = { on: false, gruppo: null, mazzo: [], coda: [], sapute: 0, primoColpo: 0, sbagliate: new Set() };
 
   /* ---------------- Mappa ---------------- */
   const confine = L.geoJSON(window.CONFINE_VDA);
@@ -180,7 +181,7 @@
   doraClic.bindTooltip("Dora Baltea", { sticky: true, className: "tip" });
   doraClic.on("click", e => {
     if (quiz.on) return quizClicMappa(e.latlng, true);
-    if (!domande.on) showPlace(window.DORA_INFO, null);
+    if (!domande.on && !flash.on) showPlace(window.DORA_INFO, null);
   });
 
   // Etichette dei territori confinanti
@@ -475,6 +476,7 @@
   const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
 
   function showHome() {
+    modoStudio(false);
     attivo = null;
     refreshIcons();
     const sezioni = window.SCHEDA.map((s, i) =>
@@ -495,7 +497,10 @@
     const sezioneQA = `
       <details class="sec sec-qa"><summary>📝 Domande e risposte</summary><div class="body">
         <p class="hint">Prova a rispondere da solo/a, poi tocca la domanda per vedere la risposta.</p>
-        <button class="btn btn-ghost btn-small" id="qa-tutte">Mostra tutte le risposte</button>
+        <div class="qa-azioni">
+          <button class="btn btn-ghost btn-small" id="qa-tutte">Mostra tutte le risposte</button>
+          <button class="btn btn-small" id="qa-flash">🃏 Ripassa con le flashcard</button>
+        </div>
         ${qa}
       </div></details>`;
 
@@ -507,6 +512,7 @@
       ${sezioneQA}
       <div class="places"><h3>Tutti i luoghi della mappa</h3>${gruppi}</div>`;
     panel.querySelectorAll(".place-btn").forEach(b => b.addEventListener("click", () => select(b.dataset.id)));
+    panel.querySelector("#qa-flash").addEventListener("click", () => startFlash());
     const tutte = panel.querySelector("#qa-tutte");
     tutte.addEventListener("click", () => {
       const apri = tutte.textContent.startsWith("Mostra");
@@ -538,7 +544,7 @@
   }
 
   function select(id) {
-    if (domande.on) return;       // durante le domande la scheda non si apre (sarebbe un aiutino!)
+    if (domande.on || flash.on) return;   // durante domande e flashcard la scheda non si apre (sarebbe un aiutino!)
     const idx = LUOGHI.findIndex(l => l.id === id);
     if (idx < 0) return;
     const l = LUOGHI[idx];
@@ -559,7 +565,7 @@
     map.flyToBounds(bounds, Object.assign({ duration: 0.6 }, FIT));
   }
 
-  document.getElementById("btn-home").addEventListener("click", () => { if (quiz.on) stopQuiz(); domande.on = false; goHome(); });
+  document.getElementById("btn-home").addEventListener("click", () => { if (quiz.on) stopQuiz(); domande.on = flash.on = false; goHome(); });
 
   /* ---------------- Quiz ---------------- */
   // Bersagli del quiz che non sono pallini: il fiume e le due catene montuose (data/zone.js)
@@ -709,7 +715,19 @@
   }
 
   /* ---------------- Menu del quiz e modalità "Domande" ---------------- */
+  // sul telefono il pannello è sotto la cartina: ci si scorre sopra da soli
+  function mostraPannello() {
+    if (window.matchMedia("(max-width: 820px)").matches) panel.scrollIntoView({ behavior: "smooth" });
+  }
+  // modalità studio (flashcard e domande): sul telefono la cartina si rimpicciolisce
+  function modoStudio(on) {
+    if (document.body.classList.contains("studio") === on) return;
+    document.body.classList.toggle("studio", on);
+    setTimeout(() => map.invalidateSize(), 60);
+  }
+
   function showQuizMenu() {
+    modoStudio(false);
     attivo = null;
     refreshIcons();
     panel.innerHTML = `
@@ -717,11 +735,14 @@
       <h2>🎯 Esercitati</h2>
       <p class="sub">Scegli come vuoi ripassare.</p>
       <button class="quiz-card" id="q-dove"><span>🗺️</span><b>Dov'è?</b><small>Compare il nome di un luogo: trovalo sulla cartina.</small></button>
-      <button class="quiz-card" id="q-domande"><span>❓</span><b>Domande e vero/falso</b><small>Come gli esercizi del libro: "Osserva la carta e rispondi".</small></button>`;
+      <button class="quiz-card" id="q-domande"><span>❓</span><b>Domande e vero/falso</b><small>Come gli esercizi del libro: "Osserva la carta e rispondi".</small></button>
+      <button class="quiz-card" id="q-flash"><span>🃏</span><b>Flashcard</b><small>Leggi la domanda, rispondi a voce, poi gira la carta.</small></button>`;
     panel.querySelector("#back").addEventListener("click", goHome);
     panel.querySelector("#q-dove").addEventListener("click", startQuiz);
     panel.querySelector("#q-domande").addEventListener("click", startDomande);
+    panel.querySelector("#q-flash").addEventListener("click", () => startFlash());
     panel.scrollTop = 0;
+    mostraPannello();
   }
 
   const QUANTE = 12;   // domande per partita
@@ -732,9 +753,12 @@
     const una = window.SEZIONI_DOMANDE.map(sz => perSezione[sz] && shuffle(perSezione[sz].slice())[0]).filter(Boolean);
     const altre = shuffle(window.DOMANDE.filter(q => !una.includes(q))).slice(0, Math.max(0, QUANTE - una.length));
     Object.assign(domande, { on: true, elenco: shuffle(una.concat(altre)), i: 0, ok: 0, risposto: false });
+    flash.on = false;
+    modoStudio(true);
     attivo = null;
     refreshIcons();
     renderDomanda();
+    mostraPannello();
   }
 
   function renderDomanda() {
@@ -792,9 +816,84 @@
     panel.querySelector("#q-ancora").addEventListener("click", startDomande);
   }
 
+  /* ---------------- Flashcard ---------------- */
+  function startFlash(gruppo = null, soloQueste = null) {
+    const tutte = [];
+    window.FLASHCARD.forEach(g => g.carte.forEach(c => tutte.push(Object.assign({ gruppo: g.gruppo }, c))));
+    const mazzo = soloQueste || tutte.filter(c => !gruppo || c.gruppo === gruppo);
+    Object.assign(flash, { on: true, gruppo, mazzo, coda: shuffle(mazzo.slice()), sapute: 0, primoColpo: 0, sbagliate: new Set() });
+    domande.on = false;
+    modoStudio(true);
+    attivo = null;
+    refreshIcons();
+    renderFlash();
+    mostraPannello();
+  }
+
+  function renderFlash() {
+    if (!flash.coda.length) return fineFlash();
+    const c = flash.coda[0], tot = flash.mazzo.length;
+    const filtri = [null, ...window.FLASHCARD.map(g => g.gruppo)].map(g =>
+      `<button class="chip-f" data-g="${g || ""}" aria-pressed="${g === flash.gruppo}">${g || "Tutte"}</button>`).join("");
+    panel.innerHTML = `
+      <button class="btn btn-ghost btn-small back" id="back">← Esci</button>
+      <h2>🃏 Flashcard</h2>
+      <div class="flash-filtri" role="group" aria-label="Scegli l'argomento">${filtri}</div>
+      <p class="sub">Sapute ${flash.sapute} su ${tot}${flash.coda.length > 1 ? ` · ne restano ${flash.coda.length}` : " · ultima carta!"}</p>
+      <div class="qbar"><span style="width:${(flash.sapute / tot) * 100}%"></span></div>
+      <button class="flashcard" aria-label="Gira la carta">
+        <span class="flash-face flash-front"><small>${c.gruppo}</small><b>${esc(c.f)}</b><em>Rispondi a voce, poi tocca per girare</em></span>
+        <span class="flash-face flash-back" aria-hidden="true"><small>Risposta</small><b>${esc(c.r)}</b><em>Tocca per rigirare</em></span>
+      </button>
+      <div class="flash-azioni" hidden>
+        <button class="btn btn-ghost" id="f-ko">↻ Da ripassare</button>
+        <button class="btn btn-ok" id="f-ok">✔ Lo sapevo</button>
+      </div>`;
+    panel.querySelector("#back").addEventListener("click", () => { flash.on = false; goHome(); });
+    panel.querySelectorAll(".chip-f").forEach(b => b.addEventListener("click", () => startFlash(b.dataset.g || null)));
+    const carta = panel.querySelector(".flashcard"), azioni = panel.querySelector(".flash-azioni");
+    carta.addEventListener("click", () => {
+      const girata = carta.classList.toggle("girata");
+      carta.querySelector(".flash-front").setAttribute("aria-hidden", String(girata));
+      carta.querySelector(".flash-back").setAttribute("aria-hidden", String(!girata));
+      carta.setAttribute("aria-label", girata ? "Rigira la carta" : "Gira la carta");
+      azioni.hidden = false;
+    });
+    panel.querySelector("#f-ok").addEventListener("click", () => {
+      if (!flash.sbagliate.has(c.f)) flash.primoColpo++;
+      flash.sapute++;
+      flash.coda.shift();
+      renderFlash();
+    });
+    panel.querySelector("#f-ko").addEventListener("click", () => {
+      flash.sbagliate.add(c.f);
+      flash.coda.push(flash.coda.shift());   // torna in fondo al mazzo
+      renderFlash();
+    });
+  }
+
+  function fineFlash() {
+    const tot = flash.mazzo.length, da = flash.mazzo.filter(c => flash.sbagliate.has(c.f));
+    panel.innerHTML = `
+      <h2>🃏 Mazzo finito!</h2>
+      <p class="qrisultato"><b>${flash.primoColpo}</b> su ${tot}</p>
+      <p>carte che sapevi già la prima volta.${da.length ? "" : " Le sapevi tutte! 🏆"}</p>
+      ${da.length ? `<p class="hint">Le hai ripassate tutte, ma queste all'inizio non le sapevi:</p>
+        <ul class="flash-lista">${da.map(c => `<li>${esc(c.f)}</li>`).join("")}</ul>` : ""}
+      <div class="nav-row">
+        <button class="btn btn-ghost btn-small" id="f-home">← Torna alla regione</button>
+        ${da.length ? `<button class="btn btn-small" id="f-sbagliate">Ripassa solo queste (${da.length})</button>` : ""}
+        <button class="btn btn-small" id="f-ancora">Ricomincia</button>
+      </div>`;
+    panel.querySelector("#f-home").addEventListener("click", () => { flash.on = false; goHome(); });
+    panel.querySelector("#f-ancora").addEventListener("click", () => startFlash(flash.gruppo));
+    if (da.length) panel.querySelector("#f-sbagliate").addEventListener("click", () => startFlash(flash.gruppo, da));
+    panel.scrollTop = 0;
+  }
+
   document.getElementById("btn-quiz").addEventListener("click", () => {
     if (quiz.on) stopQuiz();
-    else if (domande.on) { domande.on = false; goHome(); }
+    else if (domande.on || flash.on) { domande.on = flash.on = false; goHome(); }
     else showQuizMenu();
   });
   document.getElementById("quiz-stop").addEventListener("click", stopQuiz);
