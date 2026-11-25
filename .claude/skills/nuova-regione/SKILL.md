@@ -11,15 +11,16 @@ Tieni l'utente aggiornato con frasi brevi in italiano; mostragli gli screenshot 
 
 ## 0. Prima di iniziare
 
-- [ ] Chiedi all'utente le **foto delle pagine del libro di testo** sulla regione (testo, cartina, dati, esercizi).
-      Senza il libro non scrivere i testi: puoi fare solo i passi 1–3 (cartine).
+- [ ] Chiedi all'utente le **foto delle pagine dei due libri di testo** sulla regione («Geografia» vol. 5 e
+      «Che meraviglia!» Geografia 5: testo, cartina, dati, esercizi). Senza i libri non scrivere i testi:
+      puoi fare solo i passi 1–3 (cartine).
 - [ ] Trova l'`id` (cartella) e il codice ISTAT in `regioni/regioni.js`.
 - [ ] Controlla l'ambiente: per l'audio serve l'ambiente cloud "geografia-interattiva" (Hugging Face raggiungibile).
 
 ## 1. Impostazioni (`regioni/<id>/regione.js`)
 
 - [ ] Copia `regioni/valle-aosta/regione.js` e cambia: `id`, `nome`, `con_articolo` ("il Piemonte", "le Marche",
-      "l'Emilia-Romagna"), `istat`, `sottotitolo`, `bandiera` (colori della bandiera regionale), `libro` (pagine).
+      "l'Emilia-Romagna"), `istat`, `sottotitolo`, `bandiera` (colori della bandiera regionale), `libro` (pagine di tutti e due i libri).
 - [ ] Lancia `python3 tools/genera_confine.py --regione <id>`: scrive `confine.js` e **suggerisce `area_regione` e
       `area_larga`**. Copiali in `regione.js`. Per regioni grandi o lunghe (Sicilia, Sardegna, Puglia, Toscana…)
       metti `zoom_min: 7` così la regione intera sta anche sullo schermo del telefono.
@@ -56,16 +57,18 @@ python3 tools/genera_zone.py    --regione <id>
 
 ## 3. Testi (`regioni/<id>/dati.js`)
 
-Copia `regioni/valle-aosta/dati.js` come scheletro e **riscrivi tutto** per la nuova regione, partendo dal libro:
+Copia `regioni/valle-aosta/dati.js` come scheletro e **riscrivi tutto** per la nuova regione, partendo dai due libri
+(numeri di «Geografia», con la nota quando «Che meraviglia!» dice altro: vedi CLAUDE.md):
 
 - [ ] `CATEGORIE` adatte alla regione (es. "Mare e coste", "Isole"), in **ordine di importanza**; quelle fuori dal libro `spenta: true`.
-- [ ] `LUOGHI` (25–35) con coordinate vere (controlla che siano dentro la regione); ciò che non è nel libro con `extra: true` o `[[ ]]`.
+- [ ] `LUOGHI` (25–35) con coordinate vere (controlla che siano dentro la regione); ciò che non è nei libri con `extra: true` o `[[ ]]`.
 - [ ] `FIUME_INFO`, `ETICHETTE_FISICHE` (catene, pianure, valli, cime, fiumi con `km2`, laghi, mari), `CITTA`, `CONFINANTI`.
-- [ ] `SCHEDA` con **i numeri del libro** (superficie, abitanti, densità, capoluogo, occupati per settore).
+- [ ] `SCHEDA` con **i numeri del libro** (superficie, abitanti, densità, capoluogo, occupati per settore) e le note
+      dell'altro libro; nella carta d'identità la riga `<li class="libri">📖 Libri: …</li>`.
 - [ ] `DOMANDE_RISPOSTE`, `FLASHCARD`, `SEZIONI_DOMANDE` + `DOMANDE` (≥ 50, ≥ 3 per sezione, come gli esercizi del libro).
 - [ ] `DISCORSO`, `FLUSSO` (con domande "alla cartina" che usano `mappa`), `TRABOCCHETTI`, `CONSIGLI`.
 - [ ] `TOUR`: ~14 tappe con `vista`, `carta`, `luci`, `zone`, `fiume`; solo argomenti del libro, parole semplici.
-- [ ] Ogni frase che non è nel libro: `[[ ]]`. Confronta poi con il libro e prepara per l'utente la tabella
+- [ ] Ogni frase che non è in nessuno dei due libri: `[[ ]]`. Confronta poi con i libri e prepara per l'utente la tabella
       **cosa manca / cosa è in più / numeri diversi**.
 
 ## 4. Voce della visita guidata

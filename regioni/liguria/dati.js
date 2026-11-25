@@ -2,9 +2,11 @@
  * Testi e dati della regione Liguria: categorie, luoghi, scheda, domande, flashcard,
  * interrogazione e visita guidata. Le impostazioni (confini, fiume, zone…) sono in regione.js.
  *
- * Riferimento: libro di testo Geografia vol. 5, pp. 38–41 (A colpo d'occhio, Territorio, Clima e ambienti,
- * Popolazione e attività economiche, Approfondisco: l'acquario di Genova e la focaccia di Recco, Life Skills).
- * Quello che non è nel libro va tra [[ ]] (frasi) o con extra: true (luoghi e domande). Vedi CLAUDE.md.
+ * Riferimento: due libri di testo. «Geografia» vol. 5, pp. 38–41 (A colpo d'occhio, Territorio, Clima e ambienti,
+ * Popolazione e attività economiche, Approfondisco: l'acquario di Genova e la focaccia di Recco, Life Skills) e
+ * «Che meraviglia!» Geografia 5, pp. 38–40 (Cinque Terre, Portovenere, Educazione civica: rischio alluvioni).
+ * I numeri sono quelli di «Geografia»; se «Che meraviglia!» dice un numero diverso, c'è una nota.
+ * Quello che non è in nessuno dei due libri va tra [[ ]] (frasi) o con extra: true (luoghi e domande). Vedi CLAUDE.md.
  */
 
 /* Categorie in ordine di importanza per lo studio (così appaiono nella legenda).
@@ -48,7 +50,7 @@ window.LUOGHI = [
     sottotitolo: "436 m · qui le Alpi finiscono e comincia l'Appennino",
     testo: "Il Colle di Cadibona si trova vicino a Savona. È un punto molto importante: a ovest ci sono le Alpi Marittime, mentre dal Colle di Cadibona parte l'Appennino Ligure, che va verso est. È anche un valico: di qui si passa dalla costa al Piemonte.",
     punti: [
-      "Altezza: 436 m",
+      "Altezza: 436 m (in «Che meraviglia!» 435 m)",
       "Vicino a Savona",
       "Divide le Alpi Marittime (a ovest) dall'Appennino Ligure (a est)",
       "Sulla carta: vicino passa l'autostrada A6 verso il Piemonte"
@@ -85,10 +87,11 @@ window.LUOGHI = [
   {
     id: "savona", nome: "Savona", cat: "citta", lat: 44.3091, lng: 8.4772,
     sottotitolo: "Città principale della Riviera di Ponente · porto",
-    testo: "Savona si trova sulla costa, a ovest di Genova, nella Riviera di Ponente. Il suo porto è molto attivo. Poco lontano c'è il Colle di Cadibona, da dove parte l'Appennino Ligure. [[Sul mare c'è la grande fortezza del Priamar.]]",
+    testo: "Savona si trova sulla costa, a ovest di Genova, nella Riviera di Ponente. È una città portuale: il suo porto è molto attivo e serve al commercio marittimo. Poco lontano c'è il Colle di Cadibona, da dove parte l'Appennino Ligure. [[Sul mare c'è la grande fortezza del Priamar.]]",
     punti: [
       "Capoluogo di provincia",
-      "Porto molto attivo",
+      "Porto molto attivo: commercio marittimo",
+      "Sulla carta, vicino: Spotorno e, davanti alla costa, la piccola Isola di Bergeggi",
       "Riviera di Ponente, a ovest di Genova",
       "Vicino: il Colle di Cadibona",
       "[[La fortezza del Priamar]]"
@@ -103,20 +106,21 @@ window.LUOGHI = [
       "Capoluogo di provincia",
       "Riviera di Ponente, la parte più a ovest",
       "La sua provincia confina con la Francia",
+      "Sulla carta, vicino: Cervo, Sanremo e, nell'entroterra, Perinaldo",
       "[[Nata nel 1923 da Porto Maurizio e Oneglia]]",
       "[[Famosa per l'olio d'oliva]]"
     ],
     ricorda: "Imperia: la città principale più a ovest."
   },
   {
-    id: "laspezia", nome: "La Spezia", cat: "citta", lat: 44.1025, lng: 9.8241,
+    id: "laspezia", nome: "La Spezia", cat: "citta", lat: 44.112, lng: 9.830,
     sottotitolo: "Città principale della Riviera di Levante · porto",
-    testo: "La Spezia si trova nella parte più a est della Liguria, in fondo al Golfo di La Spezia, vicino alla Toscana. Il suo porto è molto attivo. Poco lontano ci sono le Cinque Terre. [[In città c'è un grande arsenale della Marina Militare e il golfo è chiamato anche «Golfo dei Poeti».]]",
+    testo: "La Spezia si trova nella parte più a est della Liguria, in fondo al Golfo di La Spezia, vicino alla Toscana. Il suo porto è molto attivo. Poco lontano ci sono le Cinque Terre. Il golfo è chiamato «Golfo dei Poeti», perché la sua bellezza ha attirato tanti poeti e artisti. [[In città c'è un grande arsenale della Marina Militare.]]",
     punti: [
       "Capoluogo di provincia",
       "Porto molto attivo, sul Golfo di La Spezia",
       "La parte più a est, vicino alla Toscana",
-      "Vicino: le Cinque Terre",
+      "Vicino: le Cinque Terre, Portovenere, Lerici e Sarzana",
       "[[Arsenale della Marina Militare]]"
     ],
     ricorda: "La Spezia: porto molto attivo, sul suo golfo, a est."
@@ -124,7 +128,7 @@ window.LUOGHI = [
   {
     id: "ventimiglia", nome: "Ventimiglia", cat: "citta", lat: 43.7903, lng: 7.6081,
     sottotitolo: "L'ultima città prima della Francia",
-    testo: "Ventimiglia si trova nella Riviera di Ponente, all'estremo ovest della Liguria, vicino al confine con la Francia. Qui sfocia nel mare il fiume Roia. [[Ogni venerdì c'è un grande mercato, dove arrivano anche tanti francesi.]]",
+    testo: "Ventimiglia si trova nella Riviera di Ponente, all'estremo ovest della Liguria, vicino al confine con la Francia. Qui sfocia nel mare il Roia, uno dei principali fiumi liguri che vanno al mare. [[Ogni venerdì c'è un grande mercato, dove arrivano anche tanti francesi.]]",
     punti: [
       "Vicino al confine con la Francia",
       "Alla foce del fiume Roia",
@@ -155,7 +159,8 @@ window.LUOGHI = [
       "Riviera di Ponente, provincia di Savona",
       "I rilievi scendono dolcemente verso il mare",
       "Spiagge di sabbia o di ciottoli",
-      "Località balneare: tanti turisti"
+      "Località balneare: tanti turisti",
+      "Altre località balneari sulla carta: Spotorno, Finale Ligure, Loano, Alassio"
     ],
     ricorda: "Varazze: spiagge nella Riviera di Ponente."
   },
@@ -166,7 +171,7 @@ window.LUOGHI = [
     punti: [
       "Promontorio: terra che sporge nel mare",
       "Golfo: mare che entra nella terra (come il Golfo di Genova)",
-      "Riviera di Ponente, vicino ad Alassio",
+      "Riviera di Ponente, vicino ad Alassio: qui le coste sono basse",
       "[[C'è un faro]]"
     ],
     ricorda: "Capo Mele: un promontorio della Riviera di Ponente."
@@ -184,17 +189,31 @@ window.LUOGHI = [
     ricorda: "Sestri Levante: nella Riviera di Levante, a est di Genova."
   },
 
+  {
+    id: "portovenere", nome: "Portovenere e il Golfo dei Poeti", cat: "mare", lat: 44.052, lng: 9.835,
+    sottotitolo: "Patrimonio UNESCO, con le Cinque Terre",
+    testo: "Portovenere è un paesino a picco sul mare. Sorge sulla cima di un promontorio che forma la sponda ovest del Golfo di La Spezia, detto «Golfo dei Poeti» perché la sua bellezza ha attirato tanti poeti e artisti. Il nome viene da un antico tempio dedicato alla dea Venere, che secondo la leggenda era nata dalla spuma del mare. Davanti al paese ci sono tre piccole isole: la Palmaria, il Tino e il Tinetto. Portovenere e le Cinque Terre sono Patrimonio dell'UNESCO.",
+    punti: [
+      "Su un promontorio del Golfo di La Spezia, il «Golfo dei Poeti»",
+      "Il nome viene dal tempio della dea Venere",
+      "Tre isole: Palmaria, Tino e Tinetto",
+      "Patrimonio dell'UNESCO, insieme alle Cinque Terre",
+      "[[Qui vissero i poeti inglesi Byron e Shelley]]"
+    ],
+    ricorda: "Portovenere: tempio di Venere, Golfo dei Poeti, UNESCO."
+  },
+
   /* ---------------- FIUMI, BOSCHI E PARCHI ---------------- */
   {
     id: "cinqueterre", nome: "Cinque Terre", cat: "natura", lat: 44.1196, lng: 9.7105,
     sottotitolo: "Parco Nazionale · Patrimonio dell'Umanità UNESCO",
-    testo: "Le Cinque Terre sono cinque borghi della Riviera di Levante costruiti a picco sul mare: Riomaggiore, Manarola, Corniglia, Vernazza e Monterosso al Mare. Il Parco Nazionale delle Cinque Terre tutela il loro paesaggio e il loro ambiente unico, con le case colorate e le colline a terrazze [[coltivate a vigneto]]. Le Cinque Terre sono Patrimonio Mondiale dell'Umanità UNESCO e attirano turisti in ogni stagione.",
+    testo: "Le Cinque Terre sono cinque borghi della Riviera di Levante costruiti a picco sul mare: Riomaggiore, Manarola, Corniglia, Vernazza e Monterosso al Mare. Il Parco Nazionale delle Cinque Terre tutela il loro paesaggio e il loro ambiente unico, con le case colorate, i terrazzamenti con i vigneti, le scogliere con i sentieri a strapiombo sul mare e la macchia mediterranea. Le Cinque Terre, insieme a Portovenere, sono Patrimonio Mondiale dell'Umanità UNESCO e attirano turisti in ogni stagione.",
     punti: [
       "Cinque borghi: Riomaggiore, Manarola, Corniglia, Vernazza, Monterosso al Mare",
       "Parco Nazionale delle Cinque Terre",
       "Patrimonio Mondiale dell'Umanità UNESCO",
       "Il paese di Manarola, nella foto del libro, è a picco sul mare",
-      "[[I borghi sono collegati da un treno e da sentieri sul mare]]"
+      "Terrazzamenti con i vigneti e sentieri a strapiombo sul mare [[; un treno collega i borghi]]"
     ],
     ricorda: "Cinque Terre: Parco Nazionale e Patrimonio dell'Umanità UNESCO."
   },
@@ -205,7 +224,8 @@ window.LUOGHI = [
     punti: [
       "Promontorio della Riviera di Levante",
       "Parco naturale di Portofino",
-      "Turisti in ogni stagione",
+      "Turismo balneare, in ogni stagione: Portofino, Camogli e le Cinque Terre",
+      "Sulla carta, vicino: Camogli, Santa Margherita Ligure, Rapallo e Chiavari",
       "[[L'abbazia di San Fruttuoso, raggiungibile a piedi o in barca]]"
     ],
     ricorda: "Portofino: un promontorio protetto da un parco naturale."
@@ -241,7 +261,7 @@ window.LUOGHI = [
     sottotitolo: "588 m · da Genova verso il Piemonte",
     testo: "Il Passo del Turchino è un valico dell'Appennino Ligure, sopra Voltri, a ovest di Genova. Le montagne separano la costa dal resto dell'Italia: i valichi servono a passare dall'altra parte, verso il Piemonte.",
     punti: [
-      "Altezza: 588 m [[(altre fonti: 532 m)]]",
+      "Altezza: 588 m (in «Che meraviglia!» 532 m)",
       "Appennino Ligure, sopra Voltri",
       "Collega la costa con il Piemonte"
     ],
@@ -272,11 +292,35 @@ window.LUOGHI = [
     ricorda: "Colle di Nava: da Imperia verso il Piemonte."
   },
 
+  {
+    id: "scoffera", nome: "Passo della Scoffera", cat: "passi", lat: 44.478, lng: 9.100,
+    sottotitolo: "674 m · da Genova verso la valle del Trebbia",
+    testo: "Il Passo della Scoffera è un valico dell'Appennino Ligure, nell'entroterra di Genova. Collega Genova con la valle del Trebbia, verso l'Emilia-Romagna. [[Ci passa la strada statale che va da Genova a Piacenza.]]",
+    punti: [
+      "Altezza: 674 m",
+      "Appennino Ligure, sopra Genova",
+      "Verso la valle del Trebbia e l'Emilia-Romagna",
+      "Si vede sulla carta di «Che meraviglia!»"
+    ],
+    ricorda: "Passo della Scoffera: da Genova verso il Trebbia."
+  },
+  {
+    id: "bracco", nome: "Passo del Bracco", cat: "passi", lat: 44.252, lng: 9.560,
+    sottotitolo: "615 m · nella Riviera di Levante",
+    testo: "Il Passo del Bracco è un valico della Riviera di Levante, tra Sestri Levante e La Spezia. Qui le montagne arrivano vicine al mare e la strada deve salire per superarle. [[Ci passa la via Aurelia, l'antica strada romana lungo la costa.]]",
+    punti: [
+      "Altezza: 615 m",
+      "Riviera di Levante, tra Sestri Levante e La Spezia",
+      "Si vede sulla carta di «Che meraviglia!»"
+    ],
+    ricorda: "Passo del Bracco: nella Riviera di Levante."
+  },
+
   /* ---------------- AGRICOLTURA E PRODOTTI ---------------- */
   {
     id: "terrazzamenti", nome: "Ulivi e terrazzamenti", cat: "sapori", lat: 43.9667, lng: 7.9833,
     sottotitolo: "Come si coltiva in collina",
-    testo: "In Liguria l'agricoltura si fa soprattutto in collina. I pendii sono ripidi, così gli agricoltori ricavano lo spazio per le coltivazioni con la tecnica del terrazzamento: creano tante piccole strisce di terra piana, una sopra l'altra, come i gradini di una scala, [[sostenute da muretti di pietra]]. Si coltivano ulivi, viti, frutta e ortaggi. [[Qui, nell'entroterra di Imperia, ci sono tanti uliveti: le olive taggiasche danno un olio famoso.]]",
+    testo: "Il terreno montuoso e la scarsità d'acqua non aiutano l'agricoltura, che si fa nelle piccole pianure vicino al mare e soprattutto in collina. I pendii sono ripidi, così gli agricoltori ricavano lo spazio per le coltivazioni con la tecnica del terrazzamento: creano tante piccole strisce di terra piana, una sopra l'altra, come i gradini di una scala, [[sostenute da muretti di pietra]]. Si coltivano ulivi, viti, frutta e ortaggi. [[Qui, nell'entroterra di Imperia, ci sono tanti uliveti: le olive taggiasche danno un olio famoso.]]",
     punti: [
       "Tecnica del terrazzamento",
       "Si coltivano ulivi, viti, frutta e ortaggi",
@@ -288,10 +332,10 @@ window.LUOGHI = [
   {
     id: "sanremo", nome: "Sanremo e i fiori", cat: "sapori", lat: 43.8159, lng: 7.7761,
     sottotitolo: "Fiori e piante ornamentali",
-    testo: "Sanremo è una città della Riviera di Ponente, in provincia di Imperia. Nella Riviera di Ponente è diffusa la coltivazione di fiori e piante ornamentali, spesso nelle serre. [[Per questo il tratto di costa intorno a Sanremo è chiamato «Riviera dei Fiori». Ogni anno a Sanremo si tiene il Festival della canzone italiana.]]",
+    testo: "Sanremo è una città della Riviera di Ponente, in provincia di Imperia. Nella Riviera di Ponente è diffusa la floricoltura, cioè la coltivazione di fiori e piante ornamentali, spesso nelle serre. [[Per questo il tratto di costa intorno a Sanremo è chiamato «Riviera dei Fiori». Ogni anno a Sanremo si tiene il Festival della canzone italiana.]]",
     punti: [
       "Riviera di Ponente, provincia di Imperia",
-      "Coltivazione di fiori e piante ornamentali",
+      "Floricoltura: coltivazione di fiori e piante ornamentali, in serra",
       "[[La «Riviera dei Fiori»]]",
       "[[Il Festival di Sanremo]]"
     ],
@@ -340,11 +384,12 @@ window.LUOGHI = [
 window.FIUME_INFO = {
   nome: "Scrivia", cat: "natura",
   sottotitolo: "Uno dei fiumi che vanno verso nord, nel Po",
-  testo: "Dai rilievi della Liguria nascono numerosi fiumi. Quelli che sfociano nel Mar Ligure sono brevi e a carattere torrentizio: hanno tanta acqua quando piove e pochissima d'estate. Verso nord vanno invece fiumi più lunghi e regolari, che finiscono nel Po: il Tanaro, la Bormida, lo Scrivia e il Trebbia. Sulla cartina è disegnato lo Scrivia: nasce nell'Appennino Ligure [[vicino a Torriglia]], passa per Busalla e scende verso il Piemonte.",
+  testo: "Dai rilievi della Liguria nascono numerosi fiumi. Quelli che sfociano nel Mar Ligure sono brevi e a carattere torrentizio: hanno tanta acqua quando piove e pochissima d'estate. I principali sono il Magra, il Roia e l'Arroscia. Verso nord vanno invece fiumi più lunghi e regolari, che finiscono nel Po: il Tanaro, la Bormida, lo Scrivia e il Trebbia. Sulla cartina è disegnato lo Scrivia: nasce nell'Appennino Ligure [[vicino a Torriglia]], passa per Busalla e scende verso il Piemonte.",
   punti: [
     "Nasce nell'Appennino Ligure e va verso nord",
     "Finisce nel Po, come il Tanaro, la Bormida e il Trebbia",
-    "I fiumi verso il Mar Ligure invece sono brevi e a carattere torrentizio",
+    "I fiumi verso il Mar Ligure invece sono brevi e a carattere torrentizio: i principali sono il Magra, il Roia e l'Arroscia",
+    "Con le piogge abbondanti i fiumi liguri straripano facilmente: frane e alluvioni",
     "[[È lungo circa 117 km]]",
     "[[Il tracciato sulla mappa è calcolato dai dati di altitudine]]"
   ],
@@ -371,6 +416,7 @@ window.ETICHETTE_FISICHE = [
   { t: "Trebbia",  tipo: "fiume", lat: 44.57, lng: 9.28, min: 8.5, km2: 150 },
   { t: "Roia",     tipo: "fiume", lat: 43.88, lng: 7.56, min: 9,   km2: 400 },
   { t: "Arroscia", tipo: "fiume", lat: 44.04, lng: 7.98, min: 9,   km2: 100 },
+  { t: "Argentina", tipo: "fiume", lat: 43.90, lng: 7.85, min: 9.5, km2: 100 },
   { t: "Lavagna",  tipo: "fiume", lat: 44.40, lng: 9.27, min: 9,   km2: 100 },
   { t: "Vara",     tipo: "fiume", lat: 44.27, lng: 9.67, min: 8.5, km2: 200 },
   { t: "Magra",    tipo: "fiume", lat: 44.15, lng: 9.94, min: 8.5, km2: 1000 },
@@ -408,7 +454,7 @@ window.SCHEDA = [
     titolo: "📍 Carta d'identità",
     html: `<div class="stats">
         <div class="stat"><span>Superficie</span><b>5.416 km²</b></div>
-        <div class="stat"><span>Abitanti</span><b>1.507.438</b></div>
+        <div class="stat"><span>Abitanti</span><b>1.507.438</b><small>«Che meraviglia!»: 1.507.636</small></div>
         <div class="stat"><span>Densità</span><b>278 ab./km²</b></div>
         <div class="stat"><span>Capoluogo</span><b>Genova</b><small>560.688 ab.</small></div>
       </div>
@@ -418,6 +464,8 @@ window.SCHEDA = [
       <li><b>Stemma:</b> la croce rossa su fondo bianco con quattro stelle, sopra la forma di una nave [[(la croce è quella di San Giorgio, simbolo di Genova; le stelle sono le quattro province)]]</li>
       <li>[[È una delle regioni più piccole d'Italia: sono più piccole solo la Valle d'Aosta e il Molise]]</li>
       <li>[[<b>Comuni:</b> 234]]</li>
+      <li>È una regione a <b>statuto ordinario</b></li>
+      <li class="libri">📖 Libri: «Geografia» vol. 5, pp. 38–41 e «Che meraviglia!» Geografia 5, pp. 38–40. I numeri sono quelli di «Geografia»: se «Che meraviglia!» ne dà uno diverso, è scritto accanto.</li>
     </ul>`
   },
   {
@@ -435,7 +483,7 @@ window.SCHEDA = [
         </ul>
       </div>
       <ul>
-      <li><b>Montagne e colline</b> occupano quasi tutto il territorio e <b>arrivano fino al mare</b>. Ci sono solo <b>poche e piccole pianure</b>.</li>
+      <li><b>Montagne e colline</b> occupano quasi tutto il territorio e <b>arrivano fino al mare</b>. Ci sono solo <b>poche e piccole pianure</b>, sulla costa, vicino alla foce dei fiumi.</li>
       <li><b>A ovest</b>, al confine con la Francia, ci sono le <b>Alpi Marittime</b> (Monte Saccarello, 2.200 m).</li>
       <li>Dal <b>Colle di Cadibona</b>, vicino a Savona, parte l'<b>Appennino Ligure</b> (Monte Maggiorasca, 1.799 m).</li>
     </ul>`
@@ -444,7 +492,7 @@ window.SCHEDA = [
     titolo: "🌊 Coste e Riviere",
     html: `<p>La costa è ricca di <b>golfi</b> (il mare che entra nella terra), <b>insenature</b> e <b>promontori</b> (la terra che sporge nel mare). Al centro c'è il <b>Golfo di Genova</b>, che divide la costa in due Riviere:</p>
       <ul>
-      <li><b>Riviera di Ponente</b>, a <b>ovest</b> di Genova: i rilievi scendono <b>più dolcemente</b> verso il mare e sulla costa ci sono anche <b>spiagge</b> di sabbia o di ciottoli (come a Varazze).</li>
+      <li><b>Riviera di Ponente</b>, a <b>ovest</b> di Genova: i rilievi scendono <b>più dolcemente</b> verso il mare, le coste sono <b>basse</b> e ci sono anche <b>spiagge</b> di sabbia o di ciottoli (come a Varazze).</li>
       <li><b>Riviera di Levante</b>, a <b>est</b> di Genova: gli Appennini arrivano <b>a picco sul mare</b> e le coste sono <b>alte e rocciose</b> (come a Manarola, nelle Cinque Terre).</li>
       <li>[[Un trucco per ricordarle: «ponente» è dove il sole si <i>pone</i>, cioè tramonta (ovest); «levante» è dove il sole si <i>leva</i>, cioè sorge (est).]]</li>
     </ul>`
@@ -453,9 +501,10 @@ window.SCHEDA = [
     titolo: "💧 Fiumi",
     html: `<p>Dai rilievi nascono <b>numerosi fiumi</b>, di due tipi:</p>
       <ul>
-      <li>quelli che sfociano nel <b>Mar Ligure</b> sono <b>brevi</b> e a <b>carattere torrentizio</b>: hanno tanta acqua quando piove e quasi niente d'estate [[(come il Roia, il Nervia, l'Entella)]];</li>
+      <li>quelli che sfociano nel <b>Mar Ligure</b> sono <b>brevi</b> e a <b>carattere torrentizio</b>: hanno tanta acqua quando piove e quasi niente d'estate. I principali sono il <b>Magra</b>, il <b>Roia</b> e l'<b>Arroscia</b> [[(e poi il Nervia, l'Entella…)]];</li>
       <li>quelli che vanno <b>verso nord</b> sono <b>più lunghi e regolari</b> e finiscono, <b>direttamente o indirettamente</b>, nel <b>Po</b>: il <b>Tanaro</b>, la <b>Bormida</b>, lo <b>Scrivia</b> e il <b>Trebbia</b>. («Indirettamente» vuol dire che prima entrano in un altro fiume: [[la Bormida, per esempio, entra nel Tanaro, che poi entra nel Po]].)</li>
-      <li>[[A est c'è il Magra, con il suo affluente Vara: nasce in Toscana e sfocia nel Mar Ligure vicino a La Spezia.]]</li>
+      <li>[[Il Magra, con il suo affluente Vara, nasce in Toscana e sfocia nel Mar Ligure vicino a La Spezia.]]</li>
+      <li>⚠️ Con le piogge abbondanti i fiumi <b>straripano</b> facilmente e provocano <b>frane</b> e <b>alluvioni</b> (vedi «Ambiente a rischio»).</li>
     </ul>`
   },
   {
@@ -465,14 +514,25 @@ window.SCHEDA = [
         <li style="--c:#e9dcd2"><b>Rilievi</b> la Liguria è ricca di foreste di <b>latifoglie</b> (alberi con foglie larghe): le montagne sono ricoperte da boschi di <b>castagni</b>, <b>roverella</b> e <b>cerro</b> [[(la roverella e il cerro sono due tipi di quercia)]].</li>
         <li style="--c:#d6ead3"><b>Costa</b> un tempo c'era la <b>macchia mediterranea</b> (arbusti sempreverdi); oggi spesso le <b>coltivazioni</b> ne hanno preso il posto.</li>
       </ol>
-      <p><b>Parchi:</b> il <b>Parco Nazionale delle Cinque Terre</b>, con i cinque borghi di <b>Riomaggiore, Manarola, Corniglia, Vernazza e Monterosso al Mare</b>, e il <b>Parco Regionale del Beigua</b>, sulle alture tra Genova e Savona, tutelano i paesaggi di queste parti della regione. Le Cinque Terre, con il loro ambiente unico, sono <b>Patrimonio Mondiale dell'Umanità UNESCO</b>.</p>`
+      <p><b>Parchi:</b> il <b>Parco Nazionale delle Cinque Terre</b>, con i cinque borghi di <b>Riomaggiore, Manarola, Corniglia, Vernazza e Monterosso al Mare</b>, e il <b>Parco Regionale del Beigua</b>, sulle alture tra Genova e Savona, tutelano i paesaggi di queste parti della regione. Le Cinque Terre, con il loro ambiente unico, sono <b>Patrimonio Mondiale dell'Umanità UNESCO</b>, insieme a <b>Portovenere</b>. Lungo la loro costa rocciosa ci sono <b>scogliere</b> con <b>sentieri a strapiombo</b> sul mare.</p>`
+  },
+  {
+    titolo: "⚠️ Ambiente a rischio e turismo sostenibile",
+    html: `<p>La Liguria è una regione <b>a rischio</b> a causa dei <b>fiumi</b>: quando piove molto, <b>straripano</b> facilmente e provocano <b>frane</b> e <b>alluvioni</b>.</p>
+      <ul>
+      <li>Nelle poche aree pianeggianti sono stati costruiti <b>moltissimi edifici</b></li>
+      <li>Sono stati tagliati tanti <b>boschi</b>: così il terreno è diventato più fragile</li>
+      <li>Anche il <b>troppo turismo</b> ha danneggiato l'ambiente e i suoi equilibri naturali</li>
+      </ul>
+      <p><b>Turismo sostenibile</b> = un modo di viaggiare che rispetta l'<b>ambiente</b> e le <b>persone che ci vivono</b> [[(per esempio: usare il treno, non lasciare rifiuti, restare sui sentieri, visitare anche fuori stagione)]].</p>`
   },
   {
     titolo: "👥 Popolazione",
     html: `<ul>
       <li>Gli abitanti sono <b>1.507.438</b>, <b>278 per km²</b> [[(molti più del Piemonte, che ne ha 168: in Liguria si vive vicini, perché lo spazio piano è poco)]]</li>
       <li>Il terreno è soprattutto <b>montuoso</b>, quindi i centri abitati sorgono lungo il <b>litorale</b> (la costa), nell'<b>entroterra</b> (la parte lontana dal mare) o lungo <b>alcune valli</b></li>
-      <li>A <b>Genova</b>, il capoluogo, e nella sua città metropolitana vive <b>oltre la metà</b> degli abitanti</li>
+      <li>A <b>Genova</b>, il capoluogo, e nella sua città metropolitana vive <b>oltre la metà</b> degli abitanti: la gente si concentra lungo la <b>costa</b>, dove la densità è alta, soprattutto nelle città principali</li>
+      <li><b>Lingue:</b> l'<b>italiano</b> e alcuni <b>dialetti</b> locali</li>
       <li><b>Storia:</b> i <b>Liguri</b> erano le antiche popolazioni che, molto prima dei Romani, si stanziarono in questa regione. [[Nel Medioevo Genova fu una potente repubblica marinara, con navi e commerci in tutto il Mediterraneo.]]</li>
     </ul>`
   },
@@ -491,21 +551,22 @@ window.SCHEDA = [
           <li><i style="--c:var(--s2)"></i>Secondario <small>industria</small><b>19,6%</b></li>
           <li><i style="--c:var(--s3)"></i>Terziario <small>turismo, commercio, porti, servizi</small><b>78,2%</b></li>
         </ul>
+        <p class="nota-libro">«Che meraviglia!»: primario 4%, secondario 23%, terziario 73%.</p>
       </div>
       <ul>
-      <li><b>Terziario:</b> è <b>di gran lunga</b> il settore più sviluppato. Oltre al turismo spiccano le attività <b>commerciali</b>, <b>assicurative</b>, <b>bancarie</b> e <b>portuali</b>. Il porto principale è quello di <b>Genova</b>, ma anche i porti di <b>Savona</b> e <b>La Spezia</b> sono molto attivi.</li>
-      <li><b>Secondario:</b> intorno ai porti in passato c'erano grandi <b>cantieri navali</b> (dove si costruiscono le navi) e <b>industrie</b>. Negli ultimi decenni queste attività hanno avuto un <b>forte calo</b>, mentre è cresciuto il settore <b>alimentare</b>.</li>
-      <li><b>Primario:</b> l'<b>agricoltura</b> si fa soprattutto in <b>collina</b>, dove lo spazio per coltivare si ricava con il <b>terrazzamento</b>. Si coltivano <b>ulivi, viti, frutta e ortaggi</b> e, nelle <b>serre</b>, il <b>basilico</b>. Nella <b>Riviera di Ponente</b> si coltivano <b>fiori e piante ornamentali</b>. Famoso il <b>carciofo spinoso di Albenga</b>. L'<b>allevamento</b> è poco sviluppato e la <b>pesca</b> non rende molto.</li>
+      <li><b>Terziario:</b> è <b>di gran lunga</b> il settore più sviluppato. Oltre al turismo spiccano le attività <b>commerciali</b>, <b>assicurative</b>, <b>bancarie</b> e <b>portuali</b>. Il porto principale è quello di <b>Genova</b>, ma anche i porti di <b>Savona</b> e <b>La Spezia</b> sono molto attivi. La Liguria è uno <b>sbocco naturale sul Mar Mediterraneo</b>: le città portuali sono fondamentali e il <b>commercio marittimo</b> (le merci che viaggiano per nave) è molto sviluppato. Nei porti arrivano anche moltissimi visitatori. Il turismo più importante è quello <b>balneare</b>, in località come <b>Portofino</b>, <b>Camogli</b> e le <b>Cinque Terre</b>.</li>
+      <li><b>Secondario:</b> intorno ai porti ci sono <b>industrie navali e cantieri</b> (dove si costruiscono le navi) e impianti <b>petrolchimici</b>, <b>siderurgici</b> (acciaio) e <b>meccanici</b>; in passato erano molto più grandi. Negli ultimi decenni queste attività hanno avuto un <b>forte calo</b>, mentre è cresciuto il settore <b>alimentare</b>.</li>
+      <li><b>Primario:</b> il terreno montuoso e la <b>scarsità d'acqua</b> non aiutano l'<b>agricoltura</b>, che si fa nelle piccole pianure costiere e soprattutto in <b>collina</b>, dove lo spazio per coltivare si ricava con il <b>terrazzamento</b>. Si coltivano <b>ulivi, viti, frutta e ortaggi</b> e, nelle <b>serre</b>, il <b>basilico</b>. Nella <b>Riviera di Ponente</b> è diffusa la <b>floricoltura</b>, cioè la coltivazione di <b>fiori e piante ornamentali</b>, in serra. Famoso il <b>carciofo spinoso di Albenga</b>. L'<b>allevamento</b> è poco sviluppato e la <b>pesca</b> non rende molto, perché il Mar Ligure è <b>poco pescoso</b>.</li>
     </ul>`
   },
   {
     titolo: "🚗 Comunicazioni",
-    html: `<p>Sulla carta del libro si vedono:</p>
+    html: `<p>Sulle carte dei libri si vedono:</p>
       <ul>
       <li><b>Porti:</b> <b>Genova</b> (il principale), <b>Savona</b> e <b>La Spezia</b>; vicino a Genova c'è anche l'<b>aeroporto</b></li>
       <li><b>Autostrade lungo la costa:</b> l'<b>A10</b> nella Riviera di Ponente, verso la <b>Francia</b>, e l'<b>A12</b> nella Riviera di Levante, verso la <b>Toscana</b></li>
       <li><b>Autostrade verso nord:</b> l'<b>A6</b> (da Savona), l'<b>A26</b> e l'<b>A7</b> (da Genova) verso il Piemonte e la Lombardia; l'<b>A15</b> da La Spezia verso l'Emilia-Romagna</li>
-      <li><b>Valichi</b> per attraversare le montagne: Colle di Nava, Colle di Cadibona, Passo del Turchino, Passo dei Giovi</li>
+      <li><b>Valichi</b> per attraversare le montagne: Colle di Nava, Colle di Cadibona, Passo del Turchino, Passo dei Giovi; sulla carta di «Che meraviglia!» anche il Passo della Scoffera (674 m) e il Passo del Bracco (615 m)</li>
       <li>[[Strade e ferrovie lungo la costa passano in tante gallerie, perché le montagne arrivano fino al mare]]</li>
     </ul>`
   },
@@ -515,6 +576,7 @@ window.SCHEDA = [
       <li><b>L'acquario di Genova</b> è l'<b>acquario più grande d'Europa</b>. Ha una settantina di ambienti dove vivono circa <b>12.000 animali</b> di <b>600 specie</b> di tutto il mondo: squali, pinguini, foche, delfini e molti altri mammiferi marini. Nel padiglione dei cetacei, da un <b>tunnel</b> di 15 metri con una parete di vetro lunga 24 metri, si guardano i <b>delfini</b> come se si fosse sott'acqua. Ci sono anche una <b>foresta tropicale</b> e una <b>scogliera corallina</b> ricostruite.</li>
       <li><b>La focaccia di Recco:</b> secondo la leggenda la inventarono i contadini che si erano rifugiati nell'entroterra per sfuggire ai <b>pirati saraceni</b>. Si fa con <b>farina, acqua, sale, olio e un formaggio morbido</b>.</li>
       <li><b>Il carciofo spinoso di Albenga</b>, noto per il colore e la tenerezza delle sue foglie.</li>
+      <li><b>Portovenere</b>, paesino a picco sul mare sul <b>Golfo di La Spezia</b>, detto «<b>Golfo dei Poeti</b>» perché ha attirato tanti poeti e artisti. Il nome viene da un antico tempio della dea <b>Venere</b>, nata secondo la leggenda dalla spuma del mare. Davanti ci sono le isole <b>Palmaria</b>, <b>Tino</b> e <b>Tinetto</b>. Con le Cinque Terre è Patrimonio dell'<b>UNESCO</b>.</li>
       <li>[[Con il basilico ligure si fa il <b>pesto alla genovese</b>]]</li>
       <li>[[A Genova è nato <b>Cristoforo Colombo</b>, che nel 1492 arrivò in America]]</li>
       <li>[[Il simbolo di Genova è la <b>Lanterna</b>, il faro del porto, alto 77 metri]]</li>
@@ -528,7 +590,7 @@ window.SCHEDA = [
 window.SEZIONI_DOMANDE = ["identita", "territorio", "coste", "acque", "clima", "popolazione", "economia", "comunicazioni", "cultura"];
 window.DOMANDE = [
   { sez: "identita", tipo: "scelta", d: "Qual è il capoluogo della Liguria?", opzioni: ["Savona", "Genova", "La Spezia"], giusta: 1, spiega: "Il capoluogo è Genova (560.688 abitanti)." },
-  { sez: "identita", tipo: "scelta", d: "Quanti abitanti ha la Liguria?", opzioni: ["circa 150.000", "circa un milione e mezzo", "circa 15 milioni"], giusta: 1, spiega: "Ha 1.507.438 abitanti." },
+  { sez: "identita", tipo: "scelta", d: "Quanti abitanti ha la Liguria?", opzioni: ["circa 150.000", "circa un milione e mezzo", "circa 15 milioni"], giusta: 1, spiega: "Ha 1.507.438 abitanti (in «Che meraviglia!» 1.507.636)." },
   { sez: "identita", tipo: "scelta", d: "Quanto è grande la Liguria?", opzioni: ["5.416 km²", "25.386 km²", "54.160 km²"], giusta: 0, spiega: "La superficie è di 5.416 km² (25.386 km² è il Piemonte)." },
   { sez: "identita", tipo: "scelta", d: "Qual è la densità di popolazione della Liguria?", opzioni: ["38 abitanti per km²", "168 abitanti per km²", "278 abitanti per km²"], giusta: 2, spiega: "278 abitanti per km² (38 è la Valle d'Aosta, 168 il Piemonte)." },
   { sez: "identita", tipo: "scelta", d: "Quale di queste NON è una città principale della Liguria?", opzioni: ["Imperia", "Torino", "La Spezia"], giusta: 1, spiega: "Torino è in Piemonte. Le città principali della Liguria sono Genova, Imperia, La Spezia e Savona." },
@@ -584,7 +646,7 @@ window.DOMANDE = [
   { sez: "popolazione", tipo: "vf", d: "Il litorale è la zona lungo il mare.", vero: true, spiega: "Vero: il litorale è la costa." },
   { sez: "popolazione", tipo: "vf", d: "In Liguria ci sono più abitanti per km² che in Piemonte.", vero: true, spiega: "Vero: 278 contro 168." },
 
-  { sez: "economia", tipo: "scelta", d: "Qual è il settore più sviluppato?", opzioni: ["il primario", "il secondario", "il terziario"], giusta: 2, spiega: "Il terziario, di gran lunga: 78,2% degli occupati." },
+  { sez: "economia", tipo: "scelta", d: "Qual è il settore più sviluppato?", opzioni: ["il primario", "il secondario", "il terziario"], giusta: 2, spiega: "Il terziario, di gran lunga: 78,2% degli occupati (in «Che meraviglia!» 73%)." },
   { sez: "economia", tipo: "scelta", d: "Quali sono le principali attività del terziario?", opzioni: ["turismo e attività commerciali, assicurative, bancarie e portuali", "agricoltura e pesca", "miniere"], giusta: 0, spiega: "Il turismo e le attività commerciali, assicurative, bancarie e portuali." },
   { sez: "economia", tipo: "scelta", d: "Perché i turisti vengono in Liguria in ogni stagione?", opzioni: ["per le località balneari, il clima mite e la bellezza del paesaggio", "per sciare sui ghiacciai", "per vedere i vulcani"], giusta: 0, spiega: "Località balneari, clima mite e paesaggi come Portofino e le Cinque Terre." },
   { sez: "economia", tipo: "scelta", d: "Quale tecnica usano gli agricoltori per ricavare il terreno per le coltivazioni?", opzioni: ["il terrazzamento", "la bonifica delle paludi", "le risaie"], giusta: 0, spiega: "Il terrazzamento: strisce di terra piana sui pendii, come gradini." },
@@ -610,6 +672,26 @@ window.DOMANDE = [
   { sez: "cultura", tipo: "vf", d: "Nell'acquario di Genova sono state ricostruite una foresta tropicale e una scogliera corallina.", vero: true, spiega: "Vero." },
   { sez: "cultura", tipo: "scelta", d: "Secondo la leggenda, chi inventò la focaccia di Recco?", opzioni: ["contadini fuggiti nell'entroterra per sfuggire ai pirati saraceni", "i soldati romani", "un cuoco francese"], giusta: 0, spiega: "I contadini rifugiati nell'entroterra durante le incursioni dei pirati saraceni." },
   { sez: "cultura", tipo: "scelta", d: "Che cosa serve per la focaccia di Recco?", opzioni: ["farina, acqua, sale, olio e un formaggio morbido", "riso e zafferano", "pomodoro e mozzarella"], giusta: 0, spiega: "Farina, acqua, sale, olio e un formaggio morbido." },
+  { sez: "identita", tipo: "scelta", d: "La Liguria è una regione a statuto…", opzioni: ["ordinario", "speciale"], giusta: 0, spiega: "Ordinario, come quasi tutte le regioni (la Valle d'Aosta invece è a statuto speciale)." },
+  { sez: "popolazione", tipo: "scelta", d: "Quali lingue si parlano in Liguria?", opzioni: ["l'italiano e alcuni dialetti locali", "l'italiano e il tedesco", "solo il francese"], giusta: 0, spiega: "L'italiano e alcuni dialetti locali." },
+  { sez: "popolazione", tipo: "scelta", d: "Dove si concentrano gli abitanti?", opzioni: ["lungo la costa, dove la densità è alta", "sulle montagne più alte", "nelle isole"], giusta: 0, spiega: "Lungo la costa, soprattutto nelle città principali." },
+  { sez: "territorio", tipo: "scelta", d: "Dove si trovano le poche pianure della Liguria?", opzioni: ["sulla costa, vicino alla foce dei fiumi", "in cima all'Appennino", "al confine con la Francia, in montagna"], giusta: 0, spiega: "Sono piccole pianure costiere, vicino alla foce dei fiumi." },
+  { sez: "coste", tipo: "vf", d: "Nella Riviera di Ponente le coste sono basse.", vero: true, spiega: "Vero: i rilievi scendono dolcemente verso il mare. Nella Riviera di Levante invece le coste sono alte e rocciose." },
+  { sez: "acque", tipo: "scelta", d: "Quali sono i principali fiumi che sfociano nel Mar Ligure?", opzioni: ["il Magra, il Roia e l'Arroscia", "il Tanaro e la Bormida", "il Po e l'Adige"], giusta: 0, spiega: "Il Magra, il Roia e l'Arroscia. Il Tanaro e la Bormida invece vanno verso il Po." },
+  { sez: "acque", tipo: "vf", d: "Con le piogge abbondanti i fiumi liguri possono straripare.", vero: true, spiega: "Vero: straripano facilmente e provocano frane e alluvioni." },
+  { sez: "clima", tipo: "scelta", d: "Perché la Liguria è una regione a rischio?", opzioni: ["perché con le piogge forti i fiumi straripano e ci sono frane e alluvioni", "perché ci sono tanti vulcani", "perché fa troppo freddo"], giusta: 0, spiega: "I fiumi straripano facilmente; in più si è costruito tanto nelle poche pianure e si sono tagliati molti boschi." },
+  { sez: "clima", tipo: "scelta", d: "Che cos'è il turismo sostenibile?", opzioni: ["un modo di viaggiare che rispetta l'ambiente e chi ci vive", "un viaggio molto lungo", "andare in vacanza solo d'estate"], giusta: 0, spiega: "È un turismo che unisce le esigenze di chi visita con il rispetto dell'ambiente e delle comunità locali." },
+  { sez: "clima", tipo: "vf", d: "Tagliare i boschi rende il terreno più fragile.", vero: true, spiega: "Vero: senza alberi il terreno frana più facilmente." },
+  { sez: "economia", tipo: "scelta", d: "Che cos'è la floricoltura?", opzioni: ["la coltivazione dei fiori", "l'allevamento delle api", "la pesca dei pesci"], giusta: 0, spiega: "È la coltivazione di fiori: in Liguria si fa soprattutto in serra." },
+  { sez: "economia", tipo: "scelta", d: "Perché la pesca in Liguria rende poco?", opzioni: ["perché il Mar Ligure è poco pescoso", "perché è vietato pescare", "perché il mare è ghiacciato"], giusta: 0, spiega: "Il Mar Ligure ha pochi pesci." },
+  { sez: "economia", tipo: "scelta", d: "Quali industrie ci sono intorno ai porti?", opzioni: ["navali e cantieristiche, petrolchimiche, siderurgiche e meccaniche", "solo industrie della lana", "nessuna"], giusta: 0, spiega: "Industrie navali e cantieri, impianti petrolchimici, siderurgici e meccanici." },
+  { sez: "economia", tipo: "scelta", d: "Quali località balneari sono famose?", opzioni: ["Portofino, Camogli e le Cinque Terre", "Cortina e Sestriere", "Courmayeur e Cervinia"], giusta: 0, spiega: "Portofino, Camogli e le Cinque Terre." },
+  { sez: "comunicazioni", tipo: "scelta", d: "Che cosa vuol dire che la Liguria è uno «sbocco naturale sul Mediterraneo»?", opzioni: ["che dai suoi porti le merci arrivano e partono per mare", "che ha un grande lago", "che non ha porti"], giusta: 0, spiega: "Con i suoi porti, come Genova e Savona, è fondamentale per il commercio marittimo." },
+  { sez: "comunicazioni", tipo: "scelta", d: "Quale passo si trova nella Riviera di Levante, tra Sestri Levante e La Spezia?", opzioni: ["il Passo del Bracco", "il Colle di Nava", "il Passo del Turchino"], giusta: 0, spiega: "Il Passo del Bracco (615 m)." },
+  { sez: "cultura", tipo: "scelta", d: "Da dove viene il nome Portovenere?", opzioni: ["da un antico tempio dedicato alla dea Venere", "da un porto di Venezia", "da un vento"], giusta: 0, spiega: "Da un tempio della dea Venere, che secondo la leggenda era nata dalla spuma del mare." },
+  { sez: "cultura", tipo: "scelta", d: "Quale golfo è chiamato «Golfo dei Poeti»?", opzioni: ["il Golfo di La Spezia", "il Golfo di Genova", "il Golfo di Napoli"], giusta: 0, spiega: "Il Golfo di La Spezia: la sua bellezza ha attirato tanti poeti e artisti." },
+  { sez: "cultura", tipo: "scelta", d: "Quali isole ci sono davanti a Portovenere?", opzioni: ["Palmaria, Tino e Tinetto", "Elba e Capraia", "le Isole Borromee"], giusta: 0, spiega: "La Palmaria, il Tino e il Tinetto." },
+  { sez: "cultura", tipo: "vf", d: "Portovenere e le Cinque Terre sono Patrimonio dell'UNESCO.", vero: true, spiega: "Vero." },
   { sez: "cultura", tipo: "scelta", extra: true, d: "Quale famoso navigatore è nato a Genova?", opzioni: ["Cristoforo Colombo", "Marco Polo", "Amerigo Vespucci"], giusta: 0, spiega: "Cristoforo Colombo, che nel 1492 arrivò in America. (Marco Polo era di Venezia, Amerigo Vespucci di Firenze.)" },
   { sez: "cultura", tipo: "scelta", extra: true, d: "Quale salsa si prepara con il basilico ligure?", opzioni: ["il pesto alla genovese", "il ragù", "la maionese"], giusta: 0, spiega: "Il pesto alla genovese." }
 ];
@@ -637,13 +719,17 @@ window.DOMANDE_RISPOSTE = [
     { d: "Dove si trova la Riviera di Levante, rispetto a Genova?",
       r: "A est. La Riviera di Ponente invece è a ovest." },
     { d: "Che differenza c'è tra le due Riviere?",
-      r: "Nella Riviera di Levante gli Appennini arrivano a picco sul mare e le coste sono alte e rocciose. Nella Riviera di Ponente i rilievi scendono più dolcemente e ci sono anche spiagge di sabbia o di ciottoli." }
+      r: "Nella Riviera di Levante gli Appennini arrivano a picco sul mare e le coste sono alte e rocciose. Nella Riviera di Ponente i rilievi scendono più dolcemente, le coste sono basse e ci sono anche spiagge di sabbia o di ciottoli." },
+    { d: "Che cos'è Portovenere?",
+      r: "Un paesino a picco sul mare, sul Golfo di La Spezia, detto «Golfo dei Poeti». Il nome viene dal tempio della dea Venere. Davanti ci sono le isole Palmaria, Tino e Tinetto. Con le Cinque Terre è Patrimonio dell'UNESCO." }
   ]},
   { gruppo: "💧 Fiumi", domande: [
     { d: "Come sono i fiumi che vanno nel Mar Ligure?",
-      r: "Brevi e a carattere torrentizio: hanno tanta acqua quando piove e poca d'estate." },
+      r: "Brevi e a carattere torrentizio: hanno tanta acqua quando piove e poca d'estate. I principali sono il Magra, il Roia e l'Arroscia." },
     { d: "Quali fiumi vanno verso nord?",
-      r: "Fiumi più lunghi e regolari, che finiscono nel Po: il Tanaro, la Bormida, lo Scrivia e il Trebbia." }
+      r: "Fiumi più lunghi e regolari, che finiscono nel Po: il Tanaro, la Bormida, lo Scrivia e il Trebbia." },
+    { d: "Perché la Liguria è una regione a rischio?",
+      r: "Perché con le piogge abbondanti i fiumi straripano e ci sono frane e alluvioni. Nelle poche pianure si è costruito tanto e sono stati tagliati molti boschi, così il terreno è più fragile." }
   ]},
   { gruppo: "☀️ Clima e ambienti", domande: [
     { d: "Da quali elementi fisici è influenzato il clima?",
@@ -657,7 +743,9 @@ window.DOMANDE_RISPOSTE = [
     { d: "Quali sono i parchi più importanti?",
       r: "Il Parco Nazionale delle Cinque Terre (Patrimonio dell'Umanità UNESCO) e il Parco Regionale del Beigua, tra Genova e Savona." },
     { d: "Quali sono le Cinque Terre?",
-      r: "Riomaggiore, Manarola, Corniglia, Vernazza e Monterosso al Mare." }
+      r: "Riomaggiore, Manarola, Corniglia, Vernazza e Monterosso al Mare." },
+    { d: "Che cos'è il turismo sostenibile?",
+      r: "Un modo di viaggiare che rispetta l'ambiente e le persone che ci vivono: in Liguria il troppo turismo ha danneggiato l'ambiente." }
   ]},
   { gruppo: "👥 Popolazione", domande: [
     { d: "Quanti abitanti ha la Liguria?",
@@ -665,7 +753,9 @@ window.DOMANDE_RISPOSTE = [
     { d: "Dove vive la gente?",
       r: "Il terreno è montuoso, quindi i centri abitati sono lungo il litorale, nell'entroterra o lungo alcune valli. Oltre la metà degli abitanti vive a Genova e nella sua città metropolitana." },
     { d: "Qual è il capoluogo?",
-      r: "Genova, con 560.688 abitanti. Le altre città principali sono Imperia, La Spezia e Savona." }
+      r: "Genova, con 560.688 abitanti. Le altre città principali sono Imperia, La Spezia e Savona." },
+    { d: "Quali lingue si parlano?",
+      r: "L'italiano e alcuni dialetti locali. La Liguria è una regione a statuto ordinario." }
   ]},
   { gruppo: "💼 Lavoro e collegamenti", domande: [
     { d: "Qual è il settore più sviluppato?",
@@ -673,13 +763,15 @@ window.DOMANDE_RISPOSTE = [
     { d: "Perché il turismo è così importante?",
       r: "Per le tante località balneari, il clima mite e la bellezza del paesaggio, come Portofino e le Cinque Terre: i turisti arrivano in ogni stagione." },
     { d: "Quali sono i porti più importanti?",
-      r: "Genova, il principale; anche Savona e La Spezia sono molto attivi." },
+      r: "Genova, il principale; anche Savona e La Spezia sono molto attivi. La Liguria è uno sbocco naturale sul Mediterraneo: nei porti si fa il commercio marittimo e arrivano tanti visitatori." },
     { d: "E l'industria?",
       r: "In passato intorno ai porti c'erano grandi cantieri navali e industrie, ma negli ultimi decenni sono molto calati. È cresciuto il settore alimentare." },
     { d: "Quale tecnica usano gli agricoltori?",
       r: "Il terrazzamento: in collina creano tante strisce di terra piana, come gradini, per coltivare ulivi, viti, frutta e ortaggi." },
     { d: "Che cosa si coltiva nelle serre e nella Riviera di Ponente?",
-      r: "Nelle serre il basilico; nella Riviera di Ponente fiori e piante ornamentali." }
+      r: "Nelle serre il basilico; nella Riviera di Ponente fiori e piante ornamentali (la floricoltura)." },
+    { d: "Perché la pesca rende poco?",
+      r: "Perché il Mar Ligure è poco pescoso." }
   ]},
   { gruppo: "🐬 Genova e curiosità", domande: [
     { d: "Che cos'ha di speciale l'acquario di Genova?",
@@ -718,12 +810,17 @@ window.FLASHCARD = [
     { f: "Dov'è la Riviera di Ponente?", r: "A ovest di Genova." },
     { f: "Com'è la costa di Levante?", r: "Alta e rocciosa: montagne a picco sul mare." },
     { f: "Com'è la costa di Ponente?", r: "Più dolce, con spiagge di sabbia o ciottoli." },
-    { f: "Che cos'è un promontorio?", r: "Terra che sporge nel mare." }
+    { f: "Che cos'è un promontorio?", r: "Terra che sporge nel mare." },
+    { f: "Qual è il «Golfo dei Poeti»?", r: "Il Golfo di La Spezia." },
+    { f: "Da dove viene il nome Portovenere?", r: "Da un tempio della dea Venere." },
+    { f: "Isole davanti a Portovenere?", r: "Palmaria, Tino e Tinetto." }
   ]},
   { gruppo: "💧 Fiumi", carte: [
     { f: "Come sono i fiumi verso il mare?", r: "Brevi e a carattere torrentizio." },
     { f: "Dove vanno i fiumi più lunghi?", r: "Verso nord, nel Po." },
-    { f: "Quali fiumi vanno nel Po?", r: "Tanaro, Bormida, Scrivia e Trebbia." }
+    { f: "Quali fiumi vanno nel Po?", r: "Tanaro, Bormida, Scrivia e Trebbia." },
+    { f: "Principali fiumi verso il mare?", r: "Magra, Roia e Arroscia." },
+    { f: "Che cosa succede con le piogge forti?", r: "I fiumi straripano: frane e alluvioni." }
   ]},
   { gruppo: "☀️ Clima e ambienti", carte: [
     { f: "Com'è il clima?", r: "Mite tutto l'anno." },
@@ -732,7 +829,8 @@ window.FLASHCARD = [
     { f: "Quali alberi ci sono sui monti?", r: "Castagni, roverella e cerro." },
     { f: "Che vegetazione c'era sulla costa?", r: "La macchia mediterranea." },
     { f: "Quali sono le Cinque Terre?", r: "Riomaggiore, Manarola, Corniglia, Vernazza, Monterosso al Mare." },
-    { f: "Dov'è il Parco del Beigua?", r: "Sulle alture tra Genova e Savona." }
+    { f: "Dov'è il Parco del Beigua?", r: "Sulle alture tra Genova e Savona." },
+    { f: "Che cos'è il turismo sostenibile?", r: "Un turismo che rispetta l'ambiente e chi ci vive." }
   ]},
   { gruppo: "👥 Popolazione", carte: [
     { f: "Dove sorgono i paesi e le città?", r: "Lungo il litorale, nell'entroterra o lungo alcune valli." },
@@ -746,7 +844,10 @@ window.FLASHCARD = [
     { f: "Che cosa si coltiva in collina?", r: "Ulivi, viti, frutta e ortaggi." },
     { f: "Che cosa si coltiva in serra?", r: "Il basilico." },
     { f: "Che cosa si coltiva nella Riviera di Ponente?", r: "Fiori e piante ornamentali." },
-    { f: "Che cosa c'era intorno ai porti?", r: "Grandi cantieri navali e industrie." }
+    { f: "Che cosa c'era intorno ai porti?", r: "Grandi cantieri navali e industrie." },
+    { f: "Che cos'è la floricoltura?", r: "La coltivazione dei fiori." },
+    { f: "Perché la pesca rende poco?", r: "Il Mar Ligure è poco pescoso." },
+    { f: "Località balneari famose?", r: "Portofino, Camogli, Cinque Terre." }
   ]},
   { gruppo: "🐬 Genova e curiosità", carte: [
     { f: "Qual è l'acquario più grande d'Europa?", r: "L'acquario di Genova." },
@@ -760,16 +861,16 @@ window.FLASHCARD = [
    Discorso da dire all'interrogazione (circa 3–4 minuti). Le parole tra **asterischi**
    sono le parole chiave: nel sito si possono nascondere per ripassarle a memoria. */
 window.DISCORSO = [
-  { titolo: "Dove si trova", testo: "Oggi vi parlo della Liguria. Si trova nel **nord-ovest dell'Italia** ed è uno **stretto arco** di montagne e colline affacciato sul **Mar Ligure**. Confina a ovest con la **Francia**, a nord con il **Piemonte** e l'**Emilia-Romagna** e a est con la **Toscana**. Il capoluogo è **Genova**. Il nome viene dai **Liguri**, antiche popolazioni che vivevano qui **molto prima dei Romani**." },
+  { titolo: "Dove si trova", testo: "Oggi vi parlo della Liguria. Si trova nel **nord-ovest dell'Italia** ed è uno **stretto arco** di montagne e colline affacciato sul **Mar Ligure**. Confina a ovest con la **Francia**, a nord con il **Piemonte** e l'**Emilia-Romagna** e a est con la **Toscana**. Il capoluogo è **Genova**. Il nome viene dai **Liguri**, antiche popolazioni che vivevano qui **molto prima dei Romani**. È una regione a **statuto ordinario** e si parlano l'**italiano** e alcuni **dialetti**." },
   { titolo: "I numeri", testo: "La Liguria è grande **5.416 km²** e ha circa **un milione e mezzo di abitanti**, cioè **278 per km²**. Le città principali sono **Genova**, **Imperia**, **La Spezia** e **Savona**." },
   { titolo: "Il territorio", testo: "Il territorio è per il **65% montagna** e per il **35% collina**: montagne e colline arrivano **fino al mare** e ci sono solo **poche e piccole pianure**. A ovest, al confine con la Francia, ci sono le **Alpi Marittime**, con il **Monte Saccarello**. Dal **Colle di Cadibona**, vicino a Savona, parte l'**Appennino Ligure**." },
   { titolo: "La costa", testo: "La costa è ricca di **golfi**, **insenature** e **promontori**. Al centro c'è il **Golfo di Genova**, che la divide in due: a **ovest** la **Riviera di Ponente**, dove i rilievi scendono **dolcemente** e ci sono **spiagge** di sabbia o di ciottoli; a **est** la **Riviera di Levante**, dove gli Appennini arrivano **a picco sul mare** e le coste sono **alte e rocciose**." },
-  { titolo: "I fiumi", testo: "Dai rilievi nascono **numerosi fiumi**. Quelli che sfociano nel Mar Ligure sono **brevi** e a **carattere torrentizio**. Verso **nord** invece vanno fiumi **più lunghi e regolari**, che finiscono nel **Po**: il **Tanaro**, la **Bormida**, lo **Scrivia** e il **Trebbia**." },
+  { titolo: "I fiumi", testo: "Dai rilievi nascono **numerosi fiumi**. Quelli che sfociano nel Mar Ligure sono **brevi** e a **carattere torrentizio**, come il **Magra**, il **Roia** e l'**Arroscia**: con le piogge forti straripano facilmente e provocano **frane** e **alluvioni**. Verso **nord** invece vanno fiumi **più lunghi e regolari**, che finiscono nel **Po**: il **Tanaro**, la **Bormida**, lo **Scrivia** e il **Trebbia**." },
   { titolo: "Clima e ambienti", testo: "Il clima è **mite tutto l'anno** grazie al **mare**, e le **montagne** proteggono la regione dai **venti del nord**: gli inverni sono **miti** e le estati **calde e ventilate**. Le montagne sono coperte di **boschi** di **castagni**, **roverella** e **cerro**; sulla costa un tempo c'era la **macchia mediterranea**, oggi spesso sostituita dalle coltivazioni. Ci sono il **Parco Nazionale delle Cinque Terre**, che è **Patrimonio dell'Umanità UNESCO**, e il **Parco del Beigua**." },
   { titolo: "La popolazione", testo: "Siccome il terreno è **montuoso**, i paesi e le città sorgono lungo il **litorale**, nell'**entroterra** o lungo **alcune valli**. **Oltre la metà** degli abitanti vive a **Genova** e nei comuni intorno." },
-  { titolo: "L'economia", testo: "Il settore più sviluppato è di gran lunga il **terziario**, con il **78%** degli occupati. Il **turismo** è una delle risorse principali, grazie alle **località balneari**, al **clima mite** e a paesaggi come **Portofino** e le **Cinque Terre**. Sono importanti anche i **porti**: il principale è quello di **Genova**, poi **Savona** e **La Spezia**. In passato c'erano grandi **cantieri navali**, che oggi sono calati. L'**agricoltura** si fa in collina con i **terrazzamenti**: si coltivano **ulivi**, **viti**, frutta e ortaggi, il **basilico** nelle serre e i **fiori** nella Riviera di Ponente." },
-  { titolo: "Le curiosità", testo: "A Genova c'è l'**acquario più grande d'Europa**, con **600 specie** di animali e un tunnel di vetro da cui si vedono i **delfini**. Sono famosi anche la **focaccia di Recco**, inventata secondo la leggenda dai contadini in fuga dai **pirati saraceni**, e il **carciofo spinoso di Albenga**." },
-  { titolo: "Per concludere", testo: "La Liguria è una regione **stretta tra le montagne e il mare**, con un **clima mite**, coste bellissime e tanti **turisti** in ogni stagione." }
+  { titolo: "L'economia", testo: "Il settore più sviluppato è di gran lunga il **terziario**, con il **78%** degli occupati. Il **turismo** è una delle risorse principali, grazie alle **località balneari**, al **clima mite** e a paesaggi come **Portofino** e le **Cinque Terre**. Sono importanti anche i **porti**: il principale è quello di **Genova**, poi **Savona** e **La Spezia**. La Liguria è uno **sbocco sul Mediterraneo** e il **commercio marittimo** è molto sviluppato. Intorno ai porti ci sono **cantieri navali** e industrie petrolchimiche, siderurgiche e meccaniche, ma in passato erano molto più grandi. L'**agricoltura** si fa in collina con i **terrazzamenti**: si coltivano **ulivi**, **viti**, frutta e ortaggi, il **basilico** nelle serre e i **fiori** nella Riviera di Ponente: è la **floricoltura**. La pesca rende poco, perché il Mar Ligure è **poco pescoso**." },
+  { titolo: "Le curiosità", testo: "A Genova c'è l'**acquario più grande d'Europa**, con **600 specie** di animali e un tunnel di vetro da cui si vedono i **delfini**. Sul Golfo di La Spezia, detto «**Golfo dei Poeti**», c'è **Portovenere**, che con le Cinque Terre è Patrimonio **UNESCO**. Sono famosi anche la **focaccia di Recco**, inventata secondo la leggenda dai contadini in fuga dai **pirati saraceni**, e il **carciofo spinoso di Albenga**." },
+  { titolo: "Per concludere", testo: "La Liguria è una regione **stretta tra le montagne e il mare**, con un **clima mite**, coste bellissime e tanti **turisti** in ogni stagione. Però è anche **fragile**: per proteggerla serve un **turismo sostenibile**." }
 ];
 
 /* Flusso di domande dell'interrogazione: si parte dal generale, si va alla cartina, poi nei dettagli.
@@ -802,7 +903,9 @@ window.FLUSSO = [
   { fase: "4️⃣ I fiumi", domande: [
     { d: "Come sono i fiumi della Liguria?", r: "Ci sono due tipi: quelli verso il mare sono brevi e a carattere torrentizio; quelli verso nord sono più lunghi e regolari e vanno nel Po." },
     { seguito: true, tipo: "ragionamento", d: "Perché i fiumi verso il mare sono così brevi?", r: "Perché le montagne sono vicinissime al mare: l'acqua fa poca strada e scende ripida." },
-    { seguito: true, d: "Dimmi un fiume che va nel Po.", r: "Lo Scrivia (anche il Tanaro, la Bormida e il Trebbia).", mappa: { tipo: "fiume" } }
+    { seguito: true, d: "Dimmi un fiume che va nel Po.", r: "Lo Scrivia (anche il Tanaro, la Bormida e il Trebbia).", mappa: { tipo: "fiume" } },
+    { seguito: true, d: "E i principali fiumi che vanno al mare?", r: "Il Magra, il Roia e l'Arroscia." },
+    { tipo: "ragionamento", d: "Perché in Liguria ci sono spesso frane e alluvioni?", r: "Perché con le piogge forti i fiumi straripano; e poi nelle poche pianure si è costruito tanto e si sono tagliati molti boschi, così il terreno è più fragile." }
   ]},
   { fase: "5️⃣ Clima e ambienti", domande: [
     { d: "Com'è il clima?", r: "Mite tutto l'anno: inverni miti ed estati calde e ventilate." },
@@ -814,12 +917,14 @@ window.FLUSSO = [
   { fase: "6️⃣ La popolazione", domande: [
     { d: "Quanti abitanti ha la Liguria?", r: "Circa un milione e mezzo: 278 per km²." },
     { seguito: true, d: "Dove vive la gente?", r: "Lungo il litorale, nell'entroterra o lungo alcune valli; oltre la metà a Genova e dintorni.", mappa: { tipo: "luogo", id: "genova" } },
+    { d: "Che lingue si parlano?", r: "L'italiano e alcuni dialetti locali. È una regione a statuto ordinario." },
     { seguito: true, tipo: "ragionamento", d: "Perché quasi nessuno vive sulle montagne?", r: "Perché il terreno è ripido: è più facile costruire e lavorare sulla costa e nelle valli." }
   ]},
   { fase: "7️⃣ L'economia", domande: [
     { d: "Qual è il settore più importante?", r: "Il terziario, con il 78,2% degli occupati: turismo, commercio, banche, assicurazioni e porti." },
     { seguito: true, tipo: "ragionamento", d: "Perché ci sono tanti turisti?", r: "Per le località balneari, il clima mite e la bellezza del paesaggio, come Portofino e le Cinque Terre.", mappa: { tipo: "luogo", id: "portofino" } },
     { d: "Quali sono i porti principali?", r: "Genova, il più importante; poi Savona e La Spezia.", mappa: { tipo: "luogo", id: "laspezia" } },
+    { seguito: true, tipo: "ragionamento", d: "Perché i porti sono così importanti per la Liguria?", r: "Perché la Liguria è uno sbocco naturale sul Mediterraneo: da qui partono e arrivano le merci (commercio marittimo) e tanti visitatori." },
     { seguito: true, tipo: "trabocchetto", d: "Quindi i cantieri navali sono in crescita?", r: "No: in passato erano grandi, ma negli ultimi decenni sono molto calati. È cresciuto il settore alimentare." },
     { d: "Come si coltiva in Liguria, se è tutta montagna e collina?", r: "Con i terrazzamenti: strisce di terra piana sui pendii, come gradini. Si coltivano ulivi, viti, frutta e ortaggi.", mappa: { tipo: "luogo", id: "terrazzamenti" } },
     { seguito: true, d: "E nelle serre?", r: "Il basilico; nella Riviera di Ponente anche fiori e piante ornamentali.", mappa: { tipo: "luogo", id: "sanremo" } }
@@ -827,10 +932,12 @@ window.FLUSSO = [
   { fase: "8️⃣ Genova e le curiosità", domande: [
     { d: "Che cosa c'è di speciale a Genova?", r: "Il porto principale e l'acquario più grande d'Europa.", mappa: { tipo: "luogo", id: "genova" } },
     { seguito: true, d: "Che cosa si vede nell'acquario?", r: "Circa 12.000 animali di 600 specie: squali, pinguini, foche e delfini, che si guardano da un tunnel di vetro." },
-    { d: "Sai dirmi un prodotto tipico?", r: "La focaccia di Recco o il carciofo spinoso di Albenga.", mappa: { tipo: "luogo", id: "recco" } }
+    { d: "Sai dirmi un prodotto tipico?", r: "La focaccia di Recco o il carciofo spinoso di Albenga.", mappa: { tipo: "luogo", id: "recco" } },
+    { d: "Che cos'è Portovenere?", r: "Un paesino a picco sul mare, sul Golfo dei Poeti; il nome viene da un tempio della dea Venere. Con le Cinque Terre è Patrimonio UNESCO.", mappa: { tipo: "luogo", id: "portovenere" } }
   ]},
   { fase: "9️⃣ Per chiudere", domande: [
     { tipo: "ragionamento", d: "Se dovessi organizzare una gita in Liguria, dove andresti?", r: "Prepara un tuo itinerario (è l'attività «Life Skills» del libro). Per esempio: 1° giorno Genova e l'acquario; 2° giorno Portofino; 3° giorno le Cinque Terre; 4° giorno la Riviera di Ponente, con le spiagge e i fiori di Sanremo." },
+    { tipo: "ragionamento", d: "Che cos'è il turismo sostenibile? Che cosa potresti fare tu?", r: "È un turismo che rispetta l'ambiente e chi ci vive. Per esempio: usare il treno, non lasciare rifiuti, restare sui sentieri." },
     { tipo: "ragionamento", d: "Confronta la Liguria con il Piemonte.", r: "Il Piemonte non ha il mare ed è molto più grande, con montagne, colline e una grande pianura. La Liguria è stretta tra montagne e mare, non ha pianure grandi ma ha più abitanti per km² (278 contro 168)." }
   ]}
 ];
@@ -842,7 +949,9 @@ window.TRABOCCHETTI = [
   ["La Liguria ha una grande pianura?", "No: solo **poche e piccole** pianure (65% montagna, 35% collina)"],
   ["I fiumi che vanno al mare sono lunghi?", "No, sono **brevi** e a **carattere torrentizio**. Quelli lunghi vanno verso il **Po**"],
   ["Il settore più importante è l'industria?", "No, è il **terziario** (78,2%)"],
-  ["L'Appennino Ligure comincia al confine con la Francia?", "No: lì ci sono le **Alpi Marittime**. L'Appennino parte dal **Colle di Cadibona**"]
+  ["L'Appennino Ligure comincia al confine con la Francia?", "No: lì ci sono le **Alpi Marittime**. L'Appennino parte dal **Colle di Cadibona**"],
+  ["Il «Golfo dei Poeti» è il Golfo di Genova?", "No, è il **Golfo di La Spezia**"],
+  ["Con tanto mare, la pesca rende molto?", "No: il Mar Ligure è **poco pescoso**"]
 ];
 
 window.CONSIGLI = [
@@ -874,21 +983,21 @@ window.TOUR = [
   { titolo: "La Riviera di Levante", carta: "fisica", vista: ["portofino", "sestrilevante", "cinqueterre"], zone: ["levante"], luci: ["portofino", "cinqueterre"],
     testo: "Nella Riviera di Levante gli Appennini arrivano a picco sul mare e le coste sono alte e rocciose, come a Portofino e nelle Cinque Terre." },
   { titolo: "I fiumi", carta: "fisica", vista: "regione", fiume: "disegna",
-    testo: "Dai rilievi nascono tanti fiumi. Quelli che finiscono nel Mar Ligure sono brevi e a carattere torrentizio. Verso nord vanno fiumi più lunghi e regolari, che finiscono nel Po: il Tanaro, la Bormida, lo Scrivia e il Trebbia. Questo è lo Scrivia." },
+    testo: "Dai rilievi nascono tanti fiumi. Quelli che finiscono nel Mar Ligure sono brevi e a carattere torrentizio, come il Magra, il Roia e l'Arroscia: quando piove molto possono straripare e provocare frane e alluvioni. Verso nord vanno fiumi più lunghi e regolari, che finiscono nel Po: il Tanaro, la Bormida, lo Scrivia e il Trebbia. Questo è lo Scrivia." },
   { titolo: "Il clima", carta: "fisica", vista: "larga",
     testo: "Il clima è mite tutto l'anno grazie al mare. Le montagne fanno da muro e proteggono la Liguria dai venti freddi del nord: per questo gli inverni sono miti e le estati calde e ventilate." },
   { titolo: "Boschi e macchia mediterranea", carta: "fisica", vista: ["dolceacqua", "ceppo"], luci: ["dolceacqua"],
     testo: "La Liguria è ricca di boschi: sulle montagne crescono castagni, roverelle e cerri. Sulla costa un tempo c'era la macchia mediterranea, ma spesso le coltivazioni ne hanno preso il posto." },
-  { titolo: "I parchi", carta: "fisica", vista: ["cinqueterre", "beigua"], luci: ["cinqueterre", "beigua"],
-    testo: "Il Parco Nazionale delle Cinque Terre protegge cinque borghi sul mare: Riomaggiore, Manarola, Corniglia, Vernazza e Monterosso al Mare. Sono Patrimonio dell'Umanità UNESCO. Il Parco del Beigua è sulle alture tra Genova e Savona." },
+  { titolo: "I parchi e Portovenere", carta: "fisica", vista: ["cinqueterre", "beigua"], luci: ["cinqueterre", "beigua", "portovenere"],
+    testo: "Il Parco Nazionale delle Cinque Terre protegge cinque borghi sul mare: Riomaggiore, Manarola, Corniglia, Vernazza e Monterosso al Mare. Insieme a Portovenere, sul Golfo dei Poeti, sono Patrimonio dell'Umanità UNESCO. Il Parco del Beigua è sulle alture tra Genova e Savona." },
   { titolo: "Genova, il capoluogo", carta: "fisica", vista: ["genova"], zoom: 11, luci: ["genova"],
     testo: "Genova è il capoluogo e ha il porto più importante della Liguria. Qui c'è l'acquario più grande d'Europa, con squali, pinguini, foche e delfini." },
   { titolo: "Dove vive la gente", carta: "politica", vista: "regione", luci: ["genova", "savona", "imperia", "laspezia"],
     testo: "La Liguria ha circa un milione e mezzo di abitanti. Il terreno è montuoso, perciò i paesi e le città sono lungo la costa, nell'entroterra o lungo alcune valli. Oltre la metà degli abitanti vive a Genova e dintorni." },
   { titolo: "Il lavoro", carta: "fisica", vista: "regione", luci: ["genova", "savona", "laspezia", "portofino"],
-    testo: "Il settore più importante è il terziario: il turismo, il commercio e i porti di Genova, Savona e La Spezia. I turisti arrivano in ogni stagione. In passato intorno ai porti c'erano grandi cantieri navali." },
+    testo: "Il settore più importante è il terziario: il turismo e il commercio per mare, perché la Liguria è uno sbocco sul Mediterraneo. I porti di Genova, Savona e La Spezia sono molto attivi, e intorno ci sono cantieri navali e industrie. I turisti sono tantissimi: per questo serve un turismo sostenibile, che rispetti l'ambiente." },
   { titolo: "I prodotti", carta: "fisica", vista: "regione", luci: ["terrazzamenti", "sanremo", "albenga", "recco"],
-    testo: "In collina si coltiva con i terrazzamenti: ulivi, viti, frutta e ortaggi. Nelle serre cresce il basilico e nella Riviera di Ponente si coltivano i fiori. Sono famosi il carciofo spinoso di Albenga e la focaccia di Recco." },
+    testo: "In collina si coltiva con i terrazzamenti: ulivi, viti, frutta e ortaggi. Nelle serre cresce il basilico e nella Riviera di Ponente si coltivano i fiori: è la floricoltura. Sono famosi il carciofo spinoso di Albenga e la focaccia di Recco." },
   { titolo: "Fine della visita! 🎉", carta: "fisica", vista: "regione", fine: true,
     testo: "Hai visto le parti principali della Liguria. Ora prova a esercitarti: con il quiz, le flashcard o l'interrogazione!" }
 ];

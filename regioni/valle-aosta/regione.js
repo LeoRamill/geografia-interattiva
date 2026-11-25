@@ -9,7 +9,7 @@ window.REGIONE = {
   istat: 2,                                   // codice ISTAT della regione (per confine e comuni)
   sottotitolo: "La regione più piccola d'Italia, tra Francia, Svizzera e Piemonte.",
   bandiera: ["#111111", "#c8102e"],           // colori della bandiera, a strisce verticali
-  libro: "Geografia vol. 5, pp. 30–33",       // le pagine del libro di testo usate come riferimento
+  libro: "Geografia vol. 5, pp. 30–33 · Che meraviglia! Geografia 5, pp. 32–34",   // i due libri di testo usati come riferimento
 
   // area coperta dalla cartina (rilievo zoom 8–11) e area più stretta per il rilievo dettagliato (zoom 12)
   area_larga: [6.00, 45.10, 8.75, 46.35],

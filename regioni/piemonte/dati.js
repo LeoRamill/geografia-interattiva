@@ -2,9 +2,11 @@
  * Testi e dati della regione Piemonte: categorie, luoghi, scheda, domande, flashcard,
  * interrogazione e visita guidata. Le impostazioni (confini, fiume, zone…) sono in regione.js.
  *
- * Riferimento: libro di testo Geografia vol. 5, pp. 34–37 (A colpo d'occhio, Territorio, Clima e ambienti,
- * Popolazione e attività economiche, Approfondisco: Parco della Val Grande e Museo Egizio, Life Skills).
- * Quello che non è nel libro va tra [[ ]] (frasi) o con extra: true (luoghi e domande). Vedi CLAUDE.md.
+ * Riferimento: due libri di testo. «Geografia» vol. 5, pp. 34–37 (A colpo d'occhio, Territorio, Clima e ambienti,
+ * Popolazione e attività economiche, Approfondisco: Parco della Val Grande e Museo Egizio, Life Skills) e
+ * «Che meraviglia!» Geografia 5, pp. 35–37 (Torino, Isole Borromee, DOP, Reggia di Venaria).
+ * I numeri sono quelli di «Geografia»; se «Che meraviglia!» dice un numero diverso, c'è una nota.
+ * Quello che non è in nessuno dei due libri va tra [[ ]] (frasi) o con extra: true (luoghi e domande). Vedi CLAUDE.md.
  */
 
 /* Categorie in ordine di importanza per lo studio (così appaiono nella legenda).
@@ -71,11 +73,13 @@ window.LUOGHI = [
   {
     id: "langhe", nome: "Le Langhe", cat: "montagne", lat: 44.55, lng: 8.02,
     sottotitolo: "Le colline del centro-sud",
-    testo: "Le Langhe sono uno dei due grandi gruppi di colline che occupano il centro del Piemonte. La collina è ricca di vigneti ben coltivati che producono vini famosi, e di alberi da frutto. Vicino c'è Alba, famosa per il tartufo.",
+    testo: "Le Langhe sono uno dei due grandi gruppi di colline che occupano il centro del Piemonte. La collina è ricca di vigneti ben coltivati che producono vini pregiati, di noccioli e di alberi da frutto. Le Langhe sono famose anche per i formaggi e per i tartufi, in particolare il tartufo bianco d'Alba.",
     punti: [
       "Zona di collina (la collina è il 30% del Piemonte)",
-      "Vigneti che producono vini famosi",
-      "Alberi da frutto",
+      "Vigneti che producono vini pregiati",
+      "Noccioli e alberi da frutto",
+      "Formaggi e tartufi: il più famoso è il tartufo bianco d'Alba",
+      "Cresce il turismo enogastronomico: si viene per assaggiare vini e prodotti tipici",
       "Clima temperato sulle colline appenniniche",
       "[[Dal 2014 i paesaggi dei vigneti di Langhe, Roero e Monferrato sono Patrimonio dell'Umanità UNESCO]]"
     ],
@@ -97,16 +101,18 @@ window.LUOGHI = [
   {
     id: "torino", nome: "Torino", cat: "citta", lat: 45.0703, lng: 7.6869,
     sottotitolo: "Il capoluogo · 848.885 abitanti",
-    testo: "Torino è il capoluogo del Piemonte. Si trova in pianura, sul Po, ai piedi delle Alpi. Oltre metà dei piemontesi vive nelle zone intorno a Torino. Il suo monumento simbolo è la Mole Antonelliana. [[Fu la prima capitale d'Italia, dal 1861 al 1865.]]",
+    testo: "Torino è il capoluogo del Piemonte. Si trova in pianura, sul Po, ai piedi delle Alpi. Oltre metà dei piemontesi vive nelle zone intorno a Torino. Fu la prima capitale d'Italia, quando il nostro Paese diventò uno Stato unito, nel 1861 [[(fino al 1865)]]: il primo Parlamento italiano si riuniva a Palazzo Carignano. Il suo monumento simbolo è la Mole Antonelliana, progettata in quegli anni, che oggi ospita il Museo Nazionale del Cinema. È sempre stata un importante centro industriale; oggi lavora soprattutto nei servizi e nel turismo.",
     punti: [
-      "Mole Antonelliana: il monumento simbolo della città",
-      "Museo Egizio: il più antico museo dedicato all'arte egizia (fondato nel 1824), il più importante al mondo dopo quello del Cairo",
+      "Prima capitale d'Italia (1861); Palazzo Carignano, prima sede del Parlamento",
+      "Mole Antonelliana: il monumento simbolo della città, oggi Museo Nazionale del Cinema",
+      "Museo Egizio: il più antico museo dedicato all'arte egizia (fondato nel 1824), con migliaia di reperti della civiltà dei faraoni; il più importante al mondo dopo quello del Cairo",
+      "Reggia di Venaria Reale, nella Città metropolitana: una residenza dei Savoia con le scuderie e un magnifico giardino; fa parte delle Residenze Sabaude, Patrimonio UNESCO",
       "Salone internazionale del libro: ogni anno migliaia di visitatori; qui hanno sede importanti editori",
       "Ricerca scientifica e tecnologica, banche, servizi",
       "[[Molti cibi inventati in Piemonte sono nati proprio a Torino: il tramezzino, i gianduiotti e il gelato stecco]]",
       "[[Qui è nata la FIAT (1899): l'industria dell'automobile]]"
     ],
-    ricorda: "Torino: capoluogo, Mole Antonelliana, Museo Egizio, Salone del libro."
+    ricorda: "Torino: capoluogo, prima capitale d'Italia, Mole Antonelliana, Museo Egizio."
   },
   {
     id: "novara", nome: "Novara", cat: "citta", lat: 45.4469, lng: 8.6219,
@@ -189,25 +195,38 @@ window.LUOGHI = [
   {
     id: "lagomaggiore", nome: "Lago Maggiore e Isole Borromee", cat: "natura", lat: 45.8297, lng: 8.5600,
     sottotitolo: "Lago di origine glaciale",
-    testo: "Il Lago Maggiore è uno dei laghi più importanti del Piemonte ed è di origine glaciale: si è formato dove un tempo c'era un grande ghiacciaio. Nel lago ci sono le Isole Borromee: l'Isola Bella è una delle più famose. [[Il lago è diviso con la Lombardia e la Svizzera.]]",
+    testo: "Il Lago Maggiore è uno dei laghi più importanti del Piemonte ed è di origine glaciale: si è formato dove un tempo c'era un grande ghiacciaio. Nella parte a sud-ovest del lago c'è l'arcipelago delle Isole Borromee. Lungo i laghi il turismo è molto sviluppato. [[Il lago è diviso con la Lombardia e la Svizzera.]]",
     punti: [
       "Origine glaciale",
-      "Isole Borromee, come l'Isola Bella",
+      "Isola Bella: il palazzo della famiglia Borromeo, con un giardino a terrazze pieno di fiori",
+      "Isola Madre: la più grande, con il Palazzo Borromeo e un giardino botanico dove vivono liberi pavoni bianchi, fagiani dorati e pappagalli",
+      "Isola dei Pescatori: l'unica abitata tutto l'anno, da una piccola comunità che vive di pesca e turismo",
       "Sulla sponda piemontese: Verbania, Stresa, Arona",
       "[[È il secondo lago d'Italia per grandezza, dopo il Lago di Garda]]"
     ],
-    ricorda: "Lago Maggiore: origine glaciale, Isole Borromee."
+    ricorda: "Lago Maggiore: origine glaciale, Isole Borromee (Bella, Madre, dei Pescatori)."
   },
   {
     id: "lagoorta", nome: "Lago d'Orta", cat: "natura", lat: 45.7975, lng: 8.4035,
     sottotitolo: "Lago di origine glaciale",
-    testo: "Il Lago d'Orta si trova poco a ovest del Lago Maggiore ed è più piccolo. Anche lui è di origine glaciale. Sulla sponda nord c'è Omegna. [[In mezzo al lago c'è l'Isola di San Giulio, con un'antica basilica.]]",
+    testo: "Il Lago d'Orta si trova poco a ovest del Lago Maggiore ed è più piccolo. Anche lui è di origine glaciale. Sulla sponda nord c'è Omegna. In mezzo al lago c'è l'Isola di San Giulio [[, con un'antica basilica]].",
     punti: [
       "Origine glaciale",
       "A ovest del Lago Maggiore",
-      "[[Isola di San Giulio]]"
+      "Al centro del lago: l'Isola di San Giulio"
     ],
     ricorda: "Lago d'Orta: l'altro grande lago del Piemonte."
+  },
+  {
+    id: "viverone", nome: "Lago di Viverone", cat: "natura", lat: 45.418, lng: 8.040,
+    sottotitolo: "Un lago tra Biella e Ivrea",
+    testo: "Il Lago di Viverone si trova tra Biella e Ivrea, ai piedi delle Alpi. È più piccolo del Lago Maggiore e del Lago d'Orta. [[Anche lui è nato dal lavoro di un antico ghiacciaio, che ha lasciato intorno al lago una lunga collina di detriti: la Serra di Ivrea.]]",
+    punti: [
+      "Tra Biella e Ivrea",
+      "Si vede sulla carta di «Che meraviglia!»",
+      "[[Origine glaciale; vicino c'è la Serra di Ivrea, la collina lasciata dal ghiacciaio]]"
+    ],
+    ricorda: "Lago di Viverone: tra Biella e Ivrea."
   },
   {
     id: "valgrande", nome: "Parco Nazionale della Val Grande", cat: "natura", lat: 46.03, lng: 8.45,
@@ -261,11 +280,11 @@ window.LUOGHI = [
   /* ---------------- AGRICOLTURA E PRODOTTI ---------------- */
   {
     id: "risaie", nome: "Le risaie", cat: "sapori", lat: 45.40, lng: 8.30,
-    sottotitolo: "Il Piemonte è il maggiore produttore di riso d'Italia",
-    testo: "In pianura, intorno a Vercelli e Novara, ci sono tantissime risaie: campi pieni d'acqua dove cresce il riso. Viste dall'alto formano scacchiere perfette. Il Piemonte è il maggiore produttore di riso d'Italia.",
+    sottotitolo: "Oltre metà del riso italiano viene dal Piemonte",
+    testo: "In pianura, intorno a Vercelli e Novara, ci sono tantissime risaie: campi pieni d'acqua dove cresce il riso. Viste dall'alto formano scacchiere perfette. Il Piemonte è il maggiore produttore di riso d'Italia: oltre la metà del riso prodotto in Italia viene da qui.",
     punti: [
-      "Il Piemonte è il maggiore produttore di riso in Italia",
-      "In pianura si coltivano anche mais, grano e foraggio",
+      "Il Piemonte è il maggiore produttore di riso in Italia: oltre metà del riso italiano",
+      "In pianura si coltivano anche cereali come mais e grano, e il foraggio",
       "L'agricoltura è moderna e molto produttiva",
       "[[In primavera i campi allagati sembrano tanti specchi d'acqua]]"
     ],
@@ -274,10 +293,11 @@ window.LUOGHI = [
   {
     id: "alba", nome: "Alba e il tartufo", cat: "sapori", lat: 44.7004, lng: 8.0357,
     sottotitolo: "Sulle colline delle Langhe",
-    testo: "La zona di Alba, sulle colline delle Langhe, è famosa per il tartufo, un fungo prezioso che cresce sotto terra. [[Ogni autunno c'è la Fiera internazionale del tartufo bianco. Ad Alba è nata anche la Nutella!]]",
+    testo: "La zona di Alba, sulle colline delle Langhe, è famosa per il tartufo, un fungo prezioso che cresce sotto terra: il più famoso è il tartufo bianco d'Alba. Sulle colline intorno si coltivano viti e noccioli, e le nocciole servono all'industria dolciaria. [[Ogni autunno c'è la Fiera internazionale del tartufo bianco. Ad Alba è nata anche la Nutella!]]",
     punti: [
-      "Famosa per il tartufo",
-      "Colline con viti e alberi da frutto",
+      "Famosa per il tartufo bianco d'Alba",
+      "Colline con viti, noccioli e alberi da frutto",
+      "Industria alimentare e dolciaria",
       "[[Fiera del tartufo bianco, in autunno]]"
     ],
     ricorda: "Alba: il tartufo."
@@ -352,7 +372,7 @@ window.FIUME_INFO = {
    Le scritte dei fiumi vengono "agganciate" al fiume più vicino (vedi app.js). */
 window.ETICHETTE_FISICHE = [
   // catene montuose e pianure (come sulla carta del libro)
-  { t: "ALPI LEPONTINE",  tipo: "catena",  lat: 46.40, lng: 8.38, r: -12, min: 7 },
+  { t: "ALPI LEPONTINE",  tipo: "catena",  lat: 46.33, lng: 8.22, r: -12, min: 7 },
   { t: "ALPI PENNINE",    tipo: "catena",  lat: 46.04, lng: 7.62, r: -8,  min: 7 },
   { t: "ALPI GRAIE",      tipo: "catena",  lat: 45.33, lng: 6.98, r: -72, min: 7 },
   { t: "ALPI COZIE",      tipo: "catena",  lat: 44.80, lng: 6.93, r: -78, min: 7 },
@@ -361,6 +381,7 @@ window.ETICHETTE_FISICHE = [
   { t: "Pianura Padana",  tipo: "pianura", lat: 45.27, lng: 8.95, r: -6,  min: 7 },
   { t: "Langhe",          tipo: "regione", lat: 44.45, lng: 8.15, r: 0,   min: 8.5 },
   { t: "Monferrato",      tipo: "regione", lat: 45.11, lng: 8.47, r: 0,   min: 8.5 },
+  { t: "Canavese",        tipo: "regione", lat: 45.43, lng: 7.80, r: 0,   min: 8.5 },
   // valli
   { t: "Val d'Ossola",    tipo: "valle", lat: 46.12, lng: 8.27, r: -70, min: 8.5 },
   { t: "Valle di Susa",   tipo: "valle", lat: 45.13, lng: 7.12, r: -12, min: 8.5 },
@@ -368,6 +389,7 @@ window.ETICHETTE_FISICHE = [
   // cime (quelle principali hanno già il loro pallino)
   { t: "▲ Monte Leone 3553",  tipo: "cima", lat: 46.2489, lng: 8.1103, min: 9 },
   { t: "▲ Monte Antola 1597", tipo: "cima", lat: 44.5925, lng: 9.1403, min: 9 },
+  { t: "▲ Monte Basodino 3273", tipo: "cima", lat: 46.4146, lng: 8.4778, min: 9.5 },
   // fiumi, laghi e mare
   { t: "Po",           tipo: "fiume", lat: 44.93, lng: 7.68, min: 7,   km2: 2000 },
   { t: "Po",           tipo: "fiume", lat: 45.13, lng: 8.40, min: 7.5, km2: 8000 },
@@ -375,7 +397,11 @@ window.ETICHETTE_FISICHE = [
   { t: "Dora Baltea",  tipo: "fiume", lat: 45.33, lng: 7.95, min: 8,   km2: 2000 },
   { t: "Dora Riparia", tipo: "fiume", lat: 45.10, lng: 7.45, min: 8.5, km2: 600 },
   { t: "Sesia",        tipo: "fiume", lat: 45.45, lng: 8.38, min: 8,   km2: 700 },
-  { t: "Stura",        tipo: "fiume", lat: 44.52, lng: 7.66, min: 8.5, km2: 700 },
+  { t: "Stura di Demonte", tipo: "fiume", lat: 44.52, lng: 7.66, min: 8.5, km2: 700 },
+  { t: "Stura di Lanzo",   tipo: "fiume", lat: 45.22, lng: 7.56, min: 8.5, km2: 500 },
+  { t: "Orco",         tipo: "fiume", lat: 45.30, lng: 7.76, min: 8.5, km2: 500 },
+  { t: "Bormida",      tipo: "fiume", lat: 44.80, lng: 8.55, min: 8.5, km2: 1500 },
+  { t: "Scrivia",      tipo: "fiume", lat: 44.82, lng: 8.88, min: 8.5, km2: 600 },
   { t: "Ticino",       tipo: "fiume", lat: 45.55, lng: 8.72, min: 8,   km2: 3000 },
   { t: "Toce",         tipo: "fiume", lat: 46.00, lng: 8.33, min: 8.5, km2: 700 },
   { t: "Lago Maggiore", tipo: "lago", lat: 45.98, lng: 8.67, r: -60, min: 7 },
@@ -416,17 +442,19 @@ window.SCHEDA = [
   {
     titolo: "📍 Carta d'identità",
     html: `<div class="stats">
-        <div class="stat"><span>Superficie</span><b>25.386 km²</b></div>
-        <div class="stat"><span>Abitanti</span><b>4.252.279</b></div>
-        <div class="stat"><span>Densità</span><b>168 ab./km²</b></div>
+        <div class="stat"><span>Superficie</span><b>25.386 km²</b><small>«Che meraviglia!»: 25.387</small></div>
+        <div class="stat"><span>Abitanti</span><b>4.252.279</b><small>«Che meraviglia!»: 4.251.351</small></div>
+        <div class="stat"><span>Densità</span><b>168 ab./km²</b><small>«Che meraviglia!»: 167</small></div>
         <div class="stat"><span>Capoluogo</span><b>Torino</b><small>848.885 ab.</small></div>
       </div>
       <ul>
-      <li><b>Città principali:</b> Torino, Alessandria, Asti, Biella, Cuneo, Novara, Verbania, Vercelli</li>
+      <li><b>Città principali:</b> Torino, Alessandria, Asti, Biella, Cuneo, Novara, Verbania (provincia del Verbano-Cusio-Ossola), Vercelli</li>
+      <li>È una regione a <b>statuto ordinario</b>, come quasi tutte (la Valle d'Aosta invece è a statuto speciale)</li>
       <li><b>Il nome:</b> viene dal latino <i>ad pedem montium</i>, che significa «ai piedi dei monti»: il Piemonte infatti è circondato su tre lati dalle Alpi</li>
       <li><b>Bandiera:</b> rossa con una croce bianca e una striscia azzurra in alto</li>
       <li>[[È la seconda regione d'Italia per grandezza, dopo la Sicilia]]</li>
       <li>[[<b>Comuni:</b> 1.180]]</li>
+      <li class="libri">📖 Libri: «Geografia» vol. 5, pp. 34–37 e «Che meraviglia!» Geografia 5, pp. 35–37. I numeri sono quelli di «Geografia»: se «Che meraviglia!» ne dà uno diverso, è scritto accanto.</li>
     </ul>`
   },
   {
@@ -453,8 +481,13 @@ window.SCHEDA = [
   },
   {
     titolo: "💧 Fiumi e laghi",
-    html: `<p>La regione è <b>ricca d'acqua</b>. Il fiume più importante è il <b>Po</b>, che <b>nasce dal Monviso</b> e passa per Torino. [[Nel Po arrivano molti fiumi piemontesi: la Dora Riparia, la Dora Baltea, la Sesia, il Tanaro.]]</p>
-      <p>I laghi più importanti sono il <b>Lago Maggiore</b> e il <b>Lago d'Orta</b>, tutti e due di <b>origine glaciale</b>: si sono formati dove un tempo c'erano dei grandi ghiacciai. Nel Lago Maggiore ci sono le <b>Isole Borromee</b>, come l'Isola Bella.</p>`
+    html: `<p>La regione è <b>ricca d'acqua</b>. Il fiume più importante è il <b>Po</b>, che <b>nasce dal Monviso</b>, passa per Torino e attraversa la Pianura Padana.</p>
+      <p><b>Gli affluenti del Po</b> (i fiumi che finiscono nel Po). Destra e sinistra si guardano seguendo la corrente, cioè guardando verso il mare:</p>
+      <ul>
+      <li><b>di sinistra</b>, dalle Alpi: Dora Riparia, Stura di Lanzo, Orco, Dora Baltea, Sesia (e il Ticino, al confine con la Lombardia)</li>
+      <li><b>di destra</b>: il Tanaro, che prima raccoglie la Stura di Demonte e la Bormida, e lo Scrivia</li>
+      </ul>
+      <p>I laghi più importanti sono il <b>Lago Maggiore</b> e il <b>Lago d'Orta</b>, tutti e due di <b>origine glaciale</b>: si sono formati dove un tempo c'erano dei grandi ghiacciai. Nel Lago Maggiore ci sono le <b>Isole Borromee</b>; al centro del Lago d'Orta c'è l'<b>Isola di San Giulio</b>. Più piccolo è il <b>Lago di Viverone</b>, tra Biella e Ivrea.</p>`
   },
   {
     titolo: "❄️ Clima e ambienti",
@@ -470,9 +503,10 @@ window.SCHEDA = [
     titolo: "👥 Popolazione",
     html: `<ul>
       <li>Gli abitanti sono <b>4.252.279</b>, <b>168 per km²</b> [[(più di quattro volte la Valle d'Aosta, che ne ha 38)]]</li>
-      <li>La maggior parte vive nella <b>fascia pedemontana</b> (cioè ai piedi delle montagne) e nella <b>Pianura Padana</b></li>
+      <li>La maggior parte vive nella <b>fascia pedemontana</b> (cioè ai piedi delle montagne) e nella <b>Pianura Padana</b>, soprattutto nelle <b>grandi città</b> di pianura, dove passano le principali <b>vie di comunicazione</b></li>
       <li><b>Oltre metà</b> della popolazione vive nelle zone intorno a <b>Torino</b>, il capoluogo</li>
       <li>[[In montagna, invece, vivono poche persone]]</li>
+      <li><b>Lingue:</b> si parlano l'<b>italiano</b>, alcuni <b>dialetti</b> locali e, nelle zone vicino al confine, il <b>francese</b></li>
     </ul>`
   },
   {
@@ -490,12 +524,14 @@ window.SCHEDA = [
           <li><i style="--c:var(--s2)"></i>Secondario <small>industria</small><b>31,8%</b></li>
           <li><i style="--c:var(--s3)"></i>Terziario <small>turismo, commercio, servizi</small><b>64,8%</b></li>
         </ul>
+        <p class="nota-libro">«Che meraviglia!»: primario 3%, secondario 34%, terziario 63%.</p>
       </div>
       <ul>
-      <li><b>Primario:</b> l'agricoltura è <b>moderna e molto produttiva</b>. In pianura si coltivano <b>mais, grano, foraggio e riso</b>: il Piemonte è il <b>maggiore produttore di riso</b> d'Italia. Sulle colline ci sono <b>viti</b> e <b>alberi da frutto</b>; la zona di <b>Alba</b> è famosa per il <b>tartufo</b>. È molto sviluppato l'<b>allevamento</b>, soprattutto dei <b>bovini</b>.</li>
-      <li><b>Secondario:</b> in pianura ci sono industrie dei settori <b>meccanico, elettronico, informatico, chimico e tessile</b>. [[A Torino è nata la FIAT, la più grande fabbrica di automobili d'Italia.]]</li>
-      <li><b>Terziario:</b> dà lavoro a <b>quasi il 65%</b> degli occupati: <b>turismo</b>, servizi commerciali, <b>banche</b>, <b>ricerca scientifica e tecnologica</b> ed <b>editoria</b> (a Torino ci sono importanti editori e il <b>Salone internazionale del libro</b>).</li>
-    </ul>`
+      <li><b>Primario:</b> l'agricoltura è <b>moderna e molto produttiva</b>. In pianura si coltivano <b>cereali</b> (mais, grano), <b>foraggio</b> e <b>riso</b>: il Piemonte è il <b>maggiore produttore di riso</b> d'Italia, con <b>oltre la metà</b> del riso italiano. Sulle colline ci sono <b>viti</b>, <b>noccioli</b> e <b>alberi da frutto</b>; le <b>Langhe</b> sono famose per i vini pregiati, i formaggi e i tartufi, soprattutto il <b>tartufo bianco d'Alba</b>. È molto sviluppato l'<b>allevamento</b>, soprattutto dei <b>bovini</b>.</li>
+      <li><b>Secondario:</b> l'industria piemontese è una delle più avanzate d'Italia. I prodotti agricoli alimentano l'<b>industria alimentare</b>: vinicola (vino), casearia (formaggi) e dolciaria (dolci). Ci sono poi industrie dei settori <b>metalmeccanico, elettronico, informatico, chimico e tessile</b>. [[A Torino è nata la FIAT, la più grande fabbrica di automobili d'Italia.]]</li>
+      <li><b>Terziario:</b> è il settore più redditizio e dà lavoro a <b>quasi il 65%</b> degli occupati: servizi commerciali, <b>banche</b>, <b>ricerca scientifica e tecnologica</b> ed <b>editoria</b> (a Torino ci sono importanti editori e il <b>Salone internazionale del libro</b>). Il <b>turismo</b> è sviluppato nelle <b>città d'arte</b>, in <b>montagna</b> e lungo i <b>laghi</b>, e cresce il turismo <b>enogastronomico</b>: si viene per assaggiare i vini e i prodotti del territorio.</li>
+    </ul>
+      <p><b>Il marchio DOP</b> (Denominazione di origine protetta) si dà a un prodotto speciale di una zona, fatto con materie prime e metodi di quella zona. Serve a difendere la qualità ed evitare le imitazioni. [[In Piemonte, per esempio, sono DOP i formaggi Castelmagno e Toma Piemontese e il Riso di Baraggia Biellese e Vercellese.]]</p>`
   },
   {
     titolo: "🚗 Comunicazioni",
@@ -504,18 +540,20 @@ window.SCHEDA = [
       <li><b>Galleria del Frejus</b> → <b>Francia</b> (in fondo alla Valle di Susa)</li>
       <li><b>Galleria del Sempione</b> → <b>Svizzera</b> (sopra la Val d'Ossola)</li>
       <li>Sulla carta ci sono anche altri valichi verso la Francia: Passo del Moncenisio, Colle del Monginevro, Colle della Maddalena, Colle di Tenda</li>
-      <li>[[L'aeroporto principale è quello di Torino-Caselle]]</li>
+      <li>L'aeroporto principale è quello di <b>Torino-Caselle</b></li>
     </ul>`
   },
   {
     titolo: "🏛️ Torino, cultura e curiosità",
     html: `<ul>
-      <li><b>Mole Antonelliana:</b> il monumento simbolo di Torino [[(oggi ospita il Museo del Cinema)]]</li>
-      <li><b>Museo Egizio:</b> il museo dedicato all'<b>arte egizia</b> più antico del mondo, fondato nel <b>1824</b>. Nei primi anni del Novecento si arricchì di migliaia di reperti trovati in Egitto da archeologi italiani. È il più importante al mondo <b>dopo quello del Cairo</b>.</li>
+      <li><b>Torino prima capitale d'Italia:</b> quando l'Italia diventò uno Stato unito, nel <b>1861</b>, la capitale fu Torino [[(fino al 1865)]]. Il primo <b>Parlamento italiano</b> si riuniva a <b>Palazzo Carignano</b>.</li>
+      <li><b>Mole Antonelliana:</b> il monumento simbolo di Torino, progettato in quegli anni; oggi ospita il <b>Museo Nazionale del Cinema</b></li>
+      <li><b>Museo Egizio:</b> il museo dedicato all'<b>arte egizia</b> più antico del mondo, fondato nel <b>1824</b>. Nei primi anni del Novecento si arricchì di migliaia di reperti della civiltà dei faraoni, trovati in Egitto da archeologi italiani. È il più importante al mondo <b>dopo quello del Cairo</b>.</li>
       <li><b>Salone internazionale del libro:</b> ogni anno a Torino arrivano migliaia di visitatori</li>
       <li><b>Sacra di San Michele:</b> un'antica abbazia all'imbocco della Valle di Susa</li>
       <li><b>Cibi inventati in Piemonte:</b> i <b>grissini</b>, il <b>tramezzino</b>, i <b>gianduiotti</b> e anche il <b>gelato stecco</b>!</li>
-      <li>[[<b>Storia:</b> il Piemonte fu per secoli governato dai <b>Savoia</b>; Torino fu la <b>prima capitale d'Italia</b> (1861–1865)]]</li>
+      <li><b>Reggia di Venaria Reale</b>, vicino a Torino: una delle residenze della famiglia reale dei <b>Savoia</b> [[(che governò il Piemonte per secoli)]], con le scuderie e un magnifico giardino. Fa parte delle <b>Residenze Sabaude</b>, Patrimonio dell'<b>UNESCO</b>.</li>
+      <li><b>Isole Borromee</b>, nel Lago Maggiore: l'<b>Isola Bella</b> (palazzo della famiglia Borromeo e giardino a terrazze), l'<b>Isola Madre</b> (la più grande, con un giardino botanico dove vivono liberi pavoni bianchi, fagiani dorati e pappagalli) e l'<b>Isola dei Pescatori</b> (l'unica abitata tutto l'anno, da chi vive di pesca e turismo).</li>
     </ul>`
   }
 ];
@@ -527,9 +565,9 @@ window.SEZIONI_DOMANDE = ["identita", "territorio", "acque", "clima", "popolazio
 window.DOMANDE = [
   { sez: "identita", tipo: "scelta", d: "Qual è il capoluogo del Piemonte?", opzioni: ["Novara", "Torino", "Cuneo"], giusta: 1, spiega: "Il capoluogo è Torino (848.885 abitanti)." },
   { sez: "identita", tipo: "scelta", d: "Che cosa vuol dire il nome «Piemonte»?", opzioni: ["in mezzo al mare", "ai piedi dei monti", "terra dei fiumi"], giusta: 1, spiega: "Viene dal latino ad pedem montium, «ai piedi dei monti»: il Piemonte è circondato su tre lati dalle Alpi." },
-  { sez: "identita", tipo: "scelta", d: "Quanti abitanti ha il Piemonte?", opzioni: ["circa 400.000", "circa 4 milioni e 250 mila", "circa 40 milioni"], giusta: 1, spiega: "Ha 4.252.279 abitanti." },
-  { sez: "identita", tipo: "scelta", d: "Quanto è grande il Piemonte?", opzioni: ["3.261 km²", "25.386 km²", "253.860 km²"], giusta: 1, spiega: "La superficie è di 25.386 km² (3.261 km² è la Valle d'Aosta)." },
-  { sez: "identita", tipo: "scelta", d: "Qual è la densità di popolazione del Piemonte?", opzioni: ["38 abitanti per km²", "168 abitanti per km²", "1.680 abitanti per km²"], giusta: 1, spiega: "168 abitanti per km²." },
+  { sez: "identita", tipo: "scelta", d: "Quanti abitanti ha il Piemonte?", opzioni: ["circa 400.000", "circa 4 milioni e 250 mila", "circa 40 milioni"], giusta: 1, spiega: "Ha 4.252.279 abitanti (in «Che meraviglia!» 4.251.351)." },
+  { sez: "identita", tipo: "scelta", d: "Quanto è grande il Piemonte?", opzioni: ["3.261 km²", "25.386 km²", "253.860 km²"], giusta: 1, spiega: "La superficie è di 25.386 km² (in «Che meraviglia!» 25.387; 3.261 km² è la Valle d'Aosta)." },
+  { sez: "identita", tipo: "scelta", d: "Qual è la densità di popolazione del Piemonte?", opzioni: ["38 abitanti per km²", "168 abitanti per km²", "1.680 abitanti per km²"], giusta: 1, spiega: "168 abitanti per km² (in «Che meraviglia!» 167)." },
   { sez: "identita", tipo: "scelta", d: "Quale di queste NON è una città principale del Piemonte?", opzioni: ["Asti", "Biella", "Genova"], giusta: 2, spiega: "Genova è in Liguria. Le città principali del Piemonte sono Torino, Alessandria, Asti, Biella, Cuneo, Novara, Verbania e Vercelli." },
   { sez: "identita", tipo: "vf", d: "Il Piemonte ha il mare.", vero: false, spiega: "Falso: il Piemonte non ha coste. Tra il Piemonte e il mare c'è la Liguria." },
   { sez: "identita", tipo: "vf", extra: true, d: "Il Piemonte è la seconda regione d'Italia per grandezza.", vero: true, spiega: "Vero: è più piccola solo della Sicilia." },
@@ -563,13 +601,13 @@ window.DOMANDE = [
   { sez: "popolazione", tipo: "scelta", d: "Quanti piemontesi vivono nelle zone intorno a Torino?", opzioni: ["pochissimi", "oltre la metà", "nessuno"], giusta: 1, spiega: "Oltre metà della popolazione vive intorno a Torino." },
   { sez: "popolazione", tipo: "vf", d: "Il Piemonte è una delle regioni più ricche e industrializzate d'Italia.", vero: true, spiega: "Vero: si trova al centro di importanti vie di comunicazione." },
   { sez: "popolazione", tipo: "vf", extra: true, d: "In Piemonte ci sono più abitanti per km² che in Valle d'Aosta.", vero: true, spiega: "Vero: 168 contro 38, più di quattro volte tanto." },
-  { sez: "economia", tipo: "scelta", d: "Di quale prodotto il Piemonte è il maggiore produttore d'Italia?", opzioni: ["l'olio", "il riso", "le arance"], giusta: 1, spiega: "Del riso: le risaie sono nella Pianura Padana, intorno a Vercelli e Novara." },
+  { sez: "economia", tipo: "scelta", d: "Di quale prodotto il Piemonte è il maggiore produttore d'Italia?", opzioni: ["l'olio", "il riso", "le arance"], giusta: 1, spiega: "Del riso: oltre la metà del riso italiano viene dal Piemonte. Le risaie sono nella Pianura Padana, intorno a Vercelli e Novara." },
   { sez: "economia", tipo: "scelta", d: "Che cosa si coltiva in pianura?", opzioni: ["mais, grano, foraggio e riso", "olive e agrumi", "caffè e cacao"], giusta: 0, spiega: "Mais, grano, foraggio e riso." },
   { sez: "economia", tipo: "scelta", d: "Che cosa c'è sulle colline?", opzioni: ["viti e alberi da frutto", "risaie", "miniere di carbone"], giusta: 0, spiega: "Viti e alberi da frutto." },
   { sez: "economia", tipo: "scelta", d: "Per che cosa è famosa la zona di Alba?", opzioni: ["per il tartufo", "per il mare", "per i vulcani"], giusta: 0, spiega: "Per il tartufo." },
   { sez: "economia", tipo: "scelta", d: "Quale allevamento è più sviluppato in Piemonte?", opzioni: ["quello dei bovini", "quello dei cammelli", "quello dei pesci"], giusta: 0, spiega: "Quello dei bovini." },
   { sez: "economia", tipo: "scelta", d: "In quali settori lavorano le industrie piemontesi?", opzioni: ["meccanico, elettronico, informatico, chimico e tessile", "solo la pesca", "solo il turismo"], giusta: 0, spiega: "Meccanico, elettronico, informatico, chimico e tessile." },
-  { sez: "economia", tipo: "scelta", d: "Quale settore ha più occupati?", opzioni: ["il primario", "il secondario", "il terziario"], giusta: 2, spiega: "Il terziario: quasi il 65% (64,8%)." },
+  { sez: "economia", tipo: "scelta", d: "Quale settore ha più occupati?", opzioni: ["il primario", "il secondario", "il terziario"], giusta: 2, spiega: "Il terziario: quasi il 65% (64,8%; in «Che meraviglia!» 63%)." },
   { sez: "economia", tipo: "vf", d: "In Piemonte l'agricoltura è moderna e molto produttiva.", vero: true, spiega: "Vero." },
   { sez: "economia", tipo: "scelta", extra: true, d: "Quale grande fabbrica di automobili è nata a Torino?", opzioni: ["la FIAT", "la Ferrari", "la Volkswagen"], giusta: 0, spiega: "La FIAT, nel 1899." },
   { sez: "comunicazioni", tipo: "scelta", d: "Quale galleria porta in Francia?", opzioni: ["il Sempione", "il Frejus", "il Gran San Bernardo"], giusta: 1, spiega: "Il Frejus, in fondo alla Valle di Susa." },
@@ -584,7 +622,26 @@ window.DOMANDE = [
   { sez: "cultura", tipo: "scelta", d: "Che cosa si svolge ogni anno a Torino?", opzioni: ["il Salone internazionale del libro", "il Festival di Sanremo", "il Palio di Siena"], giusta: 0, spiega: "Il Salone internazionale del libro, con migliaia di visitatori." },
   { sez: "cultura", tipo: "scelta", d: "Quale di questi cibi è stato inventato in Piemonte?", opzioni: ["la pizza", "i grissini", "la paella"], giusta: 1, spiega: "I grissini, e anche il tramezzino, i gianduiotti e il gelato stecco." },
   { sez: "cultura", tipo: "scelta", d: "Dove si trova la Sacra di San Michele?", opzioni: ["all'imbocco della Valle di Susa", "sul Lago Maggiore", "nel centro di Torino"], giusta: 0, spiega: "All'imbocco della Valle di Susa." },
-  { sez: "cultura", tipo: "scelta", extra: true, d: "Quale città fu la prima capitale d'Italia?", opzioni: ["Roma", "Torino", "Firenze"], giusta: 1, spiega: "Torino, dal 1861 al 1865." }
+  { sez: "cultura", tipo: "scelta", d: "Quale città fu la prima capitale d'Italia?", opzioni: ["Roma", "Torino", "Firenze"], giusta: 1, spiega: "Torino, dal 1861 [[al 1865]]." },
+  { sez: "cultura", tipo: "scelta", d: "Dove si riuniva il primo Parlamento italiano?", opzioni: ["a Palazzo Carignano, a Torino", "nella Mole Antonelliana", "nella Reggia di Venaria"], giusta: 0, spiega: "A Palazzo Carignano, quando Torino era la capitale (1861)." },
+  { sez: "cultura", tipo: "scelta", d: "Che cosa ospita oggi la Mole Antonelliana?", opzioni: ["il Museo Nazionale del Cinema", "il Museo Egizio", "il Parlamento"], giusta: 0, spiega: "Il Museo Nazionale del Cinema." },
+  { sez: "cultura", tipo: "scelta", d: "Di quale famiglia era la Reggia di Venaria Reale?", opzioni: ["dei Savoia", "dei Medici", "dei Borromeo"], giusta: 0, spiega: "Dei Savoia: fa parte delle Residenze Sabaude, Patrimonio UNESCO." },
+  { sez: "cultura", tipo: "vf", d: "La Reggia di Venaria Reale è Patrimonio dell'UNESCO.", vero: true, spiega: "Vero: fa parte delle Residenze Sabaude." },
+  { sez: "cultura", tipo: "scelta", d: "Quale delle Isole Borromee è l'unica abitata tutto l'anno?", opzioni: ["l'Isola dei Pescatori", "l'Isola Bella", "l'Isola Madre"], giusta: 0, spiega: "L'Isola dei Pescatori: ci vive una piccola comunità di pesca e turismo." },
+  { sez: "cultura", tipo: "scelta", d: "Su quale isola vivono liberi pavoni bianchi, fagiani dorati e pappagalli?", opzioni: ["sull'Isola Madre", "sull'Isola dei Pescatori", "sull'Isola di San Giulio"], giusta: 0, spiega: "Sull'Isola Madre, la più grande delle Isole Borromee, nel giardino botanico." },
+  { sez: "identita", tipo: "scelta", d: "Il Piemonte è una regione a statuto…", opzioni: ["ordinario", "speciale"], giusta: 0, spiega: "Ordinario, come quasi tutte le regioni. La Valle d'Aosta invece è a statuto speciale." },
+  { sez: "popolazione", tipo: "scelta", d: "Quali lingue si parlano in Piemonte?", opzioni: ["l'italiano, alcuni dialetti e, vicino ai confini, il francese", "solo il tedesco", "l'italiano e lo spagnolo"], giusta: 0, spiega: "L'italiano, alcuni dialetti locali e, nelle zone di confine, il francese." },
+  { sez: "popolazione", tipo: "vf", d: "Molti piemontesi vivono nelle grandi città di pianura, dove passano le principali vie di comunicazione.", vero: true, spiega: "Vero." },
+  { sez: "acque", tipo: "scelta", d: "Quali di questi sono affluenti di sinistra del Po (arrivano dalle Alpi)?", opzioni: ["Dora Riparia, Dora Baltea e Sesia", "Tanaro e Scrivia", "Arno e Tevere"], giusta: 0, spiega: "Da sinistra arrivano Dora Riparia, Stura di Lanzo, Orco, Dora Baltea e Sesia. Da destra il Tanaro e lo Scrivia." },
+  { sez: "acque", tipo: "scelta", d: "Quali di questi arrivano nel Po da destra?", opzioni: ["il Tanaro e lo Scrivia", "la Dora Baltea e la Sesia", "l'Orco e la Stura di Lanzo"], giusta: 0, spiega: "Il Tanaro (che raccoglie la Stura di Demonte e la Bormida) e lo Scrivia." },
+  { sez: "acque", tipo: "vf", d: "La Bormida si getta direttamente nel Po.", vero: false, spiega: "Falso: entra nel Tanaro, che poi entra nel Po." },
+  { sez: "acque", tipo: "scelta", d: "Quale isola c'è al centro del Lago d'Orta?", opzioni: ["l'Isola di San Giulio", "l'Isola Bella", "l'Isola d'Elba"], giusta: 0, spiega: "L'Isola di San Giulio." },
+  { sez: "economia", tipo: "scelta", d: "Quanto del riso italiano viene dal Piemonte?", opzioni: ["oltre la metà", "un decimo", "quasi niente"], giusta: 0, spiega: "Oltre la metà: il Piemonte è il maggiore produttore di riso d'Italia." },
+  { sez: "economia", tipo: "scelta", d: "Che cosa si coltiva sulle colline, oltre alle viti?", opzioni: ["i noccioli", "il riso", "le arance"], giusta: 0, spiega: "I noccioli e gli alberi da frutto." },
+  { sez: "economia", tipo: "scelta", d: "Quale industria usa i prodotti dell'agricoltura?", opzioni: ["l'industria alimentare: vinicola, casearia e dolciaria", "l'industria navale", "le miniere"], giusta: 0, spiega: "L'industria alimentare: fa vino, formaggi e dolci." },
+  { sez: "economia", tipo: "scelta", d: "Che cosa vuol dire DOP?", opzioni: ["Denominazione di origine protetta", "Dolce originale piemontese", "Divieto di ogni produzione"], giusta: 0, spiega: "È un marchio per i prodotti speciali di una zona: ne difende la qualità ed evita le imitazioni." },
+  { sez: "economia", tipo: "scelta", d: "Che cos'è il turismo enogastronomico?", opzioni: ["viaggiare per assaggiare vini e prodotti tipici", "viaggiare in treno", "andare a sciare"], giusta: 0, spiega: "Si viaggia per gustare vini e prodotti del territorio: in Piemonte è in aumento." },
+  { sez: "economia", tipo: "scelta", d: "Dove è sviluppato il turismo in Piemonte?", opzioni: ["nelle città d'arte, in montagna e lungo i laghi", "solo al mare", "solo nelle risaie"], giusta: 0, spiega: "Nelle città d'arte, in montagna e lungo i laghi." }
 ];
 
 /* Domande e risposte per ripassare (livello scuola primaria), come gli esercizi del libro.
@@ -611,6 +668,8 @@ window.DOMANDE_RISPOSTE = [
   { gruppo: "💧 Fiumi e laghi", domande: [
     { d: "Qual è il fiume più importante?",
       r: "Il Po, che nasce dal Monviso e passa per Torino." },
+    { d: "Quali affluenti riceve il Po?",
+      r: "Da sinistra, dalle Alpi: Dora Riparia, Stura di Lanzo, Orco, Dora Baltea e Sesia. Da destra: il Tanaro (che raccoglie la Stura di Demonte e la Bormida) e lo Scrivia. Destra e sinistra si guardano seguendo la corrente." },
     { d: "Quali sono i laghi più importanti della regione?",
       r: "Il Lago Maggiore e il Lago d'Orta, tutti e due di origine glaciale." },
     { d: "Che cosa vuol dire «di origine glaciale»?",
@@ -630,7 +689,9 @@ window.DOMANDE_RISPOSTE = [
     { d: "Quanti abitanti ha il Piemonte?",
       r: "4.252.279: circa 4 milioni e 250 mila. Sono 168 per km²." },
     { d: "Dove vive la maggior parte delle persone?",
-      r: "Nella fascia pedemontana, cioè ai piedi delle montagne, e nella Pianura Padana. Oltre metà vive intorno a Torino." },
+      r: "Nella fascia pedemontana, cioè ai piedi delle montagne, e nella Pianura Padana, soprattutto nelle grandi città, dove passano le vie di comunicazione. Oltre metà vive intorno a Torino." },
+    { d: "Quali lingue si parlano?",
+      r: "L'italiano, alcuni dialetti locali e, vicino ai confini, il francese. Il Piemonte è una regione a statuto ordinario." },
     { d: "Qual è il capoluogo?",
       r: "Torino, con 848.885 abitanti. Il suo monumento simbolo è la Mole Antonelliana." }
   ]},
@@ -638,15 +699,25 @@ window.DOMANDE_RISPOSTE = [
     { d: "Il Piemonte è una regione ricca?",
       r: "Sì, è una delle più ricche e industrializzate d'Italia, perché si trova al centro di importanti vie di comunicazione." },
     { d: "Che cosa si coltiva?",
-      r: "In pianura mais, grano, foraggio e riso: il Piemonte è il maggiore produttore di riso d'Italia. Sulle colline viti e alberi da frutto; ad Alba il tartufo." },
+      r: "In pianura cereali, foraggio e riso: oltre metà del riso italiano viene dal Piemonte. Sulle colline viti, noccioli e alberi da frutto; ad Alba il tartufo bianco." },
     { d: "Che cosa producono le industrie?",
-      r: "Lavorano nei settori meccanico, elettronico, informatico, chimico e tessile." },
+      r: "C'è l'industria alimentare (vino, formaggi, dolci), che usa i prodotti agricoli, e poi industrie metalmeccaniche, elettroniche, informatiche, chimiche e tessili." },
+    { d: "Che cosa vuol dire DOP?",
+      r: "Denominazione di origine protetta: un marchio per i prodotti speciali di una zona, che ne difende la qualità ed evita le imitazioni." },
+    { d: "Dove vanno i turisti?",
+      r: "Nelle città d'arte, in montagna e lungo i laghi. Cresce anche il turismo enogastronomico, per assaggiare vini e prodotti tipici." },
     { d: "Qual è il settore con più occupati?",
       r: "Il terziario, con quasi il 65%: turismo, commercio, banche, ricerca ed editoria." },
     { d: "Come si va in Francia e in Svizzera?",
       r: "Con le gallerie del Frejus (verso la Francia) e del Sempione (verso la Svizzera)." }
   ]},
   { gruppo: "🏛️ Torino e curiosità", domande: [
+    { d: "Perché Torino è importante nella storia d'Italia?",
+      r: "Perché fu la prima capitale d'Italia, nel 1861. Il primo Parlamento si riuniva a Palazzo Carignano." },
+    { d: "Che cos'è la Reggia di Venaria Reale?",
+      r: "Una residenza dei Savoia vicino a Torino, con le scuderie e un grande giardino. Fa parte delle Residenze Sabaude, Patrimonio UNESCO." },
+    { d: "Quali sono le Isole Borromee?",
+      r: "L'Isola Bella (palazzo e giardino a terrazze), l'Isola Madre (la più grande, con pavoni bianchi, fagiani dorati e pappagalli) e l'Isola dei Pescatori (l'unica abitata tutto l'anno)." },
     { d: "Che cos'è il Museo Egizio?",
       r: "È il museo di arte egizia più antico del mondo (1824) e il più importante dopo quello del Cairo." },
     { d: "Che cosa succede ogni anno a Torino?",
@@ -685,7 +756,11 @@ window.FLASHCARD = [
     { f: "Dove nasce il Po?", r: "Dal Monviso." },
     { f: "Quali sono i laghi più importanti?", r: "Il Lago Maggiore e il Lago d'Orta." },
     { f: "Che origine hanno i due laghi?", r: "Glaciale." },
-    { f: "Dove sono le Isole Borromee?", r: "Nel Lago Maggiore (Isola Bella)." }
+    { f: "Dove sono le Isole Borromee?", r: "Nel Lago Maggiore." },
+    { f: "Quali sono le tre Isole Borromee?", r: "Isola Bella, Isola Madre, Isola dei Pescatori." },
+    { f: "Quale isola c'è nel Lago d'Orta?", r: "L'Isola di San Giulio." },
+    { f: "Affluenti di sinistra del Po?", r: "Dora Riparia, Stura di Lanzo, Orco, Dora Baltea, Sesia." },
+    { f: "Affluenti di destra del Po?", r: "Tanaro (con Stura di Demonte e Bormida) e Scrivia." }
   ]},
   { gruppo: "❄️ Clima e ambienti", carte: [
     { f: "Clima in montagna?", r: "Alpino: inverni rigidi e nevosi, estati fresche." },
@@ -697,10 +772,14 @@ window.FLASHCARD = [
   { gruppo: "👥 Popolazione", carte: [
     { f: "Dove vive la maggior parte delle persone?", r: "Nella fascia pedemontana e nella Pianura Padana." },
     { f: "Che cos'è la fascia pedemontana?", r: "La zona ai piedi delle montagne." },
+    { f: "Quali lingue si parlano?", r: "Italiano, dialetti e, vicino ai confini, francese." },
     { f: "Quanti vivono intorno a Torino?", r: "Oltre metà dei piemontesi." }
   ]},
   { gruppo: "💼 Lavoro e collegamenti", carte: [
-    { f: "Di che cosa è il maggiore produttore d'Italia?", r: "Del riso." },
+    { f: "Di che cosa è il maggiore produttore d'Italia?", r: "Del riso: oltre metà del riso italiano." },
+    { f: "Che cosa si coltiva sulle colline?", r: "Viti, noccioli e alberi da frutto." },
+    { f: "Quale industria usa i prodotti agricoli?", r: "L'industria alimentare: vinicola, casearia, dolciaria." },
+    { f: "Che cosa vuol dire DOP?", r: "Denominazione di origine protetta." },
     { f: "Che cosa si coltiva in pianura?", r: "Mais, grano, foraggio e riso." },
     { f: "Per che cosa è famosa Alba?", r: "Per il tartufo." },
     { f: "Quale allevamento è più sviluppato?", r: "Quello dei bovini." },
@@ -710,7 +789,10 @@ window.FLASHCARD = [
     { f: "Quale galleria porta in Svizzera?", r: "La galleria del Sempione." }
   ]},
   { gruppo: "🏛️ Torino e curiosità", carte: [
-    { f: "Qual è il monumento simbolo di Torino?", r: "La Mole Antonelliana." },
+    { f: "Qual è il monumento simbolo di Torino?", r: "La Mole Antonelliana (oggi Museo del Cinema)." },
+    { f: "Qual è stata la prima capitale d'Italia?", r: "Torino, nel 1861." },
+    { f: "Dove si riuniva il primo Parlamento?", r: "A Palazzo Carignano, a Torino." },
+    { f: "Che cos'è la Reggia di Venaria?", r: "Una residenza dei Savoia, Patrimonio UNESCO." },
     { f: "Che cos'è il Museo Egizio?", r: "Il museo di arte egizia più antico del mondo (1824)." },
     { f: "Che cosa c'è ogni anno a Torino?", r: "Il Salone internazionale del libro." },
     { f: "Dimmi due cibi inventati in Piemonte.", r: "Ad esempio i grissini e i gianduiotti (e anche il tramezzino e il gelato stecco)." },
@@ -722,15 +804,15 @@ window.FLASHCARD = [
    Discorso da dire all'interrogazione (circa 3–4 minuti). Le parole tra **asterischi**
    sono le parole chiave: nel sito si possono nascondere per ripassarle a memoria. */
 window.DISCORSO = [
-  { titolo: "Dove si trova", testo: "Oggi vi parlo del Piemonte. Si trova nel **nord-ovest dell'Italia**, ai piedi delle **Alpi occidentali**. Il suo nome viene dal latino e vuol dire «**ai piedi dei monti**», perché è circondato su **tre lati dalle Alpi**. Confina con **Valle d'Aosta**, **Lombardia**, **Liguria** ed **Emilia-Romagna** e con due Stati: la **Francia** e la **Svizzera**. Il capoluogo è **Torino**." },
+  { titolo: "Dove si trova", testo: "Oggi vi parlo del Piemonte. Si trova nel **nord-ovest dell'Italia**, ai piedi delle **Alpi occidentali**. Il suo nome viene dal latino e vuol dire «**ai piedi dei monti**», perché è circondato su **tre lati dalle Alpi**. Confina con **Valle d'Aosta**, **Lombardia**, **Liguria** ed **Emilia-Romagna** e con due Stati: la **Francia** e la **Svizzera**. Il capoluogo è **Torino**. È una regione a **statuto ordinario**: si parlano l'**italiano**, alcuni **dialetti** e, vicino ai confini, il **francese**." },
   { titolo: "I numeri", testo: "Il Piemonte è grande **25.386 km²** e ha circa **4 milioni e 250 mila abitanti**, cioè **168 per km²**. Le città principali sono Torino, Alessandria, Asti, Biella, Cuneo, Novara, Verbania e Vercelli." },
   { titolo: "Il territorio", testo: "Il territorio è per il **43% montagna**, per il **30% collina** e per il **27% pianura**. A nord, a ovest e a sud-ovest ci sono le **Alpi**, con alcune delle cime più alte d'Italia: il **Monte Rosa** e il **Gran Paradiso**, che il Piemonte condivide con la Valle d'Aosta, e il **Monviso**. A sud si trova l'**Appennino Ligure**. Al centro ci sono le **colline** delle **Langhe** e del **Monferrato**, e a est la **Pianura Padana**, con le sue **risaie**." },
-  { titolo: "Fiumi e laghi", testo: "La regione è **ricca d'acqua**. Il fiume più importante è il **Po**, che **nasce dal Monviso** e passa per Torino. I laghi più importanti sono il **Lago Maggiore** e il **Lago d'Orta**, tutti e due di **origine glaciale**. Nel Lago Maggiore ci sono le **Isole Borromee**." },
+  { titolo: "Fiumi e laghi", testo: "La regione è **ricca d'acqua**. Il fiume più importante è il **Po**, che **nasce dal Monviso** e passa per Torino. Riceve tanti **affluenti**: da **sinistra**, dalle Alpi, la Dora Riparia, la Dora Baltea e la Sesia; da **destra** il **Tanaro** e lo Scrivia. I laghi più importanti sono il **Lago Maggiore** e il **Lago d'Orta**, tutti e due di **origine glaciale**. Nel Lago Maggiore ci sono le **Isole Borromee**: l'Isola Bella, l'Isola Madre e l'Isola dei Pescatori." },
   { titolo: "Clima e ambienti", testo: "In Piemonte ci sono **climi diversi**. In montagna il clima è **alpino**, con inverni rigidi e nevosi ed estati fresche; in pianura è **continentale**, con inverni freddi e **nebbiosi** ed estati **afose**; sulle colline appenniniche è **temperato**. Ogni zona ha il suo paesaggio: in montagna **picchi e ghiacciai**, in collina **vigneti**, in pianura **risaie** e zone industriali. C'è anche il **Parco Nazionale della Val Grande**, l'**area selvaggia più vasta d'Italia**." },
   { titolo: "La popolazione", testo: "La maggior parte delle persone vive nella **fascia pedemontana**, cioè ai piedi delle montagne, e nella **Pianura Padana**. **Oltre metà** della popolazione vive nelle zone intorno a **Torino**." },
-  { titolo: "L'economia", testo: "Il Piemonte è una delle regioni **più ricche e industrializzate** d'Italia, perché si trova al centro di importanti **vie di comunicazione**. L'**agricoltura** è moderna: si coltivano **mais, grano, foraggio e riso**, e il Piemonte è il **maggiore produttore di riso** d'Italia. Sulle colline ci sono viti e alberi da frutto, e **Alba** è famosa per il **tartufo**. Si allevano soprattutto i **bovini**. Le **industrie** lavorano nei settori **meccanico, elettronico, informatico, chimico e tessile**. Il settore più importante però è il **terziario**, con **quasi il 65%** degli occupati: turismo, commercio, banche, ricerca ed editoria." },
+  { titolo: "L'economia", testo: "Il Piemonte è una delle regioni **più ricche e industrializzate** d'Italia, perché si trova al centro di importanti **vie di comunicazione**. L'**agricoltura** è moderna: si coltivano **cereali, foraggio e riso**, e il Piemonte è il **maggiore produttore di riso** d'Italia: **oltre la metà** del riso italiano viene da qui. Sulle colline ci sono **viti** e **noccioli**, e **Alba** è famosa per il **tartufo bianco**. Si allevano soprattutto i **bovini**. Le **industrie** sono tra le più avanzate d'Italia: c'è l'industria **alimentare**, che fa vino, formaggi e dolci, e poi quella **metalmeccanica, elettronica, informatica, chimica e tessile**. Il settore più importante però è il **terziario**, con **quasi il 65%** degli occupati: commercio, banche, ricerca, editoria e **turismo**, nelle città d'arte, in montagna, sui laghi e per assaggiare i prodotti tipici." },
   { titolo: "I collegamenti", testo: "Una vasta rete di **strade** e **ferrovie** collega il Piemonte al resto d'Italia e all'**Europa**, con la galleria del **Frejus**, verso la **Francia**, e quella del **Sempione**, verso la **Svizzera**." },
-  { titolo: "Torino e le curiosità", testo: "Il monumento simbolo di Torino è la **Mole Antonelliana**. A Torino c'è il **Museo Egizio**, il più antico museo di arte egizia del mondo, e ogni anno si tiene il **Salone internazionale del libro**. In Piemonte sono stati inventati i **grissini**, il **tramezzino**, i **gianduiotti** e il **gelato stecco**!" },
+  { titolo: "Torino e le curiosità", testo: "Torino è stata la **prima capitale d'Italia**, nel **1861**: il primo **Parlamento** si riuniva a **Palazzo Carignano**. Il monumento simbolo di Torino è la **Mole Antonelliana**, che oggi ospita il **Museo del Cinema**. Vicino c'è la **Reggia di Venaria**, una residenza dei **Savoia** Patrimonio **UNESCO**. A Torino c'è il **Museo Egizio**, il più antico museo di arte egizia del mondo, e ogni anno si tiene il **Salone internazionale del libro**. In Piemonte sono stati inventati i **grissini**, il **tramezzino**, i **gianduiotti** e il **gelato stecco**!" },
   { titolo: "Per concludere", testo: "Il Piemonte è una regione **ai piedi dei monti**, con **montagne, colline e pianura**, dove **nasce il Po**: è ricca di **natura**, di **lavoro** e di **cultura**." }
 ];
 
@@ -751,6 +833,7 @@ window.FLUSSO = [
     { seguito: true, tipo: "trabocchetto", d: "La Pianura Padana è a ovest?", r: "No, è a est (nella parte orientale). A ovest ci sono le Alpi.", mappa: { tipo: "zona", id: "pianura" } },
     { d: "Indicami il fiume principale.", r: "Il Po.", mappa: { tipo: "fiume" } },
     { seguito: true, d: "Dove nasce?", r: "Dal Monviso, a ovest, vicino alla Francia.", mappa: { tipo: "luogo", id: "monviso" } },
+    { seguito: true, d: "Quali affluenti riceve?", r: "Da sinistra, dalle Alpi: Dora Riparia, Stura di Lanzo, Orco, Dora Baltea e Sesia. Da destra: il Tanaro (con la Stura di Demonte e la Bormida) e lo Scrivia.", mappa: { tipo: "fiume" } },
     { d: "Dov'è il capoluogo?", r: "Torino è in pianura, sul Po, ai piedi delle Alpi.", mappa: { tipo: "luogo", id: "torino" } }
   ]},
   { fase: "3️⃣ Il territorio", domande: [
@@ -759,7 +842,8 @@ window.FLUSSO = [
     { seguito: true, d: "E a sud che cosa c'è?", r: "L'Appennino Ligure, tra il Piemonte e la Liguria." },
     { tipo: "ragionamento", d: "Perché il Piemonte si chiama così?", r: "Perché vuol dire «ai piedi dei monti»: è circondato su tre lati dalle Alpi." },
     { d: "Quali sono i laghi più importanti?", r: "Il Lago Maggiore e il Lago d'Orta, di origine glaciale.", mappa: { tipo: "luogo", id: "lagomaggiore" } },
-    { seguito: true, tipo: "ragionamento", d: "Che cosa vuol dire «di origine glaciale»?", r: "Che si sono formati dove un tempo c'erano dei grandi ghiacciai." }
+    { seguito: true, tipo: "ragionamento", d: "Che cosa vuol dire «di origine glaciale»?", r: "Che si sono formati dove un tempo c'erano dei grandi ghiacciai." },
+    { seguito: true, d: "Quali sono le Isole Borromee?", r: "L'Isola Bella, l'Isola Madre (la più grande) e l'Isola dei Pescatori (l'unica abitata tutto l'anno).", mappa: { tipo: "luogo", id: "lagomaggiore" } }
   ]},
   { fase: "4️⃣ Clima e ambienti", domande: [
     { d: "Che clima c'è?", r: "Dipende dalla zona: alpino in montagna, continentale in pianura, temperato sulle colline appenniniche." },
@@ -769,16 +853,18 @@ window.FLUSSO = [
   ]},
   { fase: "5️⃣ La popolazione", domande: [
     { d: "Quanti abitanti ha il Piemonte?", r: "Circa 4 milioni e 250 mila: 168 per km²." },
-    { seguito: true, d: "Dove vive la maggior parte delle persone?", r: "Nella fascia pedemontana e nella Pianura Padana; oltre metà intorno a Torino.", mappa: { tipo: "luogo", id: "torino" } },
+    { seguito: true, d: "Dove vive la maggior parte delle persone?", r: "Nella fascia pedemontana e nella Pianura Padana, nelle grandi città; oltre metà intorno a Torino.", mappa: { tipo: "luogo", id: "torino" } },
+    { d: "Che lingue si parlano?", r: "L'italiano, alcuni dialetti e, nelle zone di confine, il francese. È una regione a statuto ordinario." },
     { seguito: true, tipo: "ragionamento", d: "Perché poche persone vivono in alta montagna?", r: "Perché fa freddo, è difficile costruire e coltivare, e il lavoro è soprattutto in pianura e nelle città." }
   ]},
   { fase: "6️⃣ L'economia", domande: [
     { d: "È una regione ricca?", r: "Sì: è una delle più ricche e industrializzate d'Italia." },
     { seguito: true, tipo: "ragionamento", d: "Perché?", r: "Perché si trova al centro di importanti vie di comunicazione, che hanno aiutato lo sviluppo delle attività economiche." },
     { d: "Che cosa si coltiva?", r: "In pianura mais, grano, foraggio e riso; sulle colline viti e alberi da frutto." },
-    { seguito: true, d: "Di quale prodotto il Piemonte è il primo in Italia?", r: "Del riso: le risaie sono intorno a Vercelli e Novara.", mappa: { tipo: "luogo", id: "risaie" } },
+    { seguito: true, d: "Di quale prodotto il Piemonte è il primo in Italia?", r: "Del riso: oltre metà del riso italiano viene dal Piemonte. Le risaie sono intorno a Vercelli e Novara.", mappa: { tipo: "luogo", id: "risaie" } },
     { seguito: true, d: "Per che cosa è famosa Alba?", r: "Per il tartufo.", mappa: { tipo: "luogo", id: "alba" } },
     { d: "Qual è il settore con più occupati?", r: "Il terziario, quasi il 65%: turismo, commercio, banche, ricerca ed editoria." },
+    { d: "Che cosa vuol dire DOP?", r: "Denominazione di origine protetta: un marchio che protegge i prodotti speciali di una zona dalle imitazioni." },
     { seguito: true, tipo: "trabocchetto", d: "Allora l'industria non è importante?", r: "Sì che lo è! Il Piemonte è molto industrializzato (settori meccanico, elettronico, informatico, chimico e tessile), ma nel terziario lavorano più persone." }
   ]},
   { fase: "7️⃣ I collegamenti", domande: [
@@ -786,7 +872,9 @@ window.FLUSSO = [
     { seguito: true, tipo: "trabocchetto", d: "Quale galleria porta in Francia?", r: "Il Frejus. Il Sempione porta in Svizzera.", mappa: { tipo: "luogo", id: "frejus" } }
   ]},
   { fase: "8️⃣ Torino e le curiosità", domande: [
-    { d: "Qual è il monumento simbolo di Torino?", r: "La Mole Antonelliana.", mappa: { tipo: "luogo", id: "torino" } },
+    { tipo: "trabocchetto", d: "Roma è sempre stata la capitale d'Italia?", r: "No! Nel 1861 la prima capitale fu Torino: il Parlamento si riuniva a Palazzo Carignano.", mappa: { tipo: "luogo", id: "torino" } },
+    { d: "Qual è il monumento simbolo di Torino?", r: "La Mole Antonelliana, che oggi ospita il Museo Nazionale del Cinema.", mappa: { tipo: "luogo", id: "torino" } },
+    { seguito: true, d: "Conosci una residenza dei Savoia?", r: "La Reggia di Venaria Reale, con le scuderie e un grande giardino: fa parte delle Residenze Sabaude, Patrimonio UNESCO." },
     { seguito: true, d: "Che cos'è il Museo Egizio?", r: "Il museo di arte egizia più antico del mondo, fondato nel 1824: è il più importante dopo quello del Cairo." },
     { d: "Sai dirmi un cibo inventato in Piemonte?", r: "I grissini, il tramezzino, i gianduiotti o il gelato stecco!" }
   ]},
@@ -803,7 +891,9 @@ window.TRABOCCHETTI = [
   ["Il Po nasce dal Monte Rosa?", "No, dal **Monviso**"],
   ["Il Traforo del Monte Bianco è in Piemonte?", "No, in **Valle d'Aosta**: in Piemonte ci sono il **Frejus** e il **Sempione**"],
   ["Il settore con più occupati è l'industria?", "No, il **terziario** (quasi il 65%)"],
-  ["Il Lago di Garda è in Piemonte?", "No: i laghi più importanti sono il **Maggiore** e il **d'Orta**"]
+  ["Il Lago di Garda è in Piemonte?", "No: i laghi più importanti sono il **Maggiore** e il **d'Orta**"],
+  ["Roma è sempre stata la capitale d'Italia?", "No: la prima fu **Torino**, nel **1861**"],
+  ["La Bormida si getta nel Po?", "No, nel **Tanaro**, che poi va nel Po"]
 ];
 
 window.CONSIGLI = [
@@ -833,19 +923,19 @@ window.TOUR = [
   { titolo: "La Pianura Padana e le risaie", carta: "fisica", vista: ["risaie", "vercelli", "novara"], luci: ["risaie"],
     testo: "A est si trova la Pianura Padana, con le sue numerose risaie. Viste dall'alto formano scacchiere perfette: il Piemonte è il maggiore produttore di riso d'Italia." },
   { titolo: "Il Po", carta: "fisica", vista: "regione", fiume: "disegna",
-    testo: "La regione è ricca d'acqua. Il fiume più importante è il Po: nasce dal Monviso, passa per Torino e attraversa il Piemonte da ovest a est." },
+    testo: "La regione è ricca d'acqua. Il fiume più importante è il Po: nasce dal Monviso, passa per Torino e attraversa il Piemonte da ovest a est. Riceve tanti affluenti: da sinistra, dalle Alpi, la Dora Riparia, la Dora Baltea e la Sesia; da destra il Tanaro e lo Scrivia." },
   { titolo: "I laghi", carta: "fisica", vista: ["lagomaggiore", "lagoorta"], luci: ["lagomaggiore", "lagoorta"],
-    testo: "I laghi più importanti sono il Lago Maggiore e il Lago d'Orta, tutti e due di origine glaciale: si sono formati dove un tempo c'erano grandi ghiacciai. Nel Lago Maggiore ci sono le Isole Borromee." },
+    testo: "I laghi più importanti sono il Lago Maggiore e il Lago d'Orta, tutti e due di origine glaciale: si sono formati dove un tempo c'erano grandi ghiacciai. Nel Lago Maggiore ci sono le Isole Borromee: l'Isola Bella, l'Isola Madre e l'Isola dei Pescatori. Nel Lago d'Orta c'è l'Isola di San Giulio." },
   { titolo: "Il clima", carta: "fisica", vista: "regione", zone: ["montagna", "collina", "pianura"],
     testo: "In montagna il clima è alpino, con inverni rigidi e nevosi ed estati fresche. In pianura è continentale, con inverni freddi e nebbiosi ed estati afose. Sulle colline appenniniche è temperato." },
   { titolo: "Il Parco della Val Grande", carta: "fisica", vista: ["valgrande"], zoom: 10, luci: ["valgrande"],
     testo: "Tra Domodossola e il Lago Maggiore c'è il Parco Nazionale della Val Grande: è l'area selvaggia più vasta d'Italia. Ci vivono lupi, cervi, camosci, falchi pellegrini e aquile reali." },
   { titolo: "Torino, il capoluogo", carta: "fisica", vista: ["torino"], zoom: 11, luci: ["torino"],
-    testo: "Torino è il capoluogo. Il suo monumento simbolo è la Mole Antonelliana. Qui c'è il Museo Egizio, il più antico museo di arte egizia del mondo, e ogni anno si tiene il Salone internazionale del libro." },
+    testo: "Torino è il capoluogo ed è stata la prima capitale d'Italia, nel 1861. Il suo simbolo è la Mole Antonelliana, che oggi ospita il Museo del Cinema. Qui c'è il Museo Egizio, il più antico museo di arte egizia del mondo, e vicino c'è la Reggia di Venaria, una residenza dei Savoia." },
   { titolo: "Dove vive la gente", carta: "fisica", vista: "regione", zone: ["pianura"], luci: ["torino"],
     testo: "Il Piemonte ha più di 4 milioni di abitanti. La maggior parte vive ai piedi delle montagne e nella Pianura Padana, e oltre metà vive intorno a Torino." },
   { titolo: "Il lavoro", carta: "fisica", vista: "regione", luci: ["risaie", "alba", "torino"],
-    testo: "Il Piemonte è una delle regioni più ricche e industrializzate d'Italia. Si coltivano mais, grano e riso, e ad Alba c'è il tartufo. Ci sono tante industrie, ma il settore più importante è il terziario, con quasi il 65 per cento degli occupati." },
+    testo: "Il Piemonte è una delle regioni più ricche e industrializzate d'Italia. Si coltivano mais, grano e riso: oltre metà del riso italiano viene da qui. Sulle colline ci sono viti e noccioli, e ad Alba il tartufo. Ci sono tante industrie, ma il settore più importante è il terziario, con il turismo nelle città d'arte, in montagna e sui laghi." },
   { titolo: "Le gallerie sotto le Alpi", carta: "politica", vista: "regione", luci: ["frejus", "sempione"],
     testo: "Strade e ferrovie collegano il Piemonte al resto d'Italia e all'Europa. Sotto le Alpi passano due grandi gallerie: il Frejus, verso la Francia, e il Sempione, verso la Svizzera." },
   { titolo: "Fine della visita! 🎉", carta: "fisica", vista: "regione", fine: true,

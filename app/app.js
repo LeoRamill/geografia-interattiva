@@ -536,13 +536,13 @@
 
   /* ---------------- Pannello ---------------- */
   const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
-  // [[testo]] = approfondimento (non è nel libro di testo)
-  const SPAN_EXTRA = '<span class="extra" title="Approfondimento: non è nel libro">$1</span>';
+  // [[testo]] = approfondimento (non è in nessuno dei libri di testo)
+  const SPAN_EXTRA = '<span class="extra" title="Approfondimento: non è nei libri di testo">$1</span>';
   const marcaExtra = html => html.replace(/\[\[(.+?)\]\]/g, SPAN_EXTRA);
   // testo semplice -> HTML: **parola chiave** e [[approfondimento]]
   const ricco = t => marcaExtra(esc(t).replace(/\*\*(.+?)\*\*/g, '<b class="kw" tabindex="0">$1</b>'));
-  const BADGE_EXTRA = '<span class="badge-extra">📚 Approfondimento – non è nel libro</span>';
-  const NOTA_EXTRA = '<p class="nota-extra"><span class="extra-icona">📚</span> = approfondimento: non è nel libro di testo</p>';
+  const BADGE_EXTRA = '<span class="badge-extra">📚 Approfondimento – non è nei libri</span>';
+  const NOTA_EXTRA = '<p class="nota-extra"><span class="extra-icona">📚</span> = approfondimento: non è nei libri di testo</p>';
 
   function showHome() {
     modoStudio(false);
@@ -555,7 +555,7 @@
 
     const gruppi = Object.entries(CAT).map(([key, c]) => {
       const items = LUOGHI.filter(l => l.cat === key)
-        .map(l => `<button class="place-btn" style="--c:${c.colore}" data-id="${l.id}">${esc(l.nome)}${l.extra ? ' <span title="Approfondimento: non è nel libro">📚</span>' : ""}</button>`).join("");
+        .map(l => `<button class="place-btn" style="--c:${c.colore}" data-id="${l.id}">${esc(l.nome)}${l.extra ? ' <span title="Approfondimento: non è nei libri di testo">📚</span>' : ""}</button>`).join("");
       return `<div class="place-group"><h4>${c.icona} ${c.nome}</h4><div class="place-list">${items}</div></div>`;
     }).join("");
 
@@ -1152,7 +1152,7 @@
   const tourLayer = L.layerGroup().addTo(map);
   const pocoMoto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   // Voce della visita: registrata una volta sola (voce "Paola", tools/genera_audio.py), uguale su ogni dispositivo
-  const AUDIO_V = 1;
+  const AUDIO_V = 2;
   const audioTour = new Audio();
   audioTour.preload = "auto";
 

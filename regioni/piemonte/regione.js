@@ -11,7 +11,7 @@ window.REGIONE = {
   bandiera: ["#d52b1e", "#ffffff", "#d52b1e"],    // colori di riserva, se manca bandiera_svg
   // croce bianca su fondo rosso con il "lambello" azzurro in alto (come nel libro, p. 35)
   bandiera_svg: '<svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><rect width="30" height="30" fill="#d52b1e"/><rect x="12" width="6" height="30" fill="#fff"/><rect y="12" width="30" height="6" fill="#fff"/><rect x="3" y="2" width="24" height="3" fill="#2b63b0"/><rect x="6" y="5" width="3" height="4" fill="#2b63b0"/><rect x="13.5" y="5" width="3" height="4" fill="#2b63b0"/><rect x="21" y="5" width="3" height="4" fill="#2b63b0"/></svg>',
-  libro: "Geografia vol. 5, pp. 34–37",
+  libro: "Geografia vol. 5, pp. 34–37 · Che meraviglia! Geografia 5, pp. 35–37",
   pronuncia: { "Frejus": "Fregiùs" },             // come deve leggere la voce della visita guidata
 
   area_larga: [5.83, 43.76, 9.86, 46.74],

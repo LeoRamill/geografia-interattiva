@@ -10,14 +10,18 @@ Scrivi sempre in **italiano** (testi del sito, commenti, commit, risposte all'ut
 
 - Pubblico: **quinta elementare / prima media** (10–11 anni). Frasi brevi, parole semplici; i termini del libro
   (es. "settore terziario", "idroelettrica") vanno bene ma spiegati.
-- **Il riferimento è il libro di testo** (Geografia vol. 5; pagine in `REGIONE.libro`). Prima di scrivere i testi
-  di una regione chiedi all'utente le **foto delle pagine del libro** e usa **i numeri del libro**
-  (es. Monte Bianco 4.807 m) anche se altre fonti dicono altro; se c'è differenza, una nota nella scheda.
-- Quello che **non è nel libro** si può tenere ma va segnato come approfondimento:
+- **I riferimenti sono due libri di testo, usati tutti e due a scuola**: «Geografia» vol. 5 e «Che meraviglia!» Geografia 5
+  (pagine di entrambi in `REGIONE.libro`). Prima di scrivere i testi di una regione chiedi all'utente le **foto delle pagine
+  di tutti e due i libri** e metti nel sito quello che c'è nell'uno **e** nell'altro.
+- **Numeri:** quelli di «Geografia» (es. Monte Bianco 4.807 m), anche se altre fonti dicono altro. Se «Che meraviglia!» dà un
+  numero diverso, scrivilo accanto con il titolo del libro (`<small>«Che meraviglia!»: …</small>` nella carta d'identità,
+  `<p class="nota-libro">` sotto gli occupati, "(in «Che meraviglia!» …)" nei testi). Se i due libri sono d'accordo e le altre
+  fonti no, vale il libro e la nota "altre fonti" va tra `[[ ]]`. Nella carta d'identità c'è la riga `li.libri` con le pagine.
+- Quello che **non è in nessuno dei due libri** si può tenere ma va segnato come approfondimento:
   `[[frase]]` dentro i testi, `extra: true` su luoghi e domande. Il sito lo mostra in viola con 📚.
 - Le categorie fuori dal libro (es. "Sci e terme") partono spente: `spenta: true` in `CATEGORIE`.
   Legenda in **ordine di importanza** per lo studio (montagne/territorio, città, acque, collegamenti, prodotti, monumenti, turismo).
-- Dopo aver scritto i testi, **confronta con il libro** e fai all'utente la tabella "cosa manca / cosa è in più / numeri diversi".
+- Dopo aver scritto i testi, **confronta con i due libri** e fai all'utente la tabella "cosa manca / cosa è in più / numeri diversi".
 - Non copiare immagini o testi del libro (copyright): si riscrive con parole nostre e si ricreano le cartine da dati aperti.
 
 ## Cosa contiene ogni regione (`regioni/<id>/dati.js`)
@@ -31,7 +35,7 @@ Stessa struttura della Valle d'Aosta, da usare come modello:
 - `SEZIONI_DOMANDE` + `DOMANDE` (≥ 50, almeno 3 per sezione, `sez` obbligatorio; il quiz pesca almeno una domanda per sezione)
 - `DISCORSO` (3–4 minuti, parole chiave tra `**`), `FLUSSO` (domande dell'insegnante in ordine: generale → cartina → dettagli,
   con `seguito`, `tipo: "trabocchetto" | "ragionamento"`, `mappa`), `TRABOCCHETTI`, `CONSIGLI`
-- `TOUR` (visita guidata, ~14 tappe, solo argomenti del libro, ultima con `fine: true`)
+- `TOUR` (visita guidata, ~14 tappe, solo argomenti dei libri, ultima con `fine: true`)
 
 ## Cartine: decisioni prese (non tornare indietro)
 

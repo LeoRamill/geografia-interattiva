@@ -2,8 +2,10 @@
  * Testi e dati della regione Valle d'Aosta: categorie, luoghi, scheda, domande, flashcard,
  * interrogazione e visita guidata. Le impostazioni (confini, fiume, zone…) sono in regione.js.
  *
- * Regole (vedi CLAUDE.md): livello quinta elementare / prima media; il riferimento è il libro di testo;
- * quello che non è nel libro va tra [[ ]] (frasi) o con extra: true (luoghi e domande).
+ * Regole (vedi CLAUDE.md): livello quinta elementare / prima media; i riferimenti sono due libri di testo,
+ * «Geografia» vol. 5 (pp. 30–33) e «Che meraviglia!» Geografia 5 (pp. 32–34). I numeri sono quelli di «Geografia»;
+ * se «Che meraviglia!» dice un numero diverso, c'è una nota.
+ * Quello che non è in nessuno dei due libri va tra [[ ]] (frasi) o con extra: true (luoghi e domande).
  * Per aggiungere un luogo basta copiare un oggetto dell'elenco LUOGHI e cambiare nome, coordinate e testi.
  */
 
@@ -24,15 +26,16 @@ window.LUOGHI = [
   {
     id: "aosta", nome: "Aosta", cat: "citta", lat: 45.7372, lng: 7.3206,
     sottotitolo: "Capoluogo di regione · 33.186 abitanti, circa un quarto della popolazione",
-    testo: "Aosta è l'unica vera città della regione e ne è il capoluogo. Fu fondata dai Romani nel 25 a.C. con il nome di Augusta Praetoria Salassorum, in onore dell'imperatore Augusto, dopo la sconfitta dei Salassi. [[La città fu costruita come un accampamento militare, con strade dritte che si incrociano ad angolo retto: per i suoi tanti monumenti romani è chiamata la \"Roma delle Alpi\".]]",
+    testo: "Aosta è l'unica vera città della regione e ne è il capoluogo. Fu fondata dai Romani nel 25 a.C. con il nome di Augusta Praetoria [[Salassorum]], in onore dell'imperatore Augusto, dopo la sconfitta dei Salassi. La città conserva ancora oggi la forma dell'antico accampamento romano, con le strade che si incrociano ad angolo retto, e la cinta di mura è quasi tutta intatta. [[Per i suoi tanti monumenti romani è chiamata la \"Roma delle Alpi\".]]",
     punti: [
-      "Aosta romana: le mura, la Porta Pretoria (l'ingresso della città), il teatro, l'anfiteatro, il foro (con il criptoportico) e le terme",
+      "Aosta romana: le mura (quasi intatte), le strade ad angolo retto, la Porta Pretoria (l'ingresso della città), il teatro, l'anfiteatro, il foro [[(con il criptoportico)]] e le terme",
       "Fuori dalle mura: l'Arco d'Augusto e il ponte romano sul torrente Buthier, sulla strada per la Gallia",
       "[[Area megalitica di Saint-Martin-de-Corléans: resti di oltre 5.000 anni fa]]",
       "[[Qui nacque sant'Anselmo d'Aosta (1033), filosofo e arcivescovo di Canterbury]]",
       "[[Fiera di Sant'Orso (30–31 gennaio): artigianato del legno, si svolge da oltre 1000 anni]]",
       "[[Arena della Croix-Noire: finale della Bataille des Reines, la sfida tra mucche \"regine\"]]",
-      "[[Industria: l'acciaieria Cogne Acciai Speciali]]"
+      "[[Industria: l'acciaieria Cogne Acciai Speciali]]",
+      "Vicino alla città c'è l'aeroporto (si vede sulle carte dei libri)"
     ],
     ricorda: "Aosta = Augusta Praetoria, fondata dai Romani nel 25 a.C.; il nome della regione viene da qui."
   },
@@ -51,10 +54,10 @@ window.LUOGHI = [
   {
     id: "lys", nome: "Valle del Lys (Gressoney)", cat: "citta", lat: 45.8317, lng: 7.8239,
     sottotitolo: "La valle dei Walser",
-    testo: "[[Nella valle del Lys, ai piedi del Monte Rosa, vivono i Walser: discendenti di popolazioni di lingua tedesca arrivate nel Medioevo dal Vallese, in Svizzera. Ancora oggi a Gressoney e a Issime si parlano antiche lingue di origine tedesca (il titsch e il töitschu) e si vedono le tipiche case in legno e pietra.]]",
+    testo: "Una parte dei valdostani parla il walser, una lingua che deriva dal tedesco. [[Nella valle del Lys, ai piedi del Monte Rosa, vivono i Walser: discendenti di popolazioni di lingua tedesca arrivate nel Medioevo dal Vallese, in Svizzera. Ancora oggi a Gressoney e a Issime si parlano antiche lingue di origine tedesca (il titsch e il töitschu) e si vedono le tipiche case in legno e pietra.]]",
     punti: [
       "Paesi principali: Gressoney-La-Trinité, Gressoney-Saint-Jean, Issime",
-      "[[Lingua walser, di origine tedesca]]",
+      "Lingua walser, che deriva dal tedesco",
       "[[Fa parte del comprensorio sciistico Monterosa Ski]]",
       "Il torrente Lys è un affluente della Dora Baltea"
     ],
@@ -207,12 +210,12 @@ window.LUOGHI = [
   {
     id: "parcogp", nome: "Parco Nazionale del Gran Paradiso", cat: "natura", lat: 45.5750, lng: 7.2050,
     sottotitolo: "1922 · il primo parco nazionale italiano",
-    testo: "Il Parco Nazionale del Gran Paradiso è nato nel 1922 ed è il primo parco nazionale d'Italia. [[Nacque dalla riserva di caccia del re Vittorio Emanuele II, che servì però a salvare lo stambecco dall'estinzione.]] Il parco si estende tra la Valle d'Aosta (valli di Cogne, Valsavarenche e Rhêmes) e il Piemonte.",
+    testo: "Il Parco Nazionale del Gran Paradiso è il primo parco nazionale d'Italia. Gli stambecchi venivano cacciati in gran numero e rischiavano di scomparire: per proteggerli, nel 1856 il re Vittorio Emanuele II dichiarò queste montagne riserva reale di caccia. Nel 1920 la riserva fu donata allo Stato italiano, che nel 1922 la trasformò in un parco. Il parco si estende tra la Valle d'Aosta [[(valli di Cogne, Valsavarenche e Rhêmes)]] e il Piemonte. Ci sono percorsi che permettono ai turisti di ammirare l'ambiente alpino e i suoi animali.",
     punti: [
-      "Fondato nel 1922: il primo parco nazionale italiano",
+      "1856 riserva reale di caccia → 1920 donata allo Stato → 1922 Parco: il primo d'Italia",
       "Simbolo: lo stambecco",
-      "[[Animali: stambecchi, camosci, marmotte, aquile reali, gipeti, lupi]]",
-      "Piante: cambiano con l'altitudine. In basso boschi di larici, abeti e pino cembro, poi prati e piante erbacee (stella alpina, genepì), più in alto muschi e licheni"
+      "Animali: stambecchi, camosci, marmotte, ermellini, volpi e uccelli rapaci come l'aquila, il gufo reale, la poiana e il gipeto, che è tornato a fare il nido qui negli ultimi anni [[(e anche i lupi)]]",
+      "Piante: nel fondovalle boschi di abeti rossi, abeti bianchi e larici [[(e pino cembro)]]; poi i pascoli alpini, pieni di fiori in primavera [[(stella alpina, genepì)]]; più in alto muschi e licheni e le vette rocciose coperte di ghiaccio"
     ],
     ricorda: "Primo parco nazionale (1922), simbolo lo stambecco."
   },
@@ -254,10 +257,10 @@ window.LUOGHI = [
   },
   {
     id: "gsb", nome: "Gran San Bernardo", cat: "passi", lat: 45.8620, lng: 7.1750,
-    sottotitolo: "Passo (2.469 m) e traforo (1964) · verso la Svizzera",
+    sottotitolo: "Passo (2.473 m) e traforo · verso la Svizzera",
     testo: "Il colle del Gran San Bernardo è un antico passaggio verso la Svizzera, usato già dai Romani. [[Qui c'è un ospizio fondato nell'XI secolo per aiutare i viaggiatori, famoso per i cani San Bernardo, usati per soccorrere le persone nella neve. Nel 1800 Napoleone attraversò il passo con il suo esercito.]] Più in basso, dal 1964, una galleria permette di passare anche d'inverno.",
     punti: [
-      "Colle a 2.469 m, confine con la Svizzera",
+      "Colle a 2.473 m [[(altre fonti: 2.469 m)]], confine con la Svizzera",
       "[[Ospizio e cani San Bernardo]]",
       "[[1800: lo attraversa Napoleone]]",
       "[[Traforo del Gran San Bernardo aperto nel 1964]]",
@@ -324,12 +327,13 @@ window.LUOGHI = [
     ricorda: "La neve a due passi da Aosta."
   },
   {
-    id: "monterosaski", extra: true, nome: "Monterosa Ski (Champoluc)", cat: "turismo", lat: 45.8306, lng: 7.7272,
-    sottotitolo: "Tre valli collegate",
-    testo: "Il comprensorio Monterosa Ski collega con gli impianti di risalita la Val d'Ayas (Champoluc), la valle di Gressoney e la Valsesia, in Piemonte, ai piedi del Monte Rosa.",
+    id: "monterosaski", nome: "Champoluc e gli impianti di risalita", cat: "turismo", lat: 45.8306, lng: 7.7272,
+    sottotitolo: "Sci ai piedi del Monte Rosa",
+    testo: "Champoluc, in Val d'Ayas, è una località sciistica ai piedi del Monte Rosa. In inverno il turismo è favorito dai numerosi impianti di risalita (funivie, seggiovie, skilift) che portano gli sciatori in alto. [[Il comprensorio Monterosa Ski collega la Val d'Ayas, la valle di Gressoney e la Valsesia, in Piemonte.]]",
     punti: [
-      "Collega Val d'Ayas, valle del Lys e Valsesia",
-      "Ai piedi del massiccio del Monte Rosa"
+      "Val d'Ayas, ai piedi del Monte Rosa",
+      "Tanti impianti di risalita per il turismo invernale",
+      "[[Collega Val d'Ayas, valle del Lys e Valsesia]]"
     ],
     ricorda: "Sci ai piedi del Monte Rosa."
   },
@@ -400,7 +404,7 @@ window.FIUME_INFO = {
   testo: "La Dora Baltea nasce vicino a Courmayeur, ai piedi del Monte Bianco, [[dall'unione della Dora di Veny e della Dora di Ferret]]. Attraversa tutta la valle centrale passando per Aosta, raccoglie l'acqua dei torrenti delle valli laterali, entra in Piemonte a Pont-Saint-Martin e si getta nel Po.",
   punti: [
     "[[Affluenti: Buthier, Grand Eyvia, Savara, Marmore, Évançon, Lys…]]",
-    "[[È un affluente di sinistra del Po]]",
+    "È un affluente del Po [[(di sinistra)]]",
     "Le sue acque e quelle dei torrenti producono energia idroelettrica",
     "Il tracciato sulla mappa è calcolato dai dati di altitudine"
   ],
@@ -482,7 +486,7 @@ window.SCHEDA = [
     titolo: "📍 Carta d'identità",
     html: `<div class="stats">
         <div class="stat"><span>Superficie</span><b>3.261 km²</b></div>
-        <div class="stat"><span>Abitanti</span><b>123.337</b></div>
+        <div class="stat"><span>Abitanti</span><b>123.337</b><small>«Che meraviglia!»: 123.513</small></div>
         <div class="stat"><span>Densità</span><b>38 ab./km²</b></div>
         <div class="stat"><span>Capoluogo</span><b>Aosta</b><small>33.186 ab.</small></div>
       </div>
@@ -493,6 +497,7 @@ window.SCHEDA = [
       <li><b>Regione autonoma a statuto speciale</b> [[dal 1948]]</li>
       <li>[[<b>Bandiera:</b> nera e rossa]]</li>
       <li><b>Stemma:</b> un leone d'argento su sfondo nero, con una corona sopra lo scudo</li>
+      <li class="libri">📖 Libri: «Geografia» vol. 5, pp. 30–33 e «Che meraviglia!» Geografia 5, pp. 32–34. I numeri sono quelli di «Geografia»: se «Che meraviglia!» ne dà uno diverso, è scritto accanto.</li>
     </ul>`
   },
   {
@@ -500,8 +505,8 @@ window.SCHEDA = [
     html: `<p>Si trova nella parte <b>nord-occidentale</b> dell'Italia. Confina a <b>nord</b> con la <b>Svizzera</b>, a <b>ovest</b> con la <b>Francia</b>, a <b>sud</b> e a <b>est</b> con il <b>Piemonte</b>. [[Sul <b>Mont Dolent</b> (3.820 m) si incontrano i confini di Italia, Francia e Svizzera.]]</p>
       <p>Il territorio è <b>interamente montuoso</b>: una grande valle centrale, percorsa dalla <b>Dora Baltea</b>, [[da cui si aprono a "lisca di pesce" circa venti valli laterali (Valpelline, Valtournenche, Val d'Ayas, Valle di Gressoney, Valle di Cogne, Valsavarenche, Val di Rhêmes, Valgrisenche…)]].</p>
       <p><b>Le montagne più alte d'Europa:</b> Monte Bianco (4.807 m), Monte Rosa (4.637 m), Cervino (4.478 m), Gran Paradiso (4.061 m). A nord ci sono le <b>Alpi Pennine</b>, a ovest e a sud le <b>Alpi Graie</b>.</p>
-      <p><b>Ghiacciai:</b> si trovano sulle vette oltre i 3.000 m; un tempo erano perenni, oggi si riducono per i cambiamenti climatici.</p>
-      <p><b>Acque:</b> molti torrenti scendono dalle valli laterali e confluiscono nella <b>Dora Baltea</b>, che nasce ai piedi del Monte Bianco, attraversa la regione da ovest a est [[e si getta nel Po]]. Tra le cime ci sono tanti piccoli laghi alpini.</p>`
+      <p><b>Ghiacciai:</b> si trovano sulle vette oltre i 3.000 m; un tempo erano perenni, oggi si riducono per i cambiamenti climatici. I ghiacciai alimentano numerosi <b>torrenti</b>, che scorrono in <b>valli glaciali</b> dalla tipica forma <b>stretta e allungata</b>.</p>
+      <p><b>Acque:</b> i torrenti delle valli laterali confluiscono nella <b>Dora Baltea</b>, che nasce ai piedi del Monte Bianco e scorre nella valle glaciale più ampia, dove sorge <b>Aosta</b>. Attraversa la regione da ovest a est e poi diventa un <b>affluente del Po</b>. Tra le cime ci sono tanti piccoli laghi alpini.</p>`
   },
   {
     titolo: "👥 Popolazione",
@@ -510,8 +515,8 @@ window.SCHEDA = [
       <li>La maggior parte degli abitanti vive nel <b>fondovalle</b>, lungo la valle della Dora Baltea</li>
       <li><b>Aosta</b> (33.186 ab.) ha circa <b>un quarto</b> della popolazione; gli altri vivono in <b>piccoli comuni</b></li>
       <li>[[Nel Novecento molte valli laterali si sono <b>spopolate</b>: la gente è scesa in città o in pianura per lavorare]]</li>
-      <li>È una regione <b>bilingue</b>: le lingue ufficiali sono l'<b>italiano</b> e il <b>francese</b></li>
-      <li>[[<i>Curiosità:</i> molti parlano anche il <b>patois</b> (un dialetto francoprovenzale); nella valle del Lys i <b>Walser</b> parlano una lingua di origine tedesca]]</li>
+      <li><b>Bilinguismo:</b> le lingue ufficiali sono due, l'<b>italiano</b> e il <b>francese</b>; si parlano e si insegnano tutte e due a scuola</li>
+      <li>Una parte della popolazione parla anche il <b>patois</b>, che viene dal francese [[(è un dialetto francoprovenzale)]], e il <b>walser</b>, che viene dal tedesco [[(nella valle del Lys)]]</li>
     </ul>`
   },
   {
@@ -523,17 +528,20 @@ window.SCHEDA = [
         <li style="--c:#f1f4f8"><b>oltre 3.000 m</b> nevi e ghiacciai</li>
         <li style="--c:#cfc7c0"><b>2.500–3.000 m</b> rocce, muschi e licheni</li>
         <li style="--c:#e2cf9f"><b>2.000–2.500 m</b> prati e piante erbacee (pascoli, alpeggi)</li>
-        <li style="--c:#9fc08a"><b>1.000–2.000 m</b> boschi di abeti e larici</li>
+        <li style="--c:#9fc08a"><b>1.000–2.000 m</b> boschi di abeti (rossi e bianchi) e larici</li>
         <li style="--c:#c8dc9c"><b>fondovalle</b> campi, vigneti, frutteti</li>
       </ol>
-      <p>Sulle montagne vivono molti animali selvatici: <b>stambecchi</b>, camosci, marmotte, aquile. Per proteggerli nel <b>1922</b> è nato il <b>Parco Nazionale del Gran Paradiso</b>, il più antico d'Italia; il suo simbolo è lo stambecco.</p>`
+      <p>Sulle montagne vivono molti animali selvatici: <b>stambecchi</b>, camosci, marmotte, ermellini, volpi e uccelli rapaci come l'<b>aquila</b>, il gufo reale, la poiana e il <b>gipeto</b>, tornato a fare il nido qui negli ultimi anni.</p>
+      <p><b>Parco Nazionale del Gran Paradiso</b>, il primo d'Italia; il suo simbolo è lo stambecco. Gli stambecchi rischiavano di scomparire perché venivano cacciati troppo: nel <b>1856</b> il re <b>Vittorio Emanuele II</b> fece di queste montagne una <b>riserva reale di caccia</b>, nel <b>1920</b> la riserva fu donata allo Stato e nel <b>1922</b> diventò il Parco.</p>
+      <p>📜 <b>Costituzione, articolo 9:</b> la Repubblica «tutela l'ambiente, la biodiversità e gli ecosistemi, anche nell'interesse delle future generazioni». I parchi servono proprio a questo.</p>`
   },
   {
     titolo: "🏛️ Storia in breve",
     html: `<ol class="timeline">
       <li><b>Salassi</b> – un popolo gallico (celtico) che abitava la valle</li>
-      <li><b>25 a.C.</b> – i Romani sconfiggono i Salassi e fondano <i>Augusta Praetoria</i>, in onore di Augusto: da qui vengono i nomi di <b>Aosta</b> e della regione. Restano le mura, la Porta Pretoria, il teatro, l'anfiteatro, il foro, le terme, l'Arco d'Augusto e il ponte romano sul Buthier.</li>
-      <li>[[<b>Medioevo</b> – la regione passa per secoli ai <b>Savoia</b>; le famiglie nobili costruiscono i castelli]]</li>
+      <li><b>25 a.C.</b> – i Romani sconfiggono i Salassi e fondano <i>Augusta Praetoria</i>, in onore di Augusto: da qui vengono i nomi di <b>Aosta</b> e della regione. Restano le strade ad angolo retto dell'accampamento romano, la cinta di mura quasi intatta, la Porta Pretoria, il teatro, l'anfiteatro, il foro, le terme, l'Arco d'Augusto e il ponte romano sul Buthier.</li>
+      <li><b>Medioevo</b> (il periodo che segue la fine dell'Impero Romano d'Occidente) – si costruiscono i <b>castelli medievali</b>, che oggi attirano tanti turisti [[; la regione passa per secoli ai <b>Savoia</b>]]</li>
+      <li><b>1856</b> – il re Vittorio Emanuele II fa delle montagne del Gran Paradiso una riserva reale di caccia, che nel <b>1922</b> diventa il primo Parco nazionale d'Italia</li>
       <li><b>1948</b> – diventa regione autonoma a <b>statuto speciale</b>, bilingue</li>
     </ol>`
   },
@@ -551,11 +559,12 @@ window.SCHEDA = [
           <li><i style="--c:var(--s2)"></i>Secondario <small>industria, energia, artigianato</small><b>21,3%</b></li>
           <li><i style="--c:var(--s3)"></i>Terziario <small>turismo, commercio, servizi</small><b>75,9%</b></li>
         </ul>
+        <p class="nota-libro">«Che meraviglia!»: primario 4%, secondario 23%, terziario 73%.</p>
       </div>
       <ul>
-      <li><b>Primario:</b> l'agricoltura si pratica nel <b>fondovalle</b> e ha pochi addetti: cereali, patate, viti (i <b>vigneti eroici</b>) e alberi da frutto (mele). Nei grandi pascoli si allevano i <b>bovini</b>: con il loro latte si fanno ottimi formaggi come la <b>Fontina</b>.</li>
-      <li><b>Secondario:</b> grazie all'acqua si produce molta <b>energia idroelettrica</b> [[(più di quella che la regione consuma)]]; industria [[(acciaieria di Aosta)]] e <b>artigianato</b>, soprattutto la lavorazione del legno.</li>
-      <li><b>Terziario:</b> il più importante, grazie al <b>turismo</b>: bellezze naturali e artistiche, <b>alpinismo</b> e <b>sport invernali</b>. Dal 2019 l'alpinismo è <b>Patrimonio dell'Umanità UNESCO</b>.</li>
+      <li><b>Primario:</b> l'agricoltura si pratica nel <b>fondovalle</b> e ha pochi addetti: cereali, e nelle vallate più soleggiate <b>patate</b>, <b>alberi da frutto</b> (mele) e <b>ortaggi</b>. Sui versanti di alcune montagne ci sono i <b>terrazzamenti</b>, ripiani di terreno sostenuti da muretti in pietra, dove crescono i <b>vigneti</b> (i <b>vigneti eroici</b>), che danno vini di ottima qualità. Sui <b>pascoli alpini</b> si allevano i <b>bovini</b>: il latte e i formaggi, come la <b>Fontina</b>, sono un'eccellenza della regione.</li>
+      <li><b>Secondario:</b> grazie all'abbondanza d'acqua si produce molta <b>energia idroelettrica</b> [[(più di quella che la regione consuma)]]. Ci sono industrie <b>alimentari</b>, <b>tessili</b>, <b>edili</b> e di lavorazione dei <b>minerali</b> [[(acciaieria di Aosta)]]. I boschi danno il <b>legname</b>, usato per costruire e per gli <b>oggetti artigianali</b>: l'<b>artigianato del legno</b> è tipico della regione.</li>
+      <li><b>Terziario:</b> il più importante, grazie al <b>turismo</b>: bellezze naturali e artistiche, <b>alpinismo</b> e <b>sport invernali</b>. In <b>estate</b> si visitano i <b>castelli medievali</b> e si sale ai <b>rifugi</b> in alta quota; in <b>inverno</b> ci sono le <b>stazioni sciistiche</b>, gli alberghi e numerosi <b>impianti di risalita</b>. Dal 2019 l'alpinismo è <b>Patrimonio dell'Umanità UNESCO</b>.</li>
     </ul>`
   },
   {
@@ -563,9 +572,10 @@ window.SCHEDA = [
     html: `<p>Nonostante le montagne, i collegamenti sono assicurati da:</p>
       <ul>
       <li><b>Autostrada A5</b> Torino – Aosta – Monte Bianco, nel fondovalle</li>
-      <li><b>Valichi alpini:</b> Colle del Gran San Bernardo e Colle del Piccolo San Bernardo</li>
+      <li><b>Valichi alpini:</b> Colle del Gran San Bernardo (2.473 m) e Colle del Piccolo San Bernardo (2.188 m)</li>
       <li><b>Traforo del Monte Bianco</b> [[(1965)]] → Francia</li>
       <li><b>Traforo del Gran San Bernardo</b> [[(1964)]] → Svizzera</li>
+      <li><b>Aeroporto</b> vicino ad Aosta (si vede sulle carte dei libri)</li>
       <li>[[Ferrovia Aosta – Torino]]</li>
     </ul>`
   },
@@ -595,7 +605,7 @@ window.DOMANDE = [
   {"sez": "identita", "tipo": "vf", "extra": true, "d": "La Valle d'Aosta è divisa in molte province.", "vero": false, "spiega": "Falso: non ha province; ha 74 comuni."},
   {"sez": "identita", "tipo": "scelta", "d": "Qual è il capoluogo della Valle d'Aosta?", "opzioni": ["Courmayeur", "Aosta", "Torino"], "giusta": 1, "spiega": "Il capoluogo è Aosta (33.186 abitanti). Torino è il capoluogo del Piemonte."},
   {"sez": "identita", "tipo": "scelta", "d": "Rispetto alle altre regioni italiane, la Valle d'Aosta è…", "opzioni": ["la più grande", "la più piccola e la meno popolata", "la più popolata"], "giusta": 1, "spiega": "È la regione più piccola (3.261 km²) e la meno popolata d'Italia."},
-  {"sez": "identita", "tipo": "scelta", "d": "Quanti abitanti ha la Valle d'Aosta?", "opzioni": ["circa 12.000", "circa 123.000", "circa 1.200.000"], "giusta": 1, "spiega": "Ha 123.337 abitanti."},
+  {"sez": "identita", "tipo": "scelta", "d": "Quanti abitanti ha la Valle d'Aosta?", "opzioni": ["circa 12.000", "circa 123.000", "circa 1.200.000"], "giusta": 1, "spiega": "Ha 123.337 abitanti (in «Che meraviglia!» 123.513)."},
   {"sez": "identita", "tipo": "scelta", "d": "Quanto è grande la Valle d'Aosta?", "opzioni": ["circa 326 km²", "circa 3.261 km²", "circa 32.610 km²"], "giusta": 1, "spiega": "La superficie è di 3.261 km²."},
   {"sez": "identita", "tipo": "vf", "extra": true, "d": "La bandiera della Valle d'Aosta è nera e rossa.", "vero": true, "spiega": "Vero: è divisa a metà, nera e rossa."},
   {"sez": "identita", "tipo": "vf", "d": "Nello stemma della regione c'è un leone.", "vero": true, "spiega": "Vero: un leone d'argento su sfondo nero, con una corona sopra lo scudo."},
@@ -603,7 +613,7 @@ window.DOMANDE = [
   {"sez": "territorio", "tipo": "scelta", "d": "Con quale Paese confina a ovest?", "opzioni": ["Svizzera", "Slovenia", "Francia"], "giusta": 2, "spiega": "A ovest c'è la Francia: si passa con il Traforo del Monte Bianco o il Colle del Piccolo San Bernardo."},
   {"sez": "territorio", "tipo": "scelta", "d": "Con quale regione italiana confina?", "opzioni": ["Piemonte", "Lombardia", "Liguria"], "giusta": 0, "spiega": "Confina solo con il Piemonte, a sud e a est."},
   {"sez": "territorio", "tipo": "scelta", "d": "Qual è il fiume che attraversa la regione?", "opzioni": ["Adige", "Dora Baltea", "Ticino"], "giusta": 1, "spiega": "La Dora Baltea nasce ai piedi del Monte Bianco e attraversa la regione da ovest a est."},
-  {"sez": "territorio", "tipo": "scelta", "extra": true, "d": "In quale fiume si getta la Dora Baltea?", "opzioni": ["Po", "Rodano", "Sesia"], "giusta": 0, "spiega": "La Dora Baltea esce a Pont-Saint-Martin, attraversa il Piemonte e si getta nel Po."},
+  {"sez": "territorio", "tipo": "scelta", "d": "In quale fiume si getta la Dora Baltea?", "opzioni": ["Po", "Rodano", "Sesia"], "giusta": 0, "spiega": "La Dora Baltea esce a Pont-Saint-Martin, attraversa il Piemonte e si getta nel Po."},
   {"sez": "territorio", "tipo": "scelta", "d": "Qual è la montagna più alta della regione?", "opzioni": ["Cervino", "Monte Bianco", "Gran Paradiso"], "giusta": 1, "spiega": "Il Monte Bianco (4.807 m) è la vetta più alta delle Alpi."},
   {"sez": "territorio", "tipo": "scelta", "d": "Quanto è alto il Cervino?", "opzioni": ["4.478 m", "4.807 m", "3.820 m"], "giusta": 0, "spiega": "Il Cervino è alto 4.478 m: è la terza montagna d'Italia."},
   {"sez": "territorio", "tipo": "scelta", "extra": true, "d": "Su quale montagna si incontrano i confini di Italia, Francia e Svizzera?", "opzioni": ["Gran Paradiso", "Mont Dolent", "Monte Rosa"], "giusta": 1, "spiega": "Sul Mont Dolent (3.820 m), in fondo alla Val Ferret."},
@@ -634,17 +644,33 @@ window.DOMANDE = [
   {"sez": "storia", "tipo": "scelta", "extra": true, "d": "Quale famiglia ha governato la regione per secoli, a partire dal Medioevo?", "opzioni": ["i Medici", "i Savoia", "gli Asburgo"], "giusta": 1, "spiega": "I Savoia, dall'anno 1000 circa."},
   {"sez": "storia", "tipo": "vf", "d": "Il nome \"Aosta\" deriva dall'imperatore romano Augusto.", "vero": true, "spiega": "Vero: Augusta Praetoria, la città fondata in suo onore nel 25 a.C."},
   {"sez": "economia", "tipo": "scelta", "d": "Che cosa si produce grazie alla grande disponibilità di acqua?", "opzioni": ["energia idroelettrica", "petrolio", "energia eolica"], "giusta": 0, "spiega": "Dighe e torrenti producono energia idroelettrica, più di quella che la regione consuma."},
-  {"sez": "economia", "tipo": "scelta", "d": "Quale settore ha più occupati?", "opzioni": ["primario", "secondario", "terziario"], "giusta": 2, "spiega": "Il terziario (75,9%), soprattutto grazie al turismo."},
+  {"sez": "economia", "tipo": "scelta", "d": "Quale settore ha più occupati?", "opzioni": ["primario", "secondario", "terziario"], "giusta": 2, "spiega": "Il terziario (75,9%; in «Che meraviglia!» 73%), soprattutto grazie al turismo."},
   {"sez": "economia", "tipo": "scelta", "d": "Come si chiama il formaggio più famoso della regione?", "opzioni": ["Gorgonzola", "Fontina", "Parmigiano"], "giusta": 1, "spiega": "La Fontina DOP, fatta con il latte delle mucche valdostane."},
   {"sez": "economia", "tipo": "scelta", "d": "Perché si parla di \"vigneti eroici\"?", "opzioni": ["perché li piantarono i soldati", "perché sono su terreni ripidi e si coltivano a mano", "perché fanno il vino più forte"], "giusta": 1, "spiega": "Sono su terreni ripidi e difficili, dove il clima e il terreno obbligano a lavorare a mano."},
   {"sez": "economia", "tipo": "vf", "d": "L'alpinismo è Patrimonio dell'Umanità UNESCO.", "vero": true, "spiega": "Vero: dal 2019."},
   {"sez": "economia", "tipo": "scelta", "d": "Quali animali si allevano nei grandi pascoli?", "opzioni": ["i bovini (le mucche)", "i cammelli", "gli struzzi"], "giusta": 0, "spiega": "I bovini: con il loro latte si fanno ottimi formaggi come la Fontina."},
   {"sez": "economia", "tipo": "scelta", "d": "Quale artigianato è tipico della Valle d'Aosta?", "opzioni": ["la lavorazione del legno", "il vetro di Murano", "la ceramica di Faenza"], "giusta": 0, "spiega": "La lavorazione del legno: si può vedere alla Fiera di Sant'Orso."},
-  {"sez": "economia", "tipo": "vf", "d": "L'agricoltura dà lavoro a moltissime persone.", "vero": false, "spiega": "Falso: il settore primario ha solo il 2,8% degli occupati. L'agricoltura si pratica nel fondovalle: cereali, patate, viti e alberi da frutto."},
+  {"sez": "economia", "tipo": "vf", "d": "L'agricoltura dà lavoro a moltissime persone.", "vero": false, "spiega": "Falso: il settore primario ha solo il 2,8% degli occupati (4% in «Che meraviglia!»). L'agricoltura si pratica nel fondovalle: cereali, patate, viti e alberi da frutto."},
   {"sez": "comunicazioni", "tipo": "scelta", "d": "Quale galleria porta in Francia?", "opzioni": ["Traforo del Gran San Bernardo", "Traforo del Monte Bianco", "Traforo del Frejus"], "giusta": 1, "spiega": "Il Traforo del Monte Bianco (1965) collega Courmayeur a Chamonix. Il Gran San Bernardo porta in Svizzera."},
   {"sez": "comunicazioni", "tipo": "scelta", "d": "Dove porta il Traforo del Gran San Bernardo?", "opzioni": ["in Francia", "in Svizzera", "in Piemonte"], "giusta": 1, "spiega": "In Svizzera (1964). Il Traforo del Monte Bianco invece porta in Francia."},
   {"sez": "comunicazioni", "tipo": "scelta", "d": "Quale autostrada percorre il fondovalle della regione?", "opzioni": ["A1", "A5", "A22"], "giusta": 1, "spiega": "L'autostrada A5 Torino – Aosta – Monte Bianco."},
-  {"sez": "comunicazioni", "tipo": "vf", "d": "Il Colle del Piccolo San Bernardo porta in Francia.", "vero": true, "spiega": "Vero: è un valico alpino a 2.188 m, chiuso d'inverno per la neve."},
+  {"sez": "comunicazioni", "tipo": "vf", "d": "Il Colle del Piccolo San Bernardo porta in Francia.", "vero": true, "spiega": "Vero: è un valico alpino a 2.188 m, chiuso d'inverno per la neve. Il Colle del Gran San Bernardo (2.473 m) porta invece in Svizzera."},
+  {"sez": "territorio", "tipo": "scelta", "d": "Osserva la carta: con chi confina la Valle d'Aosta a nord, a sud, a est e a ovest?", "opzioni": ["nord Svizzera, ovest Francia, sud ed est Piemonte", "nord Francia, ovest Svizzera, sud Liguria", "nord Austria, ovest Francia, sud Lombardia"], "giusta": 0, "spiega": "Nord: Svizzera. Ovest: Francia. Sud ed est: Piemonte."},
+  {"sez": "territorio", "tipo": "scelta", "d": "Che forma hanno le valli glaciali della Valle d'Aosta?", "opzioni": ["stretta e allungata", "rotonda come un lago", "piatta come una pianura"], "giusta": 0, "spiega": "Sono strette e allungate. Aosta sorge nella valle più ampia, quella della Dora Baltea."},
+  {"sez": "popolazione", "tipo": "scelta", "d": "Che cosa sono il walser e il patois?", "opzioni": ["lingue parlate da una parte degli abitanti", "due formaggi", "due sport tradizionali"], "giusta": 0, "spiega": "Il walser deriva dal tedesco, il patois dal francese. Le lingue ufficiali sono l'italiano e il francese."},
+  {"sez": "popolazione", "tipo": "vf", "d": "Nelle scuole della Valle d'Aosta si insegnano l'italiano e il francese.", "vero": true, "spiega": "Vero: è una regione bilingue, le due lingue si parlano e si insegnano a scuola."},
+  {"sez": "clima", "tipo": "scelta", "d": "Perché nel 1856 il re Vittorio Emanuele II fece del Gran Paradiso una riserva di caccia?", "opzioni": ["per proteggere gli stambecchi, che rischiavano di scomparire", "per costruire una stazione sciistica", "per cercare l'oro"], "giusta": 0, "spiega": "Gli stambecchi venivano cacciati in gran numero. Nel 1920 la riserva fu donata allo Stato e nel 1922 diventò il Parco."},
+  {"sez": "clima", "tipo": "vf", "d": "Il gipeto è un uccello rapace che è tornato a fare il nido nel Parco del Gran Paradiso.", "vero": true, "spiega": "Vero. Nel parco vivono anche l'aquila, il gufo reale e la poiana, e poi camosci, marmotte, ermellini e volpi."},
+  {"sez": "clima", "tipo": "scelta", "d": "Quali alberi formano i boschi nel fondovalle del Parco del Gran Paradiso?", "opzioni": ["abeti rossi, abeti bianchi e larici", "ulivi e viti", "palme e banani"], "giusta": 0, "spiega": "Abeti rossi, abeti bianchi e larici. Più in alto ci sono i pascoli alpini, pieni di fiori in primavera."},
+  {"sez": "clima", "tipo": "scelta", "d": "Che cosa dice l'articolo 9 della Costituzione?", "opzioni": ["che la Repubblica tutela l'ambiente, anche per le generazioni future", "che tutti devono saper sciare", "che le regioni sono venti"], "giusta": 0, "spiega": "La Repubblica «tutela l'ambiente, la biodiversità e gli ecosistemi, anche nell'interesse delle future generazioni». I parchi servono a questo."},
+  {"sez": "storia", "tipo": "scelta", "d": "Che cos'è il Medioevo?", "opzioni": ["il periodo che segue la fine dell'Impero Romano d'Occidente", "il periodo dei dinosauri", "il secolo in cui viviamo"], "giusta": 0, "spiega": "È il periodo dopo la fine dell'Impero Romano d'Occidente: allora furono costruiti i castelli medievali della Valle d'Aosta."},
+  {"sez": "storia", "tipo": "vf", "d": "Ad Aosta le strade del centro si incrociano ad angolo retto, come nell'antico accampamento romano.", "vero": true, "spiega": "Vero. Anche la cinta di mura romana è quasi intatta."},
+  {"sez": "economia", "tipo": "scelta", "d": "Che cosa si ricava dai boschi?", "opzioni": ["il legname, per costruire e per gli oggetti artigianali", "il petrolio", "il sale"], "giusta": 0, "spiega": "Il legname: serve per l'edilizia e per gli oggetti artigianali."},
+  {"sez": "economia", "tipo": "scelta", "d": "Quali industrie ci sono in Valle d'Aosta?", "opzioni": ["alimentari, tessili, edili e di lavorazione dei minerali", "navali e petrolchimiche", "di automobili e aerei"], "giusta": 0, "spiega": "Alimentari, tessili, edili e di lavorazione dei minerali."},
+  {"sez": "economia", "tipo": "scelta", "d": "Che cosa sono i terrazzamenti?", "opzioni": ["ripiani di terreno sostenuti da muretti in pietra, dove crescono le viti", "le terrazze delle case", "le piste da sci"], "giusta": 0, "spiega": "Sono ripiani costruiti sui versanti ripidi delle montagne per coltivare i vigneti."},
+  {"sez": "economia", "tipo": "scelta", "d": "Che cosa si coltiva nelle vallate più soleggiate?", "opzioni": ["patate, alberi da frutto e ortaggi", "riso", "arance e limoni"], "giusta": 0, "spiega": "Patate, alberi da frutto e ortaggi."},
+  {"sez": "economia", "tipo": "scelta", "d": "Che cosa fanno i turisti d'estate e d'inverno?", "opzioni": ["d'estate visitano castelli e salgono ai rifugi, d'inverno sciano", "fanno il bagno al mare", "visitano i vulcani"], "giusta": 0, "spiega": "D'estate castelli medievali e rifugi in alta quota; d'inverno stazioni sciistiche e impianti di risalita."},
+  {"sez": "comunicazioni", "tipo": "vf", "d": "Vicino ad Aosta c'è un aeroporto.", "vero": true, "spiega": "Vero: si vede sulle carte dei libri."},
   {"sez": "tradizioni", "tipo": "scelta", "d": "Che cosa sono il fiolet e il palet?", "opzioni": ["sport tradizionali valdostani", "formaggi tipici", "danze popolari"], "giusta": 0, "spiega": "Sono sport tradizionali: nel fiolet si lancia lontano un pezzo di legno colpendolo con una mazza, nel palet si lanciano dischi di metallo verso un bersaglio."},
   {"sez": "tradizioni", "tipo": "scelta", "extra": true, "d": "Che cos'è la Bataille des Reines?", "opzioni": ["una sfida tra mucche", "una battaglia di Napoleone", "una gara di sci"], "giusta": 0, "spiega": "È una sfida tra mucche, che si spingono con le corna senza farsi male, per eleggere la \"regina\"."},
   {"sez": "tradizioni", "tipo": "vf", "extra": true, "d": "La Fiera di Sant'Orso, ad Aosta, si tiene da più di 1000 anni.", "vero": true, "spiega": "Vero: si svolge il 30 e 31 gennaio ed è dedicata all'artigianato del legno."}
@@ -665,7 +691,9 @@ window.DOMANDE_RISPOSTE = [
     { d: "Quali catene montuose ci sono?",
       r: "A nord le Alpi Pennine (con il Cervino e il Monte Rosa), a ovest e a sud le Alpi Graie (con il Monte Bianco e il Gran Paradiso)." },
     { d: "Qual è il fiume principale?",
-      r: "La Dora Baltea. Nasce ai piedi del Monte Bianco, attraversa la regione da ovest a est [[e si getta nel Po]]. Nelle sue acque confluiscono molti torrenti." },
+      r: "La Dora Baltea. Nasce ai piedi del Monte Bianco, attraversa la regione da ovest a est e poi diventa un affluente del Po. Nelle sue acque confluiscono molti torrenti." },
+    { d: "Come sono le valli?",
+      r: "Sono valli glaciali, strette e allungate, percorse dai torrenti che nascono dai ghiacciai. Aosta sorge nella valle più ampia, quella della Dora Baltea." },
     { d: "Ci sono laghi?",
       r: "Sì, ma sono piccoli laghi alpini sparsi tra le montagne. [[Ci sono anche laghi artificiali, creati con le dighe.]]" },
     { d: "Che cosa sono i ghiacciai? Perché si stanno riducendo?",
@@ -677,7 +705,9 @@ window.DOMANDE_RISPOSTE = [
     { d: "Come cambiano le piante salendo in montagna?",
       r: "In basso ci sono campi e vigneti, poi boschi di abeti e larici, poi prati e piante erbacee, poi muschi e licheni. In cima ci sono neve e ghiacciai." },
     { d: "Quali animali vivono sulle montagne?",
-      r: "Stambecchi, camosci, marmotte e aquile reali." },
+      r: "Stambecchi, camosci, marmotte, ermellini, volpi e uccelli rapaci come l'aquila, il gufo reale, la poiana e il gipeto." },
+    { d: "Come è nato il Parco del Gran Paradiso?",
+      r: "Nel 1856 il re Vittorio Emanuele II fece di queste montagne una riserva reale di caccia, per proteggere gli stambecchi. Nel 1920 la riserva fu donata allo Stato e nel 1922 diventò il primo Parco nazionale d'Italia." },
     { d: "Qual è il parco più importante?",
       r: "Il Parco Nazionale del Gran Paradiso, nato nel 1922: è il parco nazionale più antico d'Italia. Il suo simbolo è lo stambecco." }
   ]},
@@ -689,21 +719,23 @@ window.DOMANDE_RISPOSTE = [
     { d: "Dove vive la maggior parte delle persone?",
       r: "Nel fondovalle, lungo la Dora Baltea. Gli altri abitanti vivono in piccoli comuni di montagna." },
     { d: "Quali lingue si parlano?",
-      r: "Italiano e francese: sono tutte e due lingue ufficiali. Per questo è una regione bilingue." },
+      r: "Italiano e francese: sono tutte e due lingue ufficiali e si insegnano a scuola. Per questo è una regione bilingue. Una parte degli abitanti parla anche il patois, che viene dal francese, e il walser, che viene dal tedesco." },
     { d: "Che cosa vuol dire che è una regione \"a statuto speciale\"?",
       r: "Vuol dire che ha più autonomia delle altre regioni: può decidere da sola su molte cose, anche per proteggere la sua lingua e la sua cultura. [[Lo è dal 1948.]]" }
   ]},
   { gruppo: "💼 Lavoro e collegamenti", domande: [
     { d: "Qual è l'attività economica più importante?",
-      r: "Il turismo: molte persone vengono per sciare, fare alpinismo e visitare i castelli e i monumenti." },
+      r: "Il turismo: d'estate si visitano i castelli medievali e si sale ai rifugi in alta quota; d'inverno si scia, con tante stazioni sciistiche e impianti di risalita." },
+    { d: "Quali industrie ci sono?",
+      r: "Industrie alimentari, tessili, edili e di lavorazione dei minerali. Dai boschi si ricava il legname, per costruire e per gli oggetti artigianali." },
     { d: "Che cosa si produce grazie all'acqua?",
       r: "L'energia idroelettrica: l'acqua dei torrenti e delle dighe fa funzionare le centrali elettriche." },
     { d: "Che cosa si coltiva e che cosa si alleva?",
-      r: "Nel fondovalle si coltivano cereali, patate, viti e alberi da frutto. Nei pascoli si allevano le mucche: con il loro latte si fa la Fontina." },
+      r: "Nel fondovalle si coltivano cereali, patate, alberi da frutto e ortaggi; sui terrazzamenti, ripiani sostenuti da muretti in pietra, crescono le viti. Nei pascoli alpini si allevano le mucche: con il loro latte si fa la Fontina." },
     { d: "Che cosa sono i \"vigneti eroici\"?",
       r: "Sono vigneti su terreni ripidi di montagna, dove tutto il lavoro si fa a mano." },
     { d: "Come si va dalla Valle d'Aosta agli altri Paesi?",
-      r: "Con l'autostrada A5, attraverso i valichi alpini (Gran San Bernardo e Piccolo San Bernardo) e con le gallerie: il Traforo del Monte Bianco porta in Francia, quello del Gran San Bernardo in Svizzera." }
+      r: "Con l'autostrada A5, attraverso i valichi alpini (Gran San Bernardo e Piccolo San Bernardo) e con le gallerie: il Traforo del Monte Bianco porta in Francia, quello del Gran San Bernardo in Svizzera. Vicino ad Aosta c'è anche un aeroporto." }
   ]},
   { gruppo: "🏛️ Storia e tradizioni", domande: [
     { d: "Chi abitava la regione prima dei Romani?",
@@ -711,7 +743,9 @@ window.DOMANDE_RISPOSTE = [
     { d: "Chi ha fondato Aosta? Come si chiamava?",
       r: "L'hanno fondata i Romani nel 25 a.C. e la chiamarono Augusta Praetoria, in onore dell'imperatore Augusto. Da qui viene il nome Aosta." },
     { d: "Quali monumenti romani si possono vedere ad Aosta?",
-      r: "Le mura, la Porta Pretoria, il teatro, l'anfiteatro, l'Arco d'Augusto e il ponte romano sul torrente Buthier." },
+      r: "Le mura (quasi intatte), la Porta Pretoria, il teatro, l'anfiteatro, l'Arco d'Augusto e il ponte romano sul torrente Buthier. Anche le strade del centro, che si incrociano ad angolo retto, sono quelle dell'accampamento romano." },
+    { d: "Che cos'è il Medioevo?",
+      r: "È il periodo che segue la fine dell'Impero Romano d'Occidente. In Valle d'Aosta ci sono tanti castelli medievali." },
     { d: "Quali sono gli sport tradizionali della Valle d'Aosta?",
       r: "Il fiolet e il palet, [[e anche il tsan e la rebatta]]." }
   ]}
@@ -739,7 +773,8 @@ window.FLASHCARD = [
     { f: "Quanto è alto il Cervino?", r: "4.478 m. [[Ha la forma di una piramide.]]" },
     { f: "Che cosa ha di speciale il Gran Paradiso?", r: "È alto 4.061 m [[ed è l'unico \"4000\" tutto in Italia]]." },
     { f: "Quali sono le catene montuose?", r: "Le Alpi Pennine (a nord) e le Alpi Graie (a ovest e a sud)." },
-    { f: "Qual è il fiume principale?", r: "La Dora Baltea, [[che si getta nel Po]]." },
+    { f: "Qual è il fiume principale?", r: "La Dora Baltea, che diventa un affluente del Po." },
+    { f: "Come sono le valli glaciali?", r: "Strette e allungate." },
     { f: "Dove si trovano i ghiacciai?", r: "Sulle cime oltre i 3.000 m. Si stanno riducendo." }
   ]},
   { gruppo: "❄️ Clima e ambienti", carte: [
@@ -747,17 +782,24 @@ window.FLASHCARD = [
     { f: "Quali alberi ci sono nei boschi di montagna?", r: "Abeti e larici." },
     { f: "Che cosa si trova sopra i boschi?", r: "Prati e piante erbacee, poi muschi e licheni." },
     { f: "Qual è il parco nazionale più antico d'Italia?", r: "Il Parco Nazionale del Gran Paradiso (1922)." },
-    { f: "Qual è il simbolo del Parco del Gran Paradiso?", r: "Lo stambecco." }
+    { f: "Qual è il simbolo del Parco del Gran Paradiso?", r: "Lo stambecco." },
+    { f: "Che cosa successe nel 1856?", r: "Il re Vittorio Emanuele II fece del Gran Paradiso una riserva reale di caccia." },
+    { f: "Dimmi tre uccelli rapaci del Parco.", r: "Ad esempio l'aquila, il gufo reale e il gipeto (e anche la poiana)." },
+    { f: "Che cosa dice l'articolo 9 della Costituzione?", r: "Che la Repubblica tutela l'ambiente, anche per le generazioni future." }
   ]},
   { gruppo: "👥 Popolazione", carte: [
     { f: "Dove vive la maggior parte delle persone?", r: "Nel fondovalle, lungo la Dora Baltea." },
     { f: "Quanti abitanti vivono ad Aosta?", r: "Circa un quarto di quelli della regione." },
-    { f: "Quali sono le lingue ufficiali?", r: "Italiano e francese: è una regione bilingue." }
+    { f: "Quali sono le lingue ufficiali?", r: "Italiano e francese: è una regione bilingue." },
+    { f: "Che cosa sono il walser e il patois?", r: "Lingue parlate da una parte degli abitanti: il walser viene dal tedesco, il patois dal francese." }
   ]},
   { gruppo: "💼 Lavoro e collegamenti", carte: [
     { f: "Qual è l'attività più importante?", r: "Il turismo: sci, alpinismo, castelli e monumenti." },
     { f: "Che energia si produce con l'acqua?", r: "Energia idroelettrica." },
     { f: "Qual è il formaggio più famoso?", r: "La Fontina." },
+    { f: "Che cosa si ricava dai boschi?", r: "Il legname, per costruire e per gli oggetti artigianali." },
+    { f: "Quali industrie ci sono?", r: "Alimentari, tessili, edili e di lavorazione dei minerali." },
+    { f: "Che cosa sono i terrazzamenti?", r: "Ripiani di terreno sostenuti da muretti in pietra, per le viti." },
     { f: "Che cosa sono i vigneti eroici?", r: "Vigneti su terreni ripidi, lavorati a mano." },
     { f: "Quale galleria porta in Francia?", r: "Il Traforo del Monte Bianco." },
     { f: "Quale galleria porta in Svizzera?", r: "Il Traforo del Gran San Bernardo." },
@@ -767,7 +809,8 @@ window.FLASHCARD = [
     { f: "Chi abitava qui prima dei Romani?", r: "I Salassi, un popolo gallico." },
     { f: "Come si chiamava Aosta al tempo dei Romani?", r: "Augusta Praetoria, in onore dell'imperatore Augusto (25 a.C.)." },
     { f: "Dimmi due monumenti romani di Aosta.", r: "Ad esempio la Porta Pretoria e l'Arco d'Augusto (e anche il teatro e l'anfiteatro)." },
-    { f: "Quali sono gli sport tradizionali?", r: "Il fiolet e il palet [[(e anche il tsan e la rebatta)]]." }
+    { f: "Quali sono gli sport tradizionali?", r: "Il fiolet e il palet [[(e anche il tsan e la rebatta)]]." },
+    { f: "Che cos'è il Medioevo?", r: "Il periodo che segue la fine dell'Impero Romano d'Occidente." }
   ]}
 ];
 
@@ -775,14 +818,14 @@ window.FLASHCARD = [
    Discorso da dire all'interrogazione (circa 3 minuti). Le parole tra **asterischi**
    sono le parole chiave: nel sito si possono nascondere per ripassarle a memoria. */
 window.DISCORSO = [
-  { titolo: "Dove si trova", testo: "Oggi vi parlo della Valle d'Aosta. Si trova nel **nord-ovest dell'Italia**, in mezzo alle **Alpi**. Confina a **nord con la Svizzera**, a **ovest con la Francia** e a **sud e a est con il Piemonte**. È la **regione più piccola d'Italia**, con 3.261 km², ed è anche la **meno popolata**. Il capoluogo è **Aosta**. [[Dal **1948**]] è una regione **a statuto speciale**, cioè ha più autonomia delle altre regioni, ed è **bilingue**: le lingue ufficiali sono l'**italiano** e il **francese**." },
-  { titolo: "Il territorio", testo: "Il territorio è **tutto montuoso**: c'è una grande valle centrale da cui partono tante valli laterali. Qui ci sono le **montagne più alte d'Europa**: il **Monte Bianco**, alto **4.807 metri**, il **Monte Rosa** (4.637 m), il **Cervino** (4.478 m), [[che ha la forma di una piramide]], e il **Gran Paradiso** (4.061 m), [[l'unico \"quattromila\" tutto in Italia]]. A nord ci sono le **Alpi Pennine**, a ovest e a sud le **Alpi Graie**. Sulle cime sopra i 3.000 metri ci sono i **ghiacciai**, che si stanno riducendo a causa dei **cambiamenti climatici**." },
-  { titolo: "Il fiume e i laghi", testo: "Il fiume principale è la **Dora Baltea**: nasce ai piedi del Monte Bianco, attraversa la regione **da ovest a est** [[e si getta nel **Po**]]. Nella Dora confluiscono molti **torrenti** che scendono dalle valli laterali. Tra le montagne ci sono tanti piccoli **laghi alpini**." },
-  { titolo: "Clima e ambienti", testo: "Il clima è **alpino**: gli inverni sono lunghi e freddi, con tanta neve, e le estati sono brevi e fresche. Le piante cambiano con l'altitudine: salendo si trovano **boschi di abeti e larici**, poi **prati**, poi **muschi e licheni**, e in cima neve e ghiacciai. Sulle montagne vivono **stambecchi**, camosci, marmotte e aquile. Per proteggerli, nel **1922** è nato il **Parco Nazionale del Gran Paradiso**, il più antico d'Italia; il suo simbolo è lo **stambecco**." },
+  { titolo: "Dove si trova", testo: "Oggi vi parlo della Valle d'Aosta. Si trova nel **nord-ovest dell'Italia**, in mezzo alle **Alpi**. Confina a **nord con la Svizzera**, a **ovest con la Francia** e a **sud e a est con il Piemonte**. È la **regione più piccola d'Italia**, con 3.261 km², ed è anche la **meno popolata**. Il capoluogo è **Aosta**. [[Dal **1948**]] è una regione **a statuto speciale**, cioè ha più autonomia delle altre regioni, ed è **bilingue**: le lingue ufficiali sono l'**italiano** e il **francese**, e si insegnano tutte e due a scuola. Una parte degli abitanti parla anche il **patois**, che viene dal francese, e il **walser**, che viene dal tedesco." },
+  { titolo: "Il territorio", testo: "Il territorio è **tutto montuoso**: c'è una grande valle centrale da cui partono tante valli laterali. Qui ci sono le **montagne più alte d'Europa**: il **Monte Bianco**, alto **4.807 metri**, il **Monte Rosa** (4.637 m), il **Cervino** (4.478 m), [[che ha la forma di una piramide]], e il **Gran Paradiso** (4.061 m), [[l'unico \"quattromila\" tutto in Italia]]. A nord ci sono le **Alpi Pennine**, a ovest e a sud le **Alpi Graie**. Sulle cime sopra i 3.000 metri ci sono i **ghiacciai**, che si stanno riducendo a causa dei **cambiamenti climatici**. I ghiacciai alimentano tanti torrenti, che scorrono in **valli glaciali** strette e allungate." },
+  { titolo: "Il fiume e i laghi", testo: "Il fiume principale è la **Dora Baltea**: nasce ai piedi del Monte Bianco, attraversa la regione **da ovest a est** e poi diventa un **affluente del Po**. Nella Dora confluiscono molti **torrenti** che scendono dalle valli laterali. Tra le montagne ci sono tanti piccoli **laghi alpini**." },
+  { titolo: "Clima e ambienti", testo: "Il clima è **alpino**: gli inverni sono lunghi e freddi, con tanta neve, e le estati sono brevi e fresche. Le piante cambiano con l'altitudine: salendo si trovano **boschi di abeti e larici**, poi **prati**, poi **muschi e licheni**, e in cima neve e ghiacciai. Sulle montagne vivono **stambecchi**, camosci, marmotte, ermellini, volpi e rapaci come l'**aquila** e il **gipeto**. Gli stambecchi rischiavano di scomparire: nel **1856** il re **Vittorio Emanuele II** fece del Gran Paradiso una **riserva di caccia**, e nel **1922** nacque il **Parco Nazionale del Gran Paradiso**, il più antico d'Italia; il suo simbolo è lo **stambecco**." },
   { titolo: "La popolazione", testo: "Gli abitanti sono **123.337**, circa **38 per km²**. La maggior parte vive nel **fondovalle**, lungo la Dora Baltea. Ad **Aosta**, che ha circa 33.000 abitanti, vive circa **un quarto** della popolazione; gli altri vivono in piccoli comuni." },
-  { titolo: "L'economia", testo: "L'attività più importante è il **turismo**: molte persone vengono a **sciare**, a fare **alpinismo** e a visitare castelli e monumenti. Infatti il **settore terziario** dà lavoro a circa **tre persone su quattro**. Grazie ai tanti corsi d'acqua si produce molta **energia idroelettrica**. L'**agricoltura** si fa nel fondovalle e dà lavoro a poche persone: si coltivano cereali, patate, alberi da frutto e le viti dei **vigneti eroici**, su terreni ripidi e lavorati a mano. Nei pascoli si **allevano le mucche**: con il loro latte si fa la **Fontina**. È importante anche l'**artigianato del legno**." },
+  { titolo: "L'economia", testo: "L'attività più importante è il **turismo**: d'estate si visitano i **castelli medievali** e si sale ai **rifugi**, d'inverno si va a **sciare**, con tanti impianti di risalita. Infatti il **settore terziario** dà lavoro a circa **tre persone su quattro**. Grazie ai tanti corsi d'acqua si produce molta **energia idroelettrica**. L'**agricoltura** si fa nel fondovalle e dà lavoro a poche persone: si coltivano cereali, patate, alberi da frutto, ortaggi e le viti dei **vigneti eroici**, sui **terrazzamenti** sostenuti da muretti in pietra. Nei pascoli si **allevano le mucche**: con il loro latte si fa la **Fontina**. Ci sono industrie **alimentari, tessili, edili** e di lavorazione dei **minerali**, e dai boschi si ricava il **legname** per costruire e per l'**artigianato del legno**." },
   { titolo: "I collegamenti", testo: "Anche se ci sono tante montagne, la regione è ben collegata: nel fondovalle c'è l'**autostrada A5**, ci sono i **valichi alpini** del Gran San Bernardo e del Piccolo San Bernardo e due grandi gallerie: il **Traforo del Monte Bianco** porta in **Francia** e quello del **Gran San Bernardo** in **Svizzera**." },
-  { titolo: "La storia", testo: "Anticamente qui vivevano i **Salassi**, un popolo gallico. Nel **25 a.C.** i **Romani** li sconfissero e fondarono **Augusta Praetoria**, in onore dell'imperatore **Augusto**: da qui viene il nome **Aosta**. Ad Aosta si vedono ancora la **Porta Pretoria**, l'**Arco d'Augusto**, il teatro e l'anfiteatro romani. [[Nel Medioevo la regione passò ai **Savoia** e furono costruiti molti **castelli**.]]" },
+  { titolo: "La storia", testo: "Anticamente qui vivevano i **Salassi**, un popolo gallico. Nel **25 a.C.** i **Romani** li sconfissero e fondarono **Augusta Praetoria**, in onore dell'imperatore **Augusto**: da qui viene il nome **Aosta**. Ad Aosta si vedono ancora la **Porta Pretoria**, l'**Arco d'Augusto**, il teatro e l'anfiteatro romani. Nel **Medioevo**, il periodo dopo la fine dell'Impero Romano d'Occidente, furono costruiti molti **castelli**. [[La regione passò ai **Savoia**.]]" },
   { titolo: "Le tradizioni", testo: "Ci sono sport tradizionali come il **fiolet** e il **palet**, [[e ogni anno ad Aosta si tiene la **Fiera di Sant'Orso**, dedicata all'artigianato del legno, che esiste da più di mille anni]]." },
   { titolo: "Per concludere", testo: "La Valle d'Aosta è una regione piccola, ma ha le **montagne più alte d'Europa**, una **natura protetta** e una **storia antica**, che va dai Romani ai castelli." }
 ];
@@ -799,8 +842,9 @@ window.FLUSSO = [
     { d: "Indicami la Valle d'Aosta sulla carta.", r: "È in alto a sinistra, nel nord-ovest dell'Italia, in mezzo alle Alpi.", mappa: { tipo: "regione" } },
     { seguito: true, d: "Con chi confina?", r: "A nord con la Svizzera, a ovest con la Francia, a sud e a est con il Piemonte.", mappa: { tipo: "regione" } },
     { seguito: true, d: "Che montagne ci sono al confine con la Svizzera?", r: "Le Alpi Pennine, con il Cervino e il Monte Rosa.", mappa: { tipo: "zona", id: "pennine" } },
+    { d: "Osserva la carta e dimmi i confini: nord, sud, est e ovest.", r: "Nord: Svizzera. Ovest: Francia. Sud ed est: Piemonte.", mappa: { tipo: "regione" } },
     { d: "Indicami il fiume principale.", r: "La Dora Baltea.", mappa: { tipo: "fiume" } },
-    { seguito: true, d: "In che direzione scorre? Dove va a finire?", r: "Scorre da ovest a est, [[poi esce in Piemonte e si getta nel Po]].", mappa: { tipo: "fiume" } },
+    { seguito: true, d: "In che direzione scorre? Dove va a finire?", r: "Scorre da ovest a est, poi esce in Piemonte e diventa un affluente del Po.", mappa: { tipo: "fiume" } },
     { d: "Dov'è il capoluogo?", r: "Aosta è al centro della regione, nel fondovalle, lungo la Dora Baltea.", mappa: { tipo: "luogo", id: "aosta" } }
   ]},
   { fase: "3️⃣ Il territorio", domande: [
@@ -813,13 +857,16 @@ window.FLUSSO = [
     { d: "Che clima c'è?", r: "Clima alpino: inverni lunghi, freddi e con tanta neve; estati brevi e fresche." },
     { seguito: true, tipo: "ragionamento", d: "Perché fa così freddo?", r: "Perché siamo in alta montagna: più si sale, più fa freddo." },
     { seguito: true, d: "Come cambiano le piante salendo in montagna?", r: "Prima boschi di abeti e larici, poi prati e piante erbacee, poi muschi e licheni; in cima neve e ghiacciai." },
-    { d: "Quale parco c'è? Quando è nato? Qual è il suo simbolo?", r: "Il Parco Nazionale del Gran Paradiso, nato nel 1922: è il più antico d'Italia. Il simbolo è lo stambecco.", mappa: { tipo: "luogo", id: "parcogp" } }
+    { d: "Quale parco c'è? Quando è nato? Qual è il suo simbolo?", r: "Il Parco Nazionale del Gran Paradiso, nato nel 1922: è il più antico d'Italia. Il simbolo è lo stambecco.", mappa: { tipo: "luogo", id: "parcogp" } },
+    { seguito: true, tipo: "trabocchetto", d: "Allora è nato nel 1856?", r: "No: nel 1856 il re Vittorio Emanuele II creò una riserva reale di caccia; nel 1920 fu donata allo Stato e il Parco nacque nel 1922." },
+    { seguito: true, d: "Quali animali ci vivono?", r: "Stambecchi, camosci, marmotte, ermellini, volpi e rapaci come l'aquila, il gufo reale, la poiana e il gipeto." },
+    { tipo: "ragionamento", d: "Perché è importante proteggere l'ambiente?", r: "Per non far scomparire piante e animali e per lasciarlo alle generazioni future: lo dice anche l'articolo 9 della Costituzione." }
   ]},
   { fase: "5️⃣ La popolazione", domande: [
     { d: "È una regione molto popolata?", r: "No, è la meno popolata d'Italia: 123.337 abitanti, circa 38 per km²." },
     { seguito: true, tipo: "ragionamento", d: "Perché secondo te ci vive poca gente?", r: "Perché è tutta montagna: fa freddo e c'è poco spazio piano per costruire e coltivare." },
     { seguito: true, tipo: "ragionamento", d: "Dove vive la maggior parte delle persone? Perché?", r: "Nel fondovalle, lungo la Dora Baltea: è più piano, il clima è meno duro e ci sono le strade e il lavoro." },
-    { d: "Che lingue si parlano?", r: "Italiano e francese: sono tutte e due lingue ufficiali, è una regione bilingue (è vicina alla Francia)." },
+    { d: "Che lingue si parlano?", r: "Italiano e francese: sono tutte e due lingue ufficiali e si insegnano a scuola, è una regione bilingue (è vicina alla Francia). Alcuni parlano anche il patois e il walser." },
     { seguito: true, d: "Che cosa vuol dire \"regione a statuto speciale\"?", r: "Che ha più autonomia delle altre regioni, anche per proteggere la sua lingua e la sua cultura. [[Lo è dal 1948.]]" }
   ]},
   { fase: "6️⃣ L'economia", domande: [
@@ -827,7 +874,8 @@ window.FLUSSO = [
     { seguito: true, tipo: "ragionamento", d: "Perché il turismo è così importante?", r: "Per le montagne (sci e alpinismo), la natura, i castelli e i monumenti romani." },
     { seguito: true, tipo: "ragionamento", d: "Che cosa si produce con l'acqua? Perché proprio qui?", r: "Energia idroelettrica, perché ci sono tanti torrenti, ghiacciai e dighe." },
     { d: "E l'agricoltura?", r: "Dà lavoro a poche persone e si fa nel fondovalle: cereali, patate, frutta e i vigneti eroici." },
-    { seguito: true, d: "Che cosa si alleva? Che cosa si produce?", r: "Le mucche, nei pascoli: con il loro latte si fa la Fontina." }
+    { seguito: true, d: "Che cosa si alleva? Che cosa si produce?", r: "Le mucche, nei pascoli: con il loro latte si fa la Fontina." },
+    { d: "E l'industria?", r: "Ci sono industrie alimentari, tessili, edili e di lavorazione dei minerali; dai boschi si ricava il legname per costruire e per l'artigianato." }
   ]},
   { fase: "7️⃣ I collegamenti", domande: [
     { tipo: "ragionamento", d: "Se è circondata dalle montagne, come si va in Francia o in Svizzera?", r: "Con l'autostrada A5, i valichi alpini (Gran e Piccolo San Bernardo) e le gallerie." },
@@ -851,7 +899,8 @@ window.TRABOCCHETTI = [
   ["È divisa in province?", "No, non ha province"],
   ["Il clima è mediterraneo?", "No, è **alpino**"],
   ["Si parla il tedesco come lingua ufficiale?", "No: **italiano e francese**"],
-  ["Il Traforo del Monte Bianco va in Svizzera?", "No, in **Francia**"]
+  ["Il Traforo del Monte Bianco va in Svizzera?", "No, in **Francia**"],
+  ["Il Parco del Gran Paradiso è nato nel 1856?", "No: nel 1856 nacque la **riserva di caccia** del re; il **Parco** è del **1922**"]
 ];
 
 window.CONSIGLI = [
@@ -872,7 +921,7 @@ window.TOUR = [
   { titolo: "I confini", carta: "politica", vista: "larga", confini: true,
     testo: "La Valle d'Aosta confina con due Stati e con una regione: a nord con la Svizzera, a ovest con la Francia, a sud e a est con il Piemonte." },
   { titolo: "Una regione tutta di montagna", carta: "fisica", vista: "regione", fiume: "luce",
-    testo: "Il territorio è tutto montuoso: 100% montagna! In mezzo c'è una grande valle, percorsa dalla Dora Baltea, da cui partono tante valli laterali." },
+    testo: "Il territorio è tutto montuoso: 100% montagna! In mezzo c'è una grande valle, percorsa dalla Dora Baltea, da cui partono tante valli laterali. Sono valli glaciali, strette e allungate." },
   { titolo: "Il Monte Bianco", carta: "fisica", vista: ["montebianco"], zoom: 11, luci: ["montebianco"],
     testo: "Qui, al confine con la Francia, c'è il Monte Bianco: con 4.807 metri è la montagna più alta delle Alpi." },
   { titolo: "Il Cervino e il Monte Rosa", carta: "fisica", vista: ["cervino", "monterosa"], luci: ["cervino", "monterosa"],
@@ -882,15 +931,15 @@ window.TOUR = [
   { titolo: "Alpi Pennine e Alpi Graie", carta: "fisica", vista: "regione", zone: ["pennine", "graie"],
     testo: "Le montagne a nord, verso la Svizzera, sono le Alpi Pennine. Quelle a ovest e a sud, con il Monte Bianco e il Gran Paradiso, sono le Alpi Graie." },
   { titolo: "La Dora Baltea", carta: "fisica", vista: "larga", fiume: "disegna",
-    testo: "Il fiume principale è la Dora Baltea. Nasce ai piedi del Monte Bianco, attraversa tutta la regione da ovest a est e raccoglie l'acqua di tanti torrenti." },
+    testo: "Il fiume principale è la Dora Baltea. Nasce ai piedi del Monte Bianco, attraversa tutta la regione da ovest a est e raccoglie l'acqua di tanti torrenti. Poi entra in Piemonte e diventa un affluente del Po." },
   { titolo: "Il clima e il parco", carta: "fisica", vista: ["parcogp"], zoom: 10.5, luci: ["parcogp"],
-    testo: "Il clima è alpino: inverni lunghi e freddi, con tanta neve, ed estati brevi e fresche. Per proteggere gli animali, nel 1922 è nato il Parco Nazionale del Gran Paradiso: il suo simbolo è lo stambecco." },
+    testo: "Il clima è alpino: inverni lunghi e freddi, con tanta neve, ed estati brevi e fresche. Gli stambecchi rischiavano di scomparire: nel 1856 il re Vittorio Emanuele II fece di queste montagne una riserva di caccia, e nel 1922 nacque il Parco Nazionale del Gran Paradiso, il primo d'Italia. Il suo simbolo è lo stambecco." },
   { titolo: "Aosta, il capoluogo", carta: "fisica", vista: ["aosta"], zoom: 12, luci: ["aosta"],
     testo: "Aosta è il capoluogo. L'hanno fondata i Romani nel 25 a.C. con il nome di Augusta Praetoria: ci sono ancora la Porta Pretoria, l'Arco d'Augusto e il teatro romano." },
   { titolo: "Dove vive la gente", carta: "fisica", vista: "regione", fiume: "luce", luci: ["aosta"],
     testo: "Gli abitanti sono 123.337. La maggior parte vive nel fondovalle, lungo la Dora Baltea, e circa un quarto vive ad Aosta. Le lingue ufficiali sono l'italiano e il francese." },
   { titolo: "Il lavoro", carta: "fisica", vista: "regione", luci: ["courmayeur", "cervinia", "placemoulin", "valpelline"],
-    testo: "L'attività più importante è il turismo: sci, alpinismo, castelli. Con l'acqua dei torrenti e delle dighe si produce energia idroelettrica. Nei pascoli si allevano le mucche: con il loro latte si fa la Fontina." },
+    testo: "L'attività più importante è il turismo: d'estate castelli e rifugi, d'inverno lo sci. Con l'acqua dei torrenti e delle dighe si produce energia idroelettrica, e dai boschi si ricava il legname. Nei pascoli si allevano le mucche: con il loro latte si fa la Fontina." },
   { titolo: "Le strade tra le montagne", carta: "politica", vista: "regione", luci: ["traforomb", "gsb", "psb"],
     testo: "Per uscire dalla regione ci sono l'autostrada A5, i valichi del Gran San Bernardo e del Piccolo San Bernardo e due grandi gallerie: il Traforo del Monte Bianco porta in Francia, quello del Gran San Bernardo in Svizzera." },
   { titolo: "Fine della visita! 🎉", carta: "fisica", vista: "regione", fine: true,

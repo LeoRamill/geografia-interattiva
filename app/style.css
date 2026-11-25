@@ -163,6 +163,9 @@ body {
   .country-label { font-size: calc(10.5px * var(--scala, 1)); letter-spacing: .15em; }
 }
 .leaflet-tooltip.tip { font-weight: 600; }
+/* nella scheda: da quale libro vengono i numeri, e i numeri diversi dell'altro libro */
+.panel li.libri { list-style: none; margin-left: -1.1em; margin-top: 6px; font-size: .85rem; color: var(--muted); }
+.nota-libro { margin: 6px 0 0; font-size: .82rem; color: var(--muted); }
 
 /* ---------- Pannello ---------- */
 .panel h2 { margin: 0 0 2px; font-size: 1.45rem; line-height: 1.2; }

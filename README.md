@@ -21,7 +21,8 @@ con schede, visita guidata, quiz, flashcard e prova di interrogazione.
 - **Paralleli e meridiani**, **nomi dei luoghi** che compaiono avvicinandosi, **legenda** con le categorie in ordine di importanza (si accendono e spengono, anche tutte insieme)
 - **Luoghi** divisi in categorie, ognuno con la sua **scheda**: testo, informazioni principali, frase "Da ricordare"
 - **Scheda della regione**: carta d'identità, confini e territorio, popolazione, clima e ambienti, storia, economia (con gli occupati per settore), comunicazioni, tradizioni; **Domande e risposte** a tendina
-- **📚 Approfondimento – non è nel libro**: quello che va oltre il libro di testo è segnato in viola con 📚
+- **Due libri di testo** come riferimento: «Geografia» vol. 5 e «Che meraviglia!» Geografia 5. I numeri sono quelli di «Geografia»; quando «Che meraviglia!» ne dà uno diverso, è scritto accanto
+- **📚 Approfondimento – non è nei libri**: quello che va oltre i libri di testo è segnato in viola con 📚
 - **▶ Visita guidata**: tappe animate sulla cartina con la spiegazione passo passo e la **voce della maestra** (registrata, sempre la stessa su ogni dispositivo, anche offline)
 - **Esercitati** (pulsante Quiz): **Dov'è?** (trovare luoghi, fiume e zone sulla cartina), **Domande e vero/falso** (almeno una per ogni sezione a ogni partita), **Flashcard**, **Interrogazione** (discorso con parole chiave da nascondere, cronometro, trabocchetti, simulazione delle domande dell'insegnante)
 - Pulsante **A+** per ingrandire il testo; funziona su computer e telefono, in tema chiaro e scuro
@@ -79,7 +80,7 @@ node tools/prova_sito.js valle-aosta         # prova tutto nel browser (serve Pl
 La procedura completa è in [`.claude/skills/nuova-regione/SKILL.md`](.claude/skills/nuova-regione/SKILL.md)
 (con Claude Code: `/nuova-regione Piemonte`). In breve:
 
-1. Foto delle pagine del libro di testo sulla regione
+1. Foto delle pagine dei due libri di testo sulla regione («Geografia» vol. 5 e «Che meraviglia!» Geografia 5)
 2. `regioni/<id>/regione.js` (copiando quello della Valle d'Aosta) e `pronta: false` in `regioni/regioni.js`
 3. Dati delle cartine:
    ```bash
