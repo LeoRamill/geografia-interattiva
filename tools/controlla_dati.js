@@ -50,12 +50,16 @@ function dentroAnello(lat, lng, anello) {
   return c;
 }
 const dentroRegione = (lat, lng) => poligoni.some(p => dentroAnello(lat, lng, p[0]));
+const dentroGeom = (lat, lng, g) => (g.type === "Polygon" ? [g.coordinates] : g.coordinates)
+  .some(p => dentroAnello(lat, lng, p[0]) && !p.slice(1).some(h => dentroAnello(lat, lng, h)));
 
 // ---------- file generati ----------
 if (!W.FIUMI || !Array.isArray(W.FIUMI.principale) || W.FIUMI.principale.length < 2) err("fiumi.js: manca il tracciato del fiume principale (tools/genera_fiumi.py)");
 for (const z of R.zone || []) {
   if (!W.ZONE || !W.ZONE[z.id]) err(`zone.js: manca la zona "${z.id}" (tools/genera_zone.py)`);
-  if (!z.poligono && !z.resto) err(`regione.js: la zona "${z.id}" non ha né poligono né resto: true`);
+  if (!z.poligono && !z.resto && !z.altimetria) err(`regione.js: la zona "${z.id}" non ha né poligono, né altimetria, né resto: true`);
+  if (z.altimetria && !["montagna", "collina", "pianura"].includes(z.altimetria)) err(`regione.js: altimetria "${z.altimetria}" non valida`);
+  if (W.ZONE && W.ZONE[z.id] && z.etichetta && !dentroGeom(z.etichetta[0], z.etichetta[1], W.ZONE[z.id])) avv(`zona "${z.id}": l'etichetta è fuori dalla zona`);
 }
 if (!W.POLITICA || !W.POLITICA.aree) err("politica.js: dati mancanti (tools/genera_politica.py)");
 const tiles = path.join(DIR, "tiles", "rilievo");

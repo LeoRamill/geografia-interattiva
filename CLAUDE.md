@@ -51,6 +51,7 @@ Stessa struttura della Valle d'Aosta, da usare come modello:
   (`politica.comuni`), altrimenti province. Noto: in Natural Earth il **Lago Maggiore** si chiama per errore "Lago di Como"
   (lo script lo corregge); tra confini NE e ISTAT restano strisce vuote (lo script le riempie).
 - Le zone (es. catene montuose) sono poligoni in `regione.js` intersecati con la regione; `resto: true` = quello che avanza.
+  Le zone non si sovrappongono (ognuna toglie quelle già fatte), così il quiz "Dov'è?" non ha risposte ambigue.
   Oppure `altimetria: "montagna" | "collina"` (calcolate da quota e dislivello, soglie in `tools/genera_zone.py`,
   tarate sul Piemonte: 42/30/27% contro i dati ISTAT 43/30/27%). Montagna / collina / pianura è un classico dei libri:
   usarle quando la regione non è tutta montuosa, e confrontare le percentuali con quelle del libro.
@@ -64,6 +65,16 @@ Stessa struttura della Valle d'Aosta, da usare come modello:
 - Se cambi i testi di `TOUR`, **rigenera l'audio** (`controlla_dati.js` se ne accorge) e aumenta `AUDIO_V` in `app/app.js`.
 - Il modello si scarica da Hugging Face: serve l'ambiente cloud **"geografia-interattiva"** (permette huggingface.co,
   us.aws.cdn.hf.co e simili). Non mettere il modello (63 MB) nel repository.
+
+## Cose della cartina imparate con il Piemonte
+
+- Carta politica: da lontano solo i nomi delle province **della regione studiata** e le scritte `CONFINANTI`
+  (regioni e Stati vicini); i nomi delle province vicine compaiono da zoom 9,5 (prima si sovrapponevano tutti).
+- Le scritte (`ETICHETTE_FISICHE`, `CONFINANTI`) non devono stare sotto un pallino né sul bordo della cartina:
+  controlla sempre gli screenshot e spostale.
+- Durante il quiz "Dov'è?" la cartina lascia spazio in basso per la barra del quiz (i pallini a sud venivano coperti).
+- `regione.js` può avere `bandiera_svg` (disegno della bandiera, scritto da noi) e `pronuncia` (parole che la voce
+  legge male, es. `{ "Frejus": "Fregiùs" }`: controlla con `voce.phonemize(...)`).
 
 ## Codice
 

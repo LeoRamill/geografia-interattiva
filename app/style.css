@@ -58,6 +58,7 @@ body {
 .brand p a:hover { color: var(--accent); }
 .flag { display: inline-flex; width: 30px; height: 30px; border-radius: 6px; overflow: hidden; flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
 .flag i { flex: 1; }
+.flag svg { width: 100%; height: 100%; display: block; }
 .flag i { background: var(--border); }   /* i colori veri vengono da REGIONE.bandiera */
 .actions { display: flex; gap: 8px; flex: none; }
 
@@ -334,6 +335,12 @@ body.quiz-on .lbl-cima { display: none; }
   :root:not([data-theme="light"]) .segbar-wrap { --s1: #3987e5; --s2: #d95926; --s3: #199e70; }
 }
 :root[data-theme="dark"] .segbar-wrap { --s1: #3987e5; --s2: #d95926; --s3: #199e70; }
+/* montagna / collina / pianura: colori della cartina, controllati per il daltonismo (validate_palette.js) */
+.segbar-wrap.terreno { --s1: #a8622f; --s2: #cf9f12; --s3: #3f9a55; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .segbar-wrap.terreno { --s1: #9c522a; --s2: #b08a0e; --s3: #2e9a80; }
+}
+:root[data-theme="dark"] .segbar-wrap.terreno { --s1: #9c522a; --s2: #b08a0e; --s3: #2e9a80; }
 .segbar { display: flex; gap: 2px; height: 30px; }
 .segbar span {
   flex: var(--w) 1 0; min-width: 4px; background: var(--c);

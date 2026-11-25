@@ -13,7 +13,8 @@
   document.title = R.nome + " interattiva";
   document.querySelector(".brand h1").textContent = R.nome;
   // bandiera: una striscia verticale per ogni colore di REGIONE.bandiera
-  document.querySelector(".brand .flag").innerHTML = R.bandiera.map(c => `<i style="background:${c}"></i>`).join("");
+  // (o il disegno vero, se regione.js ha bandiera_svg: è scritto da noi, non viene da fuori)
+  document.querySelector(".brand .flag").innerHTML = R.bandiera_svg || R.bandiera.map(c => `<i style="background:${c}"></i>`).join("");
   document.getElementById("map").setAttribute("aria-label", "Mappa: " + R.nome);
 
   const CAT = window.CATEGORIE;
@@ -153,9 +154,11 @@
                                          weight: f.properties.tipo === "Major Highway" ? 2.4 : 1.4 }) }),
     confineStato()
   ]);
+  // i nomi delle province della regione si vedono subito; quelli delle altre zone avvicinandosi
+  // (da lontano basta il nome della regione o dello Stato vicino, in CONFINANTI)
   P.aree.features.forEach(f => {
     const [lat, lng] = f.properties.etichetta;
-    scritta(lat, lng, f.properties.nome, "lbl-area", 8, politica);
+    scritta(lat, lng, f.properties.nome, "lbl-area", f.properties.regione ? 8 : 9.5, politica);
   });
   P.comuni.features.forEach(f => {
     const [lat, lng] = f.properties.etichetta;
@@ -726,7 +729,10 @@
     qbar.hidden = false;
     applyFilters();
     refreshIcons();
-    map.flyToBounds(bounds, Object.assign({ duration: 0.6 }, FIT));
+    // in basso c'è la barra del quiz: si lascia spazio, così nessun pallino resta coperto
+    const alto = qbar.offsetHeight || 90;
+    map.flyToBounds(bounds, Object.assign({ duration: 0.6 }, FIT, {
+      paddingTopLeft: FIT.paddingTopLeft || FIT.padding, paddingBottomRight: [20, alto + 40], padding: null }));
     panel.innerHTML = `
       <h2>🎯 Quiz: dov'è?</h2>
       <p class="sub">Esercitati per l'interrogazione.</p>
@@ -1197,9 +1203,13 @@
     const centro = (ll, z) => anima ? map.flyTo(ll, z, opz) : map.setView(ll, z, { animate: false });
     const inquadra = (b, extra) => anima ? map.flyToBounds(b, Object.assign({}, FIT, extra, opz)) : map.fitBounds(b, Object.assign({}, FIT, extra));
     if (t.vista === "larga") {
-      // la vista più larga possibile senza uscire dall'area della cartina
-      const z = Math.max(map.getMinZoom(), Math.ceil(map.getBoundsZoom(AREA_LARGA, true) * 4) / 4);
-      centro(AREA_LARGA.getCenter(), z);
+      // la vista più larga possibile senza uscire dall'area della cartina; se la regione è grande
+      // (e quella vista la taglierebbe) si inquadra semplicemente tutta la regione
+      const pad = FIT.padding ? L.point(FIT.padding).multiplyBy(2) : L.point(FIT.paddingTopLeft).add(FIT.paddingBottomRight);
+      const zRegione = map.getBoundsZoom(bounds, false, pad);
+      const zArea = Math.max(map.getMinZoom(), Math.ceil(map.getBoundsZoom(AREA_LARGA, true) * 4) / 4);
+      if (zArea >= zRegione) inquadra(bounds);
+      else centro(AREA_LARGA.getCenter(), zArea);
     }
     else if (t.vista === "regione") inquadra(bounds);
     else {

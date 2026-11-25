@@ -4,7 +4,7 @@
  */
 window.REGIONI = [
   { id: "valle-aosta",           nome: "Valle d'Aosta",         istat: 2,  pronta: true },
-  { id: "piemonte",              nome: "Piemonte",              istat: 1,  pronta: false },
+  { id: "piemonte",              nome: "Piemonte",              istat: 1,  pronta: true },
   { id: "lombardia",             nome: "Lombardia",             istat: 3,  pronta: false },
   { id: "trentino-alto-adige",   nome: "Trentino-Alto Adige",   istat: 4,  pronta: false },
   { id: "veneto",                nome: "Veneto",                istat: 5,  pronta: false },

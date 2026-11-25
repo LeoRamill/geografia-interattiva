@@ -28,7 +28,11 @@ async function pagina(browser, opzioni) {
   const p = await ctx.newPage();
   p.errori = [];
   p.on("pageerror", e => p.errori.push(e.message));
-  p.on("requestfailed", r => { if (r.url().startsWith("file:")) p.errori.push("file mancante: " + r.url().replace(RADICE, "")); });
+  // le tessere che la cartina smette di caricare mentre si muove sono "annullate" (ERR_ABORTED): non sono errori
+  p.on("requestfailed", r => {
+    if (r.url().startsWith("file:") && !/ABORTED/.test((r.failure() || {}).errorText || ""))
+      p.errori.push("file mancante: " + r.url().replace(RADICE, ""));
+  });
   await p.route(/arcgisonline|opentopomap/, r => r.abort());
   return p;
 }
@@ -91,7 +95,10 @@ const centro = async (p, titolo) => {
         for (let k = 1; k < 40; k++) for (let h = 1; h < 40; h++) {
           const pt = L.point(size.x * k / 40, size.y * h / 40), ll = map.containerPointToLatLng(pt);
           if (pt.y > size.y - 120 || pt.x < 230) continue;    // non sotto la barra del quiz o la legenda
-          if (pol.some(pp => dentro(ll.lat, ll.lng, pp[0])) && b.contains(ll)) return pt;
+          if (!pol.some(pp => dentro(ll.lat, ll.lng, pp[0]) && !pp.slice(1).some(h => dentro(ll.lat, ll.lng, h))) || !b.contains(ll)) continue;
+          const box = map.getContainer().getBoundingClientRect();
+          const el = document.elementFromPoint(box.left + pt.x, box.top + pt.y);
+          if (el && !el.closest(".leaflet-marker-icon")) return pt;      // non sotto un pallino
         }
       }
       return null;
@@ -107,6 +114,11 @@ const centro = async (p, titolo) => {
     await p.waitForTimeout(150);
     const esito = await p.textContent("#quiz-feedback");
     if (esito.startsWith("✘")) console.log(`   ⚠️  quiz: al primo colpo "${nome}" non è riuscito (${esito.trim()})`);
+    const dopo = (await p.evaluate(() => document.querySelector("#quiz-target").firstChild.textContent)).trim();
+    if (dopo === nome && !esito.startsWith("✘")) {          // il clic non ha fatto niente: si salta, per non girare a vuoto
+      ok(false, `quiz: il clic su "${nome}" non ha avuto effetto${bersaglio ? ` (punto ${Math.round(bersaglio.x)},${Math.round(bersaglio.y)})` : ""}`);
+      await p.click("#quiz-skip");
+    }
     giri++;
   }
   const fb = await p.textContent("#quiz-feedback");

@@ -115,11 +115,10 @@ def main():
                 minx, miny, maxx, maxy = regione.bounds
                 classi = classi_altimetria((minx - 0.05, miny - 0.05, maxx + 0.05, maxy + 0.05))
             c = {"pianura": 0, "collina": 1, "montagna": 2}[z["altimetria"]]
-            g = poligono_classe(*classi[:1], c, *classi[1:]).intersection(regione).difference(unary_union(fatte) if fatte else Polygon())
+            g = semplifica_zona(poligono_classe(*classi[:1], c, *classi[1:]).intersection(regione), regione)
+            g = g.difference(unary_union(fatte)) if fatte else g     # le zone non si sovrappongono
         else:
             continue
-        if z.get("altimetria"):
-            g = semplifica_zona(g, regione)
         zone[z["id"]] = g
         fatte.append(g)
     for z in R.get("zone", []):

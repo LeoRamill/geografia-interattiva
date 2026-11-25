@@ -4,7 +4,7 @@ Sito statico per studiare le **regioni italiane** (livello quinta elementare / p
 Si sceglie una regione sulla cartina d'Italia, si esplora la cartina della regione e si ripassa
 con schede, visita guidata, quiz, flashcard e prova di interrogazione.
 
-**Regioni pronte:** Valle d'Aosta. Le altre sono "in arrivo": per aggiungerne una, vedi
+**Regioni pronte:** Valle d'Aosta, Piemonte. Le altre sono "in arrivo": per aggiungerne una, vedi
 [Aggiungere una regione](#aggiungere-una-regione).
 
 ## Cosa c'è per ogni regione

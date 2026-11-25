@@ -27,7 +27,7 @@ import wave
 from piper import PiperVoice, SynthesisConfig
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from regione import argomenti, cartella, leggi_js  # noqa: E402
+from regione import argomenti, cartella, leggi_js, leggi_regione  # noqa: E402
 
 # Tono "da maestra": un po' più lento del normale e con pause tra le frasi
 CONFIG = SynthesisConfig(length_scale=1.12, noise_scale=0.6, noise_w_scale=0.8)
@@ -37,8 +37,10 @@ PAUSA_FRASE = 0.40    # secondi tra una frase e l'altra
 FILTRI = "highpass=f=70,lowpass=f=9500,acompressor=threshold=-20dB:ratio=2:attack=20:release=200,loudnorm=I=-18:TP=-2"
 
 
-def da_leggere(t):
-    """Stesse regole del sito: niente emoji, sigle e unità scritte per intero."""
+def da_leggere(t, pronuncia=None):
+    """Niente emoji, sigle e unità scritte per intero, parole difficili come vanno lette (REGIONE.pronuncia)."""
+    for parola, come in (pronuncia or {}).items():
+        t = re.sub(rf"\b{re.escape(parola)}\b", come, t)
     t = re.sub(r"[\U0001F000-\U0001FAFF☀-➿️]", "", t)
     t = re.sub(r"\ba\.C\.", "avanti Cristo", t)
     t = re.sub(r"\bd\.C\.", "dopo Cristo", t)
@@ -55,6 +57,7 @@ def main():
     args = argomenti("Registra la voce della visita guidata", lambda ap: ap.add_argument(
         "--voce", required=True, help="file .onnx della voce (con accanto il .onnx.json)"))
     tappe = leggi_js(cartella(args.regione, "dati.js"), "TOUR")
+    pronuncia = leggi_regione(args.regione).get("pronuncia", {})
     voce = PiperVoice.load(args.voce)
     sr = voce.config.sample_rate
     out_dir = cartella(args.regione, "audio", "tour")
@@ -62,7 +65,7 @@ def main():
         shutil.rmtree(out_dir)                          # niente file di tappe vecchie
     os.makedirs(out_dir)
     for n, t in enumerate(tappe, start=1):
-        pezzi = [(da_leggere(t["titolo"]), PAUSA_TITOLO), (da_leggere(t["testo"]), PAUSA_FRASE)]
+        pezzi = [(da_leggere(t["titolo"], pronuncia), PAUSA_TITOLO), (da_leggere(t["testo"], pronuncia), PAUSA_FRASE)]
         with tempfile.TemporaryDirectory() as tmp:
             wav = os.path.join(tmp, "tappa.wav")
             with wave.open(wav, "wb") as out:

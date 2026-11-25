@@ -190,7 +190,8 @@ def main():
                 continue
             out.append({"type": "Feature",
                         "properties": {"nome": it["nome"], "tipo": it["tipo"], "colore": it["colore"],
-                                       "etichetta": etichetta(it["geom"].intersection(AREA))},
+                                       "etichetta": etichetta(it["geom"].intersection(AREA)),
+                                       "regione": it["gruppo"] == "REGIONE"},   # è della regione studiata
                         "geometry": arrotonda(g)})
         return {"type": "FeatureCollection", "features": out}
 

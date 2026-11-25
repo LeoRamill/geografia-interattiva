@@ -77,7 +77,7 @@ python3 tools/genera_audio.py --regione <id> --voce /percorso/it_IT-paola-medium
 ```
 
 - [ ] Controlla la pronuncia delle parole difficili con `voce.phonemize(...)` (numeri, nomi stranieri o dialettali).
-      Se una parola viene male, scrivila nel `TOUR` in modo che si legga bene, o aggiungi una regola in `da_leggere()`.
+      Se una parola viene male, aggiungila a `pronuncia` in `regione.js` (es. `{ "Frejus": "Fregiùs" }`).
 - [ ] Manda all'utente un mp3 da ascoltare.
 
 ## 5. Verifica
