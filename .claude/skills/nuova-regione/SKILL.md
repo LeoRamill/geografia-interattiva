@@ -90,6 +90,7 @@ python3 tools/genera_audio.py --regione <id> --voce /percorso/it_IT-paola-medium
 
 ## 6. Pubblicazione
 
-- [ ] `pronta: true` in `regioni/regioni.js`, aggiorna l'elenco delle regioni pronte nel `README.md`.
+- [ ] `pronta: true` in `regioni/regioni.js`, aggiorna l'elenco delle regioni pronte nel `README.md`
+      e aggiungi il link diretto (`regione.html?r=<id>`) in cima al `README.md`.
 - [ ] Commit in italiano e push su `main` (il sito si aggiorna con GitHub Pages).
 - [ ] Riassumi all'utente: cosa c'è, il confronto con il libro, cosa non hai potuto verificare (cartine online, audio vero).

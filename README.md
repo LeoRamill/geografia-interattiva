@@ -1,5 +1,9 @@
 # Geografia interattiva
 
+### 🌐 [Apri il sito: leoramill.github.io/geografia-interattiva](https://leoramill.github.io/geografia-interattiva/)
+
+Vai direttamente a una regione: [Valle d'Aosta](https://leoramill.github.io/geografia-interattiva/regione.html?r=valle-aosta) · [Piemonte](https://leoramill.github.io/geografia-interattiva/regione.html?r=piemonte)
+
 Sito statico per studiare le **regioni italiane** (livello quinta elementare / prima media).
 Si sceglie una regione sulla cartina d'Italia, si esplora la cartina della regione e si ripassa
 con schede, visita guidata, quiz, flashcard e prova di interrogazione.
