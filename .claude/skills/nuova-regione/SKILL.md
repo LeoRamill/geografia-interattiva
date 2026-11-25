@@ -23,6 +23,7 @@ Tieni l'utente aggiornato con frasi brevi in italiano; mostragli gli screenshot 
 - [ ] Lancia `python3 tools/genera_confine.py --regione <id>`: scrive `confine.js` e **suggerisce `area_regione` e
       `area_larga`**. Copiali in `regione.js`. Per regioni grandi o lunghe (Sicilia, Sardegna, Puglia, Toscana…)
       metti `zoom_min: 7` così la regione intera sta anche sullo schermo del telefono.
+      Se la regione è **stretta e lunga** (Liguria) allarga `area_larga` in altezza, se no sul telefono restano bande bianche.
 - [ ] `fiume`: il fiume principale del libro. `sorgente` = un punto vicino alla sorgente nel fondovalle,
       `fine` = dove fermarsi (foce o uscita dalla regione), `foce` = scritta finale ("verso il Po", "verso il mare Adriatico"),
       `etichetta`, `ricorda`, `con_articolo` ("il Po", "l'Adige").
@@ -86,6 +87,7 @@ python3 tools/genera_audio.py --regione <id> --voce /percorso/it_IT-paola-medium
 - [ ] Metti temporaneamente `pronta: true` e lancia `node tools/prova_sito.js <id> <cartella-scratchpad>` → tutto ✅.
 - [ ] **Guarda gli screenshot** (home, regione, scheda, politica, visita, telefono): scritte sovrapposte, pallini troppo vicini,
       cartina tagliata o vuota, testo troppo lungo sul telefono. Correggi e riprova.
+- [ ] Guarda anche alcune **tappe della visita** (quelle con le zone e con più luoghi), sul computer e sul telefono.
 - [ ] Aumenta `?v=` in `index.html` e `regione.html`.
 
 ## 6. Pubblicazione

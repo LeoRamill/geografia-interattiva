@@ -40,12 +40,14 @@ Stessa struttura della Valle d'Aosta, da usare come modello:
   con gli script in `tools/` e salvate nel repository (funzionano offline). Satellite/Escursionistica/Semplice sono
   solo extra online: i pulsanti compaiono solo se una tessera di prova si carica.
 - Rilievo: Terrain Tiles (AWS, formato Terrarium), colori da atlante, ombreggiatura, laghi e mare in blu; zoom `zoom_min`–11
-  su `area_larga`, 12 su `area_regione`. Dimensione: Valle d'Aosta ≈ 5 MB, Piemonte ≈ 19 MB.
+  su `area_larga`, 12 su `area_regione`. Dimensione: Valle d'Aosta ≈ 5 MB, Piemonte ≈ 19 MB, Liguria ≈ 11 MB.
   Negli zoom lontani (≤ 10) la superficie dei laghi nei dati non è piatta: i laghi si colorano anche con i contorni
   di Natural Earth (stessa cosa per non disegnare fiumi dentro i laghi).
 - Regioni grandi: `zoom_min: 7` (devono stare intere sul telefono); da lontano (zoom < 8,5) il sito nasconde strade
   e fiumi medi, se no la cartina è illeggibile.
 - Fiumi: Priority-Flood + accumulo del deflusso a zoom 10; in pianura solo i fiumi grandi (il piatto crea falsi ruscelli).
+  "Pianura" = sotto `fiumi_quota_pianura` **e** terreno piatto (dislivello < 80 m nei dintorni): così restano i torrenti
+  brevi delle valli ripide che arrivano al mare (Liguria), che prima sparivano perché sono sotto i 450 m.
 - Politica: province e comuni da openpolis (ISTAT), Stati vicini da Natural Earth; il mare è il contorno `ne_10m_ocean`
   (indovinarlo "per differenza" dava strisce azzurre lungo i confini). Comuni solo se la regione ne ha pochi
   (`politica.comuni`), altrimenti province. Noto: in Natural Earth il **Lago Maggiore** si chiama per errore "Lago di Como"
@@ -55,6 +57,9 @@ Stessa struttura della Valle d'Aosta, da usare come modello:
   Oppure `altimetria: "montagna" | "collina"` (calcolate da quota e dislivello, soglie in `tools/genera_zone.py`,
   tarate sul Piemonte: 42/30/27% contro i dati ISTAT 43/30/27%). Montagna / collina / pianura è un classico dei libri:
   usarle quando la regione non è tutta montuosa, e confrontare le percentuali con quelle del libro.
+  Se le percentuali non tornano, `altimetria_soglie` in `regione.js` (Liguria: montagne ripide sul mare, soglie più basse).
+  Zone con `gruppo` diversi si possono sovrapporre (Liguria: montagna/collina e Riviera di Ponente/Levante);
+  `costa: { km, ovest, est }` = striscia lungo il mare (contorno del mare di Natural Earth).
 
 ## Voce della visita guidata
 
@@ -75,6 +80,19 @@ Stessa struttura della Valle d'Aosta, da usare come modello:
 - Durante il quiz "Dov'è?" la cartina lascia spazio in basso per la barra del quiz (i pallini a sud venivano coperti).
 - `regione.js` può avere `bandiera_svg` (disegno della bandiera, scritto da noi) e `pronuncia` (parole che la voce
   legge male, es. `{ "Frejus": "Fregiùs" }`: controlla con `voce.phonemize(...)`).
+
+## Cose imparate con la Liguria
+
+- Regione **stretta e lunga**: `area_larga` molto più alta di quella suggerita da `genera_confine.py`, se no sul telefono
+  (e anche sul computer) restano bande bianche sopra e sotto la cartina. Liguria: latitudine 42,60–45,85.
+- Il libro non ha un "fiume principale": `fiume` è un fiume del libro che si vede bene (lo Scrivia, verso il Po)
+  e `FIUME_INFO` spiega i due tipi di fiumi (brevi e torrentizi verso il mare, lunghi verso il Po).
+- Nomi delle province sotto un pallino: `politica.etichette` in `regione.js` (es. `{ "Savona": [44.20, 8.26] }`),
+  poi rigenera la politica.
+- Visita guidata: con `vista: [luoghi]` la cartina si allarga parecchio intorno ai luoghi; se sono lontani tra loro
+  usa `vista: "regione"` con le `luci`.
+- Regione piccola sul telefono: le scritte delle catene da zoom 8 (`min: 8`), se no coprono i pallini. I nomi delle zone
+  (`etichetta` in `regione.js`) non devono toccarsi tra loro né con le scritte della visita: guardale anche sul telefono.
 
 ## Codice
 

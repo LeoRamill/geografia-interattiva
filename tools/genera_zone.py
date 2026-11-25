@@ -7,7 +7,11 @@ Le zone sono descritte in regioni/<id>/regione.js (REGIONE.zone):
   - altimetria: "montagna" | "collina" | "pianura"
                              -> la zona è calcolata dai dati di altitudine: quanto è alto il terreno e
                                 quanto è "mosso" (dislivello nei dintorni). Le soglie sono in SOGLIE.
-  - resto: true              -> la zona è la parte di regione che avanza dalle altre
+  - costa: { km, ovest, est } -> la striscia di costa larga `km` chilometri tra le longitudini ovest ed est
+                                (es. le Riviere liguri); il mare viene da Natural Earth
+  - resto: true              -> la zona è la parte di regione che avanza dalle altre (dello stesso gruppo)
+  - gruppo: "…"              -> le zone dello stesso gruppo non si sovrappongono; gruppi diversi sì
+                                (es. montagna/collina e Riviera di Ponente/Levante). Senza gruppo: tutte insieme.
 
 Scrive regioni/<id>/zone.js.
 Uso:  python3 tools/genera_zone.py --regione valle-aosta      (richiede shapely, node)
@@ -104,10 +108,13 @@ def superfici(g):
 def main():
     args = argomenti("Prepara le zone della regione (quiz e visita guidata)")
     R = leggi_regione(args.regione)
+    SOGLIE.update(R.get("altimetria_soglie", {}))   # regioni con montagne "diverse" (es. Liguria, a picco sul mare)
     regione = shape(leggi_js(cartella(args.regione, "confine.js"), "CONFINE")["geometry"]).buffer(0)
-    zone, fatte = {}, []
+    zone, fatte = {}, {}             # fatte: per gruppo, le zone già calcolate
     classi = None
+    oceano = None
     for z in R.get("zone", []):
+        gia = fatte.setdefault(z.get("gruppo", ""), [])
         if z.get("poligono"):
             g = Polygon(z["poligono"]).buffer(0).intersection(regione)
         elif z.get("altimetria"):
@@ -116,14 +123,26 @@ def main():
                 classi = classi_altimetria((minx - 0.05, miny - 0.05, maxx + 0.05, maxy + 0.05))
             c = {"pianura": 0, "collina": 1, "montagna": 2}[z["altimetria"]]
             g = semplifica_zona(poligono_classe(*classi[:1], c, *classi[1:]).intersection(regione), regione)
-            g = g.difference(unary_union(fatte)) if fatte else g     # le zone non si sovrappongono
+        elif z.get("costa"):
+            if oceano is None:
+                from genera_politica import NE, carica
+                minx, miny, maxx, maxy = regione.bounds
+                zona = box(minx - 0.5, miny - 0.5, maxx + 0.5, maxy + 0.5)
+                oceano = unary_union([shape(f["geometry"]).intersection(zona) for f in carica(NE + "ne_10m_ocean.geojson")
+                                      if shape(f["geometry"]).intersects(zona)])
+            c = z["costa"]
+            striscia = oceano.buffer(c["km"] / 111).intersection(box(c["ovest"], -90, c["est"], 90))
+            g = superfici(striscia.intersection(regione))
         else:
             continue
+        if gia:
+            g = g.difference(unary_union(gia))                       # nello stesso gruppo non si sovrappongono
         zone[z["id"]] = g
-        fatte.append(g)
+        gia.append(g)
     for z in R.get("zone", []):
         if z.get("resto"):
-            zone[z["id"]] = regione.difference(unary_union(fatte)) if fatte else regione
+            gia = fatte.get(z.get("gruppo", ""), [])
+            zone[z["id"]] = regione.difference(unary_union(gia)) if gia else regione
     out = cartella(args.regione, "zone.js")
     scrivi_js(out, "ZONE", {k: arrotonda(mapping(superfici(g).simplify(0.001))) for k, g in zone.items()}, "genera_zone.py")
     for k, g in zone.items():

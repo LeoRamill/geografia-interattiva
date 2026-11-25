@@ -26,7 +26,9 @@ from regione import argomenti, cartella, laghi, leggi_regione, scarica_dem, scri
 Z = 10                      # risoluzione dei dati usati (circa 100 m per pixel)
 SOGLIA_KM2 = 25             # area drenata minima perché sia disegnato un fiume
 SOGLIA_PIANURA_KM2 = 700    # in pianura solo i fiumi grandi: il terreno piatto crea falsi ruscelli
-QUOTA_PIANURA = 450         # metri: sotto questa quota vale SOGLIA_PIANURA_KM2 (in regione.js: fiumi_quota_pianura)
+QUOTA_PIANURA = 450         # metri: sotto questa quota vale SOGLIA_PIANURA_KM2 (in regione.js: fiumi_quota_pianura)…
+DISLIVELLO_PIANURA = 80     # …ma solo dove il terreno è piatto: dislivello nei dintorni sotto questi metri
+RAGGIO_DISLIVELLO = 6       # pixel (circa 650 m): i torrenti delle valli ripide (es. Liguria) restano
 
 
 def mosaico(z, area):
@@ -112,7 +114,15 @@ def main():
     soglia = SOGLIA_KM2 / km2_cella
     fiume = acc >= soglia
     quota = R.get("fiumi_quota_pianura", QUOTA_PIANURA)
-    fiume &= ~((elev.ravel() < quota) & (acc < SOGLIA_PIANURA_KM2 / km2_cella))
+    from regione import _sposta
+    alto, basso = elev.copy(), elev.copy()
+    for dy in range(-RAGGIO_DISLIVELLO, RAGGIO_DISLIVELLO + 1):
+        for dx in range(-RAGGIO_DISLIVELLO, RAGGIO_DISLIVELLO + 1):
+            sp = _sposta(elev, dy, dx)
+            np.maximum(alto, sp, out=alto)
+            np.minimum(basso, sp, out=basso)
+    piatto = ((alto - basso) < DISLIVELLO_PIANURA).ravel()
+    fiume &= ~((elev.ravel() < quota) & piatto & (acc < SOGLIA_PIANURA_KM2 / km2_cella))
     fiume &= ~laghi(elev, Z).ravel()          # niente linee dentro i laghi…
     from genera_rilievo import maschera_laghi_ne   # …anche quelli che nei dati non sono piatti
     fiume &= ~maschera_laghi_ne(Z, [x0], [y0], elev.shape, area).ravel()

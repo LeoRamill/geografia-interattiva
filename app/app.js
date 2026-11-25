@@ -653,7 +653,7 @@
     { id: "fiume", nome: R.fiume.nome, con_articolo: R.fiume.con_articolo, cat: "natura", tipo: "fiume",
       lat: R.fiume.etichetta[0], lng: R.fiume.etichetta[1], aiuto: "clicca sul fiume", ricorda: R.fiume.ricorda },
     ...(R.zone || []).map(z => ({ id: z.id, nome: z.nome, con_articolo: z.con_articolo, plurale: z.plurale, colore: z.colore,
-      cat: z.cat || "montagne", tipo: "zona", lat: z.etichetta[0], lng: z.etichetta[1],
+      cat: z.cat || "montagne", tipo: "zona", gruppo: z.gruppo || "", lat: z.etichetta[0], lng: z.etichetta[1],
       aiuto: "clicca sulla zona della cartina", ricorda: z.ricorda }))
   ];
   const FIUME = EXTRA[0];
@@ -671,7 +671,9 @@
     const poligoni = g.type === "Polygon" ? [g.coordinates] : g.coordinates;
     return poligoni.some(p => dentroAnello(ll, p[0]) && !p.slice(1).some(buco => dentroAnello(ll, buco)));
   }
-  const zonaDi = ll => ZONE_QUIZ.map(z => z.id).find(id => window.ZONE[id] && dentroGeom(ll, window.ZONE[id])) || null;
+  // la zona cliccata, cercata tra quelle dello stesso gruppo della domanda (es. montagna/collina, oppure le Riviere)
+  const zonaDi = (ll, t) => ZONE_QUIZ.filter(z => z.gruppo === t.gruppo).map(z => z.id)
+    .find(id => window.ZONE[id] && dentroGeom(ll, window.ZONE[id])) || null;
 
   // mostra per un attimo in verde la zona o il fiume
   let evidenziato = null;
@@ -696,8 +698,15 @@
     const t = quiz.order[quiz.i];
     if (!t) return;
     if (t.tipo === "zona") {
-      const z = zonaDi(ll);
-      if (!z) { qFb.className = "quiz-feedback ko"; qFb.textContent = `Clicca dentro ${R.con_articolo}.`; return; }
+      const z = zonaDi(ll, t);
+      if (!z) {
+        const scelte = ZONE_QUIZ.filter(x => x.gruppo === t.gruppo);
+        qFb.className = "quiz-feedback ko";
+        qFb.textContent = scelte.length > 1 && t.gruppo
+          ? `Lì non c'è nessuna di queste zone: ${scelte.map(x => x.nome).join(", ")}. Riprova!`
+          : `Clicca dentro ${R.con_articolo}.`;
+        return;
+      }
       return quizAnswer(EXTRA.find(x => x.id === z));
     }
     if (sulFiume) quizAnswer(FIUME);      // ha cliccato il fiume principale

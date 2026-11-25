@@ -9,7 +9,7 @@ window.REGIONI = [
   { id: "trentino-alto-adige",   nome: "Trentino-Alto Adige",   istat: 4,  pronta: false },
   { id: "veneto",                nome: "Veneto",                istat: 5,  pronta: false },
   { id: "friuli-venezia-giulia", nome: "Friuli-Venezia Giulia", istat: 6,  pronta: false },
-  { id: "liguria",               nome: "Liguria",               istat: 7,  pronta: false },
+  { id: "liguria",               nome: "Liguria",               istat: 7,  pronta: true },
   { id: "emilia-romagna",        nome: "Emilia-Romagna",        istat: 8,  pronta: false },
   { id: "toscana",               nome: "Toscana",               istat: 9,  pronta: false },
   { id: "umbria",                nome: "Umbria",                istat: 10, pronta: false },

@@ -159,6 +159,9 @@ body {
   text-shadow: 0 0 3px #fff, 0 0 6px #fff;
   white-space: nowrap; pointer-events: none;
 }
+@media (max-width: 480px) {   /* sul telefono le scritte di Stati e regioni vicine non devono uscire dalla cartina */
+  .country-label { font-size: calc(10.5px * var(--scala, 1)); letter-spacing: .15em; }
+}
 .leaflet-tooltip.tip { font-weight: 600; }
 
 /* ---------- Pannello ---------- */

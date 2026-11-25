@@ -111,6 +111,7 @@ def main():
     AREA = box(*R["area_larga"])
     target = R["istat"]
     con_comuni = R.get("politica", {}).get("comuni", False)
+    sposta = R.get("politica", {}).get("etichette", {})   # nome → [lat, lng]: dove scrivere il nome (se sotto c'è un pallino)
 
     # --- Italia: regioni e province (openpolis/ISTAT) ---
     regioni = {f["properties"]["reg_istat_code_num"]: (f["properties"]["reg_name"], shape(f["geometry"]))
@@ -190,7 +191,7 @@ def main():
                 continue
             out.append({"type": "Feature",
                         "properties": {"nome": it["nome"], "tipo": it["tipo"], "colore": it["colore"],
-                                       "etichetta": etichetta(it["geom"].intersection(AREA)),
+                                       "etichetta": sposta.get(it["nome"]) or etichetta(it["geom"].intersection(AREA)),
                                        "regione": it["gruppo"] == "REGIONE"},   # è della regione studiata
                         "geometry": arrotonda(g)})
         return {"type": "FeatureCollection", "features": out}

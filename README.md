@@ -2,13 +2,13 @@
 
 ### 🌐 [Apri il sito: leoramill.github.io/geografia-interattiva](https://leoramill.github.io/geografia-interattiva/)
 
-Vai direttamente a una regione: [Valle d'Aosta](https://leoramill.github.io/geografia-interattiva/regione.html?r=valle-aosta) · [Piemonte](https://leoramill.github.io/geografia-interattiva/regione.html?r=piemonte)
+Vai direttamente a una regione: [Valle d'Aosta](https://leoramill.github.io/geografia-interattiva/regione.html?r=valle-aosta) · [Piemonte](https://leoramill.github.io/geografia-interattiva/regione.html?r=piemonte) · [Liguria](https://leoramill.github.io/geografia-interattiva/regione.html?r=liguria)
 
 Sito statico per studiare le **regioni italiane** (livello quinta elementare / prima media).
 Si sceglie una regione sulla cartina d'Italia, si esplora la cartina della regione e si ripassa
 con schede, visita guidata, quiz, flashcard e prova di interrogazione.
 
-**Regioni pronte:** Valle d'Aosta, Piemonte. Le altre sono "in arrivo": per aggiungerne una, vedi
+**Regioni pronte:** Valle d'Aosta, Piemonte, Liguria. Le altre sono "in arrivo": per aggiungerne una, vedi
 [Aggiungere una regione](#aggiungere-una-regione).
 
 ## Cosa c'è per ogni regione

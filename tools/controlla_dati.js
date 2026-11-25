@@ -57,7 +57,9 @@ const dentroGeom = (lat, lng, g) => (g.type === "Polygon" ? [g.coordinates] : g.
 if (!W.FIUMI || !Array.isArray(W.FIUMI.principale) || W.FIUMI.principale.length < 2) err("fiumi.js: manca il tracciato del fiume principale (tools/genera_fiumi.py)");
 for (const z of R.zone || []) {
   if (!W.ZONE || !W.ZONE[z.id]) err(`zone.js: manca la zona "${z.id}" (tools/genera_zone.py)`);
-  if (!z.poligono && !z.resto && !z.altimetria) err(`regione.js: la zona "${z.id}" non ha né poligono, né altimetria, né resto: true`);
+  if (!z.poligono && !z.resto && !z.altimetria && !z.costa) err(`regione.js: la zona "${z.id}" non ha né poligono, né altimetria, né costa, né resto: true`);
+  if (z.costa && !(z.costa.km > 0 && z.costa.ovest < z.costa.est)) err(`regione.js: la zona "${z.id}" ha una "costa" non valida`);
+  if (z.cat && !(W.CATEGORIE || {})[z.cat]) err(`regione.js: la zona "${z.id}" ha la categoria "${z.cat}" che non c'è in CATEGORIE`);
   if (z.altimetria && !["montagna", "collina", "pianura"].includes(z.altimetria)) err(`regione.js: altimetria "${z.altimetria}" non valida`);
   if (W.ZONE && W.ZONE[z.id] && z.etichetta && !dentroGeom(z.etichetta[0], z.etichetta[1], W.ZONE[z.id])) avv(`zona "${z.id}": l'etichetta è fuori dalla zona`);
 }
